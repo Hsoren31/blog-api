@@ -1,17 +1,11 @@
 const { Router } = require("express");
 const usersRouter = new Router();
+const userController = require("../controller/userController");
 
-usersRouter.get("/", (req, res) => res.send("get all users"));
-usersRouter.post("/", (req, res) => res.send("create new user?"));
-usersRouter.put("/:userId", (req, res) =>
-  res.send(`update user ${req.params.userId}`)
-);
-usersRouter.delete("/:userId", (req, res) =>
-  res.send(`delete user ${req.params.userId}`)
-);
-
-usersRouter.get("/:userId/posts", (req, res) =>
-  res.send(`User ${req.params.userId}'s posts`)
-);
+//user crud operation routes
+usersRouter.post("/", userController.createUser);
+usersRouter.get("/:userId", userController.readUser);
+usersRouter.put("/:userId", userController.updateUser);
+usersRouter.delete("/:userId", userController.deleteUser);
 
 module.exports = usersRouter;
