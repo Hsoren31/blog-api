@@ -15,20 +15,32 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(uuid())
-  firstName String @db.VarChar(20)
-  lastName  String @db.VarChar(20)
-  email     String @unique
-  username  String @unique @db.VarChar(20)
-  password  String @db.VarChar(20)
+  id        String    @id @default(uuid())
+  firstName String    @db.VarChar(20)
+  lastName  String    @db.VarChar(20)
+  email     String    @unique
+  username  String    @unique @db.VarChar(20)
+  password  String    @db.VarChar(20)
   posts     Post[]
+  comments  Comment[]
 }
 
 model Post {
+  id        String    @id @default(uuid())
+  title     String    @db.VarChar(30)
+  body      String    @db.VarChar(7500)
+  timestamp DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  comments  Comment[]
+}
+
+model Comment {
   id        String   @id @default(uuid())
-  title     String   @db.VarChar(30)
-  body      String   @db.VarChar(7500)
+  message   String   @db.VarChar(250)
   timestamp DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  author    User     @relation(fields: [userId], references: [id])
   userId    String
 }

@@ -9,17 +9,12 @@ postsRouter.put("/:postId", postController.updatePost);
 postsRouter.delete("/:postId", postController.deletePost);
 
 //post comment crud operations
-postsRouter.get("/:postId/comments", (req, res) =>
-  res.send("get all post comments")
-);
-postsRouter.post("/:postId/comments", (req, res) =>
-  res.send("create new comment on a post")
-);
-postsRouter.put("/:postId/comments/:commentId", (req, res) =>
-  res.send(`update ${req.params.postId} post comment ${req.params.commentId}`)
-);
-postsRouter.delete("/:postId/comments/:commentId", (req, res) =>
-  res.send(`delete ${req.params.postId} post comment ${req.params.commentId}`)
+postsRouter.get("/:postId/comments", postController.readPostComments);
+postsRouter.post("/:postId/comments", postController.createComment);
+postsRouter.put("/:postId/comments/:commentId", postController.updateComment);
+postsRouter.delete(
+  "/:postId/comments/:commentId",
+  postController.deleteComment
 );
 
 module.exports = postsRouter;
