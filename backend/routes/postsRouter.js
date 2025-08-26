@@ -1,15 +1,14 @@
 const { Router } = require("express");
 const postsRouter = new Router();
+const postController = require("../controller/postController");
 
-postsRouter.get("/", (req, res) => res.send("get all posts"));
-postsRouter.post("/", (req, res) => res.json(req.body));
-postsRouter.put("/:postId", (req, res) =>
-  res.send(`update ${req.params.postId} post`)
-);
-postsRouter.delete("/:postId", (req, res) =>
-  res.send(`delete ${req.params.postId} post`)
-);
+//post crud operations
+postsRouter.post("/", postController.createPost);
+postsRouter.get("/:postId", postController.readPost);
+postsRouter.put("/:postId", postController.updatePost);
+postsRouter.delete("/:postId", postController.deletePost);
 
+//post comment crud operations
 postsRouter.get("/:postId/comments", (req, res) =>
   res.send("get all post comments")
 );
