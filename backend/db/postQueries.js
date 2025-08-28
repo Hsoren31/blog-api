@@ -52,12 +52,19 @@ async function readPostComments(postId) {
   const comments = prisma.comment.findMany({
     where: {
       postId,
+      parentId: null,
+    },
+    include: {
+      children: true,
+    },
+    orderBy: {
+      timestamp: "desc",
     },
   });
   return comments;
 }
 
-async function createComment(postId, userId, message) {
+async function createComment(postId, userId, message, parentId) {
   const comment = await prisma.comment.create({
     data: {
       message,
@@ -69,6 +76,30 @@ async function createComment(postId, userId, message) {
       post: {
         connect: {
           id: postId,
+        },
+      },
+    },
+  });
+  return comment;
+}
+
+async function createChildComment(postId, userId, message, parentId) {
+  const comment = await prisma.comment.create({
+    data: {
+      message,
+      author: {
+        connect: {
+          id: userId,
+        },
+      },
+      post: {
+        connect: {
+          id: postId,
+        },
+      },
+      parent: {
+        connect: {
+          id: parentId,
         },
       },
     },
@@ -103,6 +134,7 @@ module.exports = {
   deletePost,
   readPostComments,
   createComment,
+  createChildComment,
   updateComment,
   deleteComment,
 };

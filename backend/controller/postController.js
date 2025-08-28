@@ -55,8 +55,17 @@ async function readPostComments(req, res) {
 
 async function createComment(req, res) {
   try {
-    const { postId, userId, message } = req.body;
-    const comment = await db.createComment(postId, userId, message);
+    const { postId, userId, message, parentId } = req.body;
+    if (parentId) {
+      let comment = await db.createChildComment(
+        postId,
+        userId,
+        message,
+        parentId
+      );
+      return res.json({ comment });
+    }
+    let comment = await db.createComment(postId, userId, message);
     res.json({ comment });
   } catch (error) {
     res.json({ message: "Could not create comment." });

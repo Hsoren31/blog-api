@@ -36,11 +36,14 @@ model Post {
 }
 
 model Comment {
-  id        String   @id @default(uuid())
-  message   String   @db.VarChar(250)
-  timestamp DateTime @default(now())
-  post      Post     @relation(fields: [postId], references: [id])
+  id        String    @id @default(uuid())
+  message   String    @db.VarChar(250)
+  timestamp DateTime  @default(now())
+  post      Post      @relation(fields: [postId], references: [id])
   postId    String
-  author    User     @relation(fields: [userId], references: [id])
-  userId    String
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+  parentId  String?
+  parent    Comment?  @relation("CommentChildren", fields: [parentId], references: [id])
+  children  Comment[] @relation("CommentChildren")
 }
