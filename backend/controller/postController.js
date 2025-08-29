@@ -44,6 +44,15 @@ async function deletePost(req, res) {
   }
 }
 
+async function readPosts(req, res) {
+  try {
+    const posts = await db.readPosts();
+    res.json({ posts });
+  } catch (error) {
+    res.json({ message: "Could not retrieve posts. Try again." });
+  }
+}
+
 //CRUD comments
 async function readPostComments(req, res) {
   try {
@@ -100,6 +109,7 @@ module.exports = {
   readPost,
   updatePost,
   deletePost,
+  readPosts,
   readPostComments,
   createComment,
   updateComment,

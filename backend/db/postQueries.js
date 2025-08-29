@@ -44,6 +44,15 @@ async function deletePost(postId) {
   });
 }
 
+async function readPosts() {
+  const posts = await prisma.post.findMany({
+    where: {
+      published: true,
+    },
+  });
+  return posts;
+}
+
 //Post Comments
 async function readPostComments(postId) {
   const comments = prisma.comment.findMany({
@@ -129,6 +138,7 @@ module.exports = {
   readPost,
   updatePost,
   deletePost,
+  readPosts,
   readPostComments,
   createComment,
   createChildComment,

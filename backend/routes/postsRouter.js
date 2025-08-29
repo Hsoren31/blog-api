@@ -8,6 +8,8 @@ postsRouter.get("/:postId", postController.readPost);
 postsRouter.put("/:postId", postController.updatePost);
 postsRouter.delete("/:postId", postController.deletePost);
 
+postsRouter.get("/", postController.readPosts);
+
 //post comment crud operations
 postsRouter.get("/:postId/comments", postController.readPostComments);
 postsRouter.post("/:postId/comments", postController.createComment);
