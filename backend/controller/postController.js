@@ -13,12 +13,19 @@ async function readPost(req, res) {
 
 async function createPost(req, res) {
   try {
-    const { userId, title, body } = req.body;
+    const { userId, title, description, body } = req.body;
     let { published } = req.body;
     published = Boolean(parseInt(published));
-    const post = await db.createPost(userId, title, body, published);
+    const post = await db.createPost(
+      userId,
+      title,
+      description,
+      body,
+      published
+    );
     res.json({ post });
   } catch (error) {
+    console.log(error);
     res.json({ error: "Could not create Post." });
   }
 }
