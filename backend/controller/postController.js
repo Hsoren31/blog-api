@@ -14,7 +14,9 @@ async function readPost(req, res) {
 async function createPost(req, res) {
   try {
     const { userId, title, body } = req.body;
-    const post = await db.createPost(userId, title, body);
+    let { published } = req.body;
+    published = Boolean(parseInt(published));
+    const post = await db.createPost(userId, title, body, published);
     res.json({ post });
   } catch (error) {
     res.json({ error: "Could not create Post." });

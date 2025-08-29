@@ -30,6 +30,7 @@ model Post {
   title     String    @db.VarChar(30)
   body      String    @db.VarChar(7500)
   timestamp DateTime  @default(now())
+  published Boolean
   user      User      @relation(fields: [userId], references: [id])
   userId    String
   comments  Comment[]

@@ -2,16 +2,13 @@ const { PrismaClient } = require("../../generated/prisma");
 const prisma = new PrismaClient();
 
 //Posts
-async function createPost(userId, title, body) {
+async function createPost(userId, title, body, published) {
   const post = await prisma.post.create({
     data: {
       title,
       body,
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
+      userId,
+      published,
     },
   });
   return post;
