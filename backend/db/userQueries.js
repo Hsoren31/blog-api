@@ -10,6 +10,9 @@ async function createUser(firstName, lastName, email, username, password) {
       username,
       password,
     },
+    include: {
+      password: false,
+    },
   });
   return user;
 }
@@ -24,6 +27,9 @@ async function readUser(id) {
       lastName: true,
       username: true,
       posts: true,
+    },
+    include: {
+      password: false,
     },
   });
   return user;
@@ -42,8 +48,10 @@ async function updateUser(id, firstName, lastName, email, username, password) {
       username,
       password,
     },
+    include: {
+      password: false,
+    },
   });
-  console.log(user);
   return user;
 }
 

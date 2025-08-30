@@ -19,8 +19,8 @@ model User {
   firstName String    @db.VarChar(20)
   lastName  String    @db.VarChar(20)
   email     String    @unique
-  username  String    @unique @db.VarChar(20)
-  password  String    @db.VarChar(20)
+  username  String    @unique @db.VarChar(255)
+  password  String    @db.VarChar(255)
   posts     Post[]
   comments  Comment[]
 }

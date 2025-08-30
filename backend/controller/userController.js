@@ -1,8 +1,10 @@
 const db = require("../db/userQueries");
+const bcrypt = require("bcryptjs");
 
 async function createUser(req, res) {
   try {
-    const { firstName, lastName, email, username, password } = req.body;
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const { firstName, lastName, email, username } = req.body;
     // check if user exists in the database
     const userExists = await db.findIfUserExists(email);
     if (userExists) {
@@ -18,10 +20,11 @@ async function createUser(req, res) {
       lastName,
       email,
       username,
-      password
+      hashedPassword
     );
     res.json({ user });
   } catch (error) {
+    console.error(error);
     res.json({ error: "Something went wrong. Try again." });
   }
 }
