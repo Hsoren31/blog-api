@@ -38,7 +38,7 @@ async function getLogin(req, res) {
 async function postLogin(req, res) {
   passport.authenticate("local", (err, user, options) => {
     if (!user) {
-      res.json({ message: options.message });
+      res.status(400).json({ message: options.message });
     }
     jwt.sign({ user }, process.env.SECRET_KEY, (err, token) => {
       res.json({
