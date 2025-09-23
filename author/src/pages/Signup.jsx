@@ -62,7 +62,7 @@ export default function Signup() {
       <form onSubmit={submitUser}>
         <legend>Create an Account</legend>
         <p>
-          Have an Account already? <Link to="/">Login</Link>
+          Have an Account already? <Link to="/login">Login</Link>
         </p>
         {error && <p>{error}</p>}
         <p>
