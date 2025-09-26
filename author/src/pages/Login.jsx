@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [user, setUser] = useState({
@@ -35,7 +36,9 @@ export default function Login() {
         setError(data.message);
         throw new Error(data.message);
       }
-      console.log("Success");
+      localStorage.setItem("userId", data.user.id);
+      localStorage.setItem("accessToken", data.token);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }

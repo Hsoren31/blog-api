@@ -33,8 +33,14 @@ async function createPost(req, res) {
 async function updatePost(req, res) {
   try {
     const { postId } = req.params;
-    const { title, body } = req.body;
-    const post = await db.updatePost(postId, title, body);
+    const { title, description, body, published } = req.body;
+    const post = await db.updatePost(
+      postId,
+      title,
+      description,
+      body,
+      published
+    );
     res.json({ post });
   } catch (error) {
     res.json({ error: "Could not find post to update" });

@@ -28,9 +28,6 @@ async function readUser(id) {
       username: true,
       posts: true,
     },
-    include: {
-      password: false,
-    },
   });
   return user;
 }

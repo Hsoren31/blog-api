@@ -1,28 +1,45 @@
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
+import { useState, useEffect } from "react";
 
 export default function Post() {
-  const post = {
-    id: 3,
-    title: "Fake Title 3",
-    description:
-      "Lorem et dolore magna aliqua. Ut enim ad minim veniam, ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    body: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos. \n Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos. \n Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.",
-    timestamp: "Fri Mar 23 2025 12:09:04",
-    published: true,
-    comments: [
-      {
-        id: 1,
-        message:
-          "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem.",
-        author: "Username3",
-      },
-      {
-        id: 3,
-        message: "Lorem ipsum dolor sit amet consectetur adipiscing elit.",
-        author: "userName4",
-      },
-    ],
-  };
+  const params = useParams();
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState(null);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/posts/${params.postId}`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error: Status ${response.status}`);
+        }
+        let postData = await response.json();
+        if (response.error) {
+          throw new Error(response.error);
+        }
+        setPost(postData.post);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        setPost(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPost();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <>
       <p>{post.published ? "Published" : "Unpublished"}</p>

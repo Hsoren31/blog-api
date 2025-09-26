@@ -24,14 +24,16 @@ async function readPost(id) {
   return post;
 }
 
-async function updatePost(postId, title, body) {
+async function updatePost(postId, title, description, body, published) {
   const post = await prisma.post.update({
     where: {
       id: postId,
     },
     data: {
       title,
+      description,
       body,
+      published,
     },
   });
   return post;

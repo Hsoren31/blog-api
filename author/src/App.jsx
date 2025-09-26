@@ -20,7 +20,7 @@ function App() {
         <Route path="/" element={<HomeFeed />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
-        <Route path=":id">
+        <Route path=":postId">
           <Route index element={<Post />} />
           <Route path="edit" element={<EditPost />} />
         </Route>
