@@ -26,6 +26,7 @@ async function readUser(id) {
       firstName: true,
       lastName: true,
       username: true,
+      email: true,
       posts: true,
     },
   });

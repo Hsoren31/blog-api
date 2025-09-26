@@ -50,7 +50,7 @@ export default function Signup() {
       });
       setError(null);
       console.log("success");
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       console.log(err);
     }

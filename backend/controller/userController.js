@@ -46,6 +46,16 @@ async function updateUser(req, res) {
   try {
     const { userId } = req.params;
     const { firstName, lastName, email, username, password } = req.body;
+    // check if user exists in the database
+    const userExists = await db.findIfUserExists(email);
+    if (userExists) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+    // check if username is taken
+    const usernameExists = await db.findIfUsernameExists(username);
+    if (usernameExists) {
+      return res.status(400).json({ error: "Username is already taken." });
+    }
     const user = await db.updateUser(
       userId,
       firstName,
