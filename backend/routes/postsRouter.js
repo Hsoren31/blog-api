@@ -3,7 +3,7 @@ const postsRouter = new Router();
 const postController = require("../controller/postController");
 const verifyToken = require("../controller/authController").verifyToken;
 //post crud operations
-postsRouter.post("/", postController.createPost);
+postsRouter.post("/", verifyToken, postController.createPost);
 postsRouter.get("/:postId", verifyToken, postController.readPost);
 postsRouter.put("/:postId", verifyToken, postController.updatePost);
 postsRouter.delete("/:postId", verifyToken, postController.deletePost);

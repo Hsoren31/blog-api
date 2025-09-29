@@ -22,9 +22,10 @@ export default function CreatePost() {
         method: "POST",
         headers: {
           "Content-Type": "application/JSON",
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
         },
         body: JSON.stringify({
-          userId: "c20f3689-75a9-4863-956c-a0815d3f12d6",
+          userId: localStorage.getItem("userId"),
           title,
           description,
           body,
