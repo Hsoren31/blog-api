@@ -9,7 +9,7 @@ export default function Header() {
     <header>
       <h1>Blog</h1>
       <nav>
-        <ul>
+        <ul className="nav">
           <li>
             <Link to="/">Home</Link>
           </li>

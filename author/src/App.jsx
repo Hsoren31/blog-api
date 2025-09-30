@@ -17,23 +17,25 @@ function App() {
   return (
     <>
       <Header />
-      <Routes>
-        <Route element={<PrivateRoutes />}>
-          <Route path="/" element={<HomeFeed />} />
-          <Route path=":postId">
-            <Route index element={<Post />} />
-            <Route path="edit" element={<EditPost />} />
+      <main>
+        <Routes>
+          <Route element={<PrivateRoutes />}>
+            <Route path="/" element={<HomeFeed />} />
+            <Route path=":postId">
+              <Route index element={<Post />} />
+              <Route path="edit" element={<EditPost />} />
+            </Route>
+            <Route path="create" element={<CreatePost />} />
+            <Route path="account">
+              <Route index element={<Account />} />
+              <Route path="edit" element={<EditAccount />} />
+            </Route>
           </Route>
-          <Route path="create" element={<CreatePost />} />
-          <Route path="account">
-            <Route index element={<Account />} />
-            <Route path="edit" element={<EditAccount />} />
-          </Route>
-        </Route>
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
       <Footer />
     </>
   );
