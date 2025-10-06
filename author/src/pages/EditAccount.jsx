@@ -3,12 +3,22 @@ import { useNavigate } from "react-router";
 
 export default function EditAccount() {
   const navigate = useNavigate();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [initialData, setInitialData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+  });
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    emailChange: false,
+    usernameChange: false,
+  });
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -25,10 +35,18 @@ export default function EditAccount() {
           throw new Error(`HTTP error: Status ${response.status}`);
         }
         let userData = await response.json();
-        setFirstName(userData.user.firstName);
-        setLastName(userData.user.lastName);
-        setUsername(userData.user.username);
-        setEmail(userData.user.email);
+        setInitialData({
+          firstName: userData.user.firstName,
+          lastName: userData.user.lastName,
+          username: userData.user.username,
+          email: userData.user.email,
+        });
+        setUserData({
+          firstName: userData.user.firstName,
+          lastName: userData.user.lastName,
+          username: userData.user.username,
+          email: userData.user.email,
+        });
         setError(null);
       } catch (error) {
         setError(error);
@@ -46,6 +64,10 @@ export default function EditAccount() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (JSON.stringify(initialData) == JSON.stringify(userData)) {
+      setError("There are no changes to submit");
+      return;
+    }
     try {
       const response = await fetch(
         `http://localhost:3000/users/${localStorage.getItem("userId")}`,
@@ -55,12 +77,7 @@ export default function EditAccount() {
             "Content-Type": "application/JSON",
             Authorization: "Bearer " + localStorage.getItem("accessToken"),
           },
-          body: JSON.stringify({
-            firstName,
-            lastName,
-            username,
-            email,
-          }),
+          body: JSON.stringify({ userData }),
         }
       );
       const results = await response.json();
@@ -105,8 +122,13 @@ export default function EditAccount() {
             type="text"
             name="firstName"
             id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={userData.firstName}
+            onChange={(e) => {
+              setUserData((prevData) => ({
+                ...prevData,
+                firstName: e.target.value,
+              }));
+            }}
           />
         </div>
         <div>
@@ -115,8 +137,13 @@ export default function EditAccount() {
             type="text"
             name="lastName"
             id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={userData.lastName}
+            onChange={(e) => {
+              setUserData((prevData) => ({
+                ...prevData,
+                lastName: e.target.value,
+              }));
+            }}
           />
         </div>
         <div>
@@ -125,8 +152,15 @@ export default function EditAccount() {
             type="text"
             name="username"
             id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={userData.username}
+            onChange={(e) => {
+              setUserData((prevData) => ({
+                ...prevData,
+                username: e.target.value,
+                usernameChange:
+                  e.target.value === initialData.username ? false : true,
+              }));
+            }}
           />
         </div>
         <div>
@@ -135,8 +169,15 @@ export default function EditAccount() {
             type="email"
             name="email"
             id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={userData.email}
+            onChange={(e) => {
+              setUserData((prevData) => ({
+                ...prevData,
+                email: e.target.value,
+                emailChange:
+                  e.target.value === initialData.email ? false : true,
+              }));
+            }}
           />
         </div>
         <button onClick={onCancel}>Cancel</button>

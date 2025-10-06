@@ -33,8 +33,7 @@ async function readUser(id) {
   return user;
 }
 
-async function updateUser(id, firstName, lastName, email, username, password) {
-  console.log("updating...");
+async function updateUser({ id, firstName, lastName, email, username }) {
   const user = await prisma.user.update({
     where: {
       id,
@@ -44,7 +43,6 @@ async function updateUser(id, firstName, lastName, email, username, password) {
       lastName,
       email,
       username,
-      password,
     },
     include: {
       password: false,
