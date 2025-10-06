@@ -12,7 +12,7 @@ export default function EditPost() {
   const [published, setPublished] = useState(false);
 
   const onCancel = () => {
-    navigate("/");
+    navigate(`/${postId}`);
   };
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function EditPost() {
         setError(data.error);
         throw new Error(data.error);
       }
-      navigate("/");
+      navigate(`/${postId}`);
     } catch (err) {
       console.log(err);
     } finally {
