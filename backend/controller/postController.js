@@ -13,9 +13,7 @@ async function readPost(req, res) {
 
 async function createPost(req, res) {
   try {
-    const { userId, title, description, body } = req.body;
-    let { published } = req.body;
-    published = Boolean(parseInt(published));
+    const { userId, title, description, body, published } = req.body;
     const post = await db.createPost(
       userId,
       title,

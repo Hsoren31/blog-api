@@ -88,8 +88,8 @@ export default function CreatePost() {
             type="checkbox"
             name="publish"
             id="publish"
-            value={published}
-            onChange={(e) => setPublished(e.target.value)}
+            checked={published}
+            onChange={(e) => setPublished(e.target.checked)}
           />
           <label htmlFor="checkbox">Publish</label>
         </div>
