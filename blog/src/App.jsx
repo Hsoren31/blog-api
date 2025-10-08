@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Author from "./pages/Author";
 import Post from "./pages/Post";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import "./App.css";
 
 function App() {
@@ -12,7 +14,7 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/:authorName">
         <Route index element={<Author />} />
-        <Route path="/:postId" element={<Post />} />
+        <Route path=":postId" element={<Post />} />
       </Route>
     </Routes>
   );
