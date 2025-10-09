@@ -1,41 +1,58 @@
-const posts = [
-  {
-    id: 1,
-    title: "Test Title",
-    description: "Short description of post",
-    author: "Author 1",
-    timestamp: "10/8/2025 10:00",
-    commentCount: 31,
-  },
-  {
-    id: 2,
-    title: "Test Title 2",
-    description: "Short description of post",
-    author: "Author 2",
-    timestamp: "10/8/2025 1:00",
-    commentCount: 13,
-  },
-  {
-    id: 3,
-    title: "Test Title 3",
-    description: "Short description of post",
-    author: "Author 3",
-    timestamp: "10/8/2025 5:34",
-    commentCount: 6,
-  },
-];
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
 export default function Home() {
+  const [posts, setPosts] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/posts", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ` + localStorage.getItem("token"),
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error: Status ${response.status}`);
+        }
+        let postsData = await response.json();
+        setPosts(postsData.posts);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(posts);
+
   return (
-    <ul>
-      {posts.map((post) => (
-        <li key={post.id}>
-          <p>{post.title}</p>
-          <p>{post.description}</p>
-          <p>{post.author}</p>
-          <p>{post.timestamp}</p>
-          <p>{post.commentCount}</p>
-        </li>
-      ))}
-    </ul>
+    <>
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      <ul>
+        {posts ? (
+          posts.map((post) => (
+            <li key={post.id}>
+              <Link to={"/" + post.user.username + "/" + post.id}>
+                <p>{post.title}</p>
+                <p>{post.description}</p>
+                <p>{post.user.username}</p>
+                <p>{post.timestamp}</p>
+                <p>{post.commentCount}</p>
+              </Link>
+            </li>
+          ))
+        ) : (
+          <p>No Posts Yet.</p>
+        )}
+      </ul>
+    </>
   );
 }

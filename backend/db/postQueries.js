@@ -52,6 +52,13 @@ async function readPosts() {
     where: {
       published: true,
     },
+    include: {
+      user: {
+        select: {
+          username: true,
+        },
+      },
+    },
   });
   return posts;
 }
