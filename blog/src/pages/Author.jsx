@@ -1,49 +1,56 @@
-const author = {
-  username: "author345",
-  posts: [
-    {
-      id: 1,
-      title: "Test Title",
-      description: "Short description of post",
-      author: "Author345",
-      timestamp: "10/8/2025 10:00",
-      commentCount: 31,
-    },
-    {
-      id: 2,
-      title: "Test Title 2",
-      description: "Short description of post",
-      author: "Author345",
-      timestamp: "10/8/2025 1:00",
-      commentCount: 13,
-    },
-    {
-      id: 3,
-      title: "Test Title 3",
-      description: "Short description of post",
-      author: "Author345",
-      timestamp: "10/8/2025 5:34",
-      commentCount: 6,
-    },
-  ],
-};
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 export default function Author() {
+  const { authorName } = useParams();
+  const [author, setAuthor] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/posts/author/${authorName}`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP Error: Status ${response.status}`);
+        }
+        let authorData = await response.json();
+        setAuthor(authorData.author);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+  console.log(author);
   return (
     <>
-      <h1>{author.username}</h1>
-      <p>{author.posts.length} Posts</p>
-      <ul>
-        {author.posts.map((post) => (
-          <li key={post.id}>
-            <p>{post.title}</p>
-            <p>{post.description}</p>
-            <p>{post.author}</p>
-            <p>{post.timestamp}</p>
-            <p>{post.commentCount} Comments</p>
-          </li>
-        ))}
-      </ul>
+      {author && (
+        <>
+          <h1>{author.username}</h1>
+          {author.posts && <p>{author.posts.length} Posts</p>}
+          <ul>
+            {author.posts ? (
+              author.posts.map((post) => (
+                <li key={post.id}>
+                  <p>{post.title}</p>
+                  <p>{post.description}</p>
+                  <p>{post.author}</p>
+                  <p>{post.timestamp}</p>
+                  <p>{post.commentCount} Comments</p>
+                </li>
+              ))
+            ) : (
+              <p>No Posts.</p>
+            )}
+          </ul>
+        </>
+      )}
     </>
   );
 }

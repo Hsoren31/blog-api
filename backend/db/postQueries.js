@@ -63,6 +63,26 @@ async function readPosts() {
   return posts;
 }
 
+async function readAuthor(authorName) {
+  const author = await prisma.user.findFirst({
+    where: {
+      username: authorName,
+    },
+    select: {
+      username: true,
+      firstName: true,
+      lastName: true,
+      posts: {
+        where: {
+          published: true,
+        },
+      },
+    },
+  });
+  console.log(author);
+  return author;
+}
+
 //Post Comments
 async function readPostComments(postId) {
   const comments = prisma.comment.findMany({
@@ -149,6 +169,7 @@ module.exports = {
   updatePost,
   deletePost,
   readPosts,
+  readAuthor,
   readPostComments,
   createComment,
   createChildComment,

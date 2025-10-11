@@ -64,6 +64,16 @@ async function readPosts(req, res) {
   }
 }
 
+async function readAuthor(req, res) {
+  try {
+    const { authorName } = req.params;
+    const author = await db.readAuthor(authorName);
+    res.json({ author });
+  } catch (err) {
+    res.json({ message: "Could not retrieve Author. Try Again." });
+  }
+}
+
 //CRUD comments
 async function readPostComments(req, res) {
   try {
@@ -121,6 +131,7 @@ module.exports = {
   updatePost,
   deletePost,
   readPosts,
+  readAuthor,
   readPostComments,
   createComment,
   updateComment,
