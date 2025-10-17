@@ -30,8 +30,6 @@ export default function Home() {
     fetchData();
   }, []);
 
-  console.log(posts);
-
   return (
     <>
       {loading && <p>Loading...</p>}

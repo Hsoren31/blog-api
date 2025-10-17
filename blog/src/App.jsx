@@ -7,10 +7,11 @@ import Signup from "./pages/Signup";
 import Header from "./components/Header";
 import "./App.css";
 import Footer from "./components/Footer";
+import { CurrentUserProvider } from "./context/CurrentUserProvider";
 
 function App() {
   return (
-    <>
+    <CurrentUserProvider>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -22,7 +23,7 @@ function App() {
         </Route>
       </Routes>
       <Footer />
-    </>
+    </CurrentUserProvider>
   );
 }
 

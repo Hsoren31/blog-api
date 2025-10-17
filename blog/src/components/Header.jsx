@@ -1,9 +1,9 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { CurrentUserContext } from "../context/CurrentUserContext";
 
 export default function Header() {
-  function logoutUser() {
-    localStorage.clear();
-  }
+  const { currentUser, logout } = useContext(CurrentUserContext);
 
   return (
     <header>
@@ -13,10 +13,19 @@ export default function Header() {
           <li>
             <Link to="/">Home</Link>
           </li>
+          {currentUser && (
+            <li>
+              <a href="/account">{currentUser.username}</a>
+            </li>
+          )}
           <li>
-            <a href="/login" onClick={logoutUser}>
-              Logout
-            </a>
+            {currentUser ? (
+              <a href="/login" onClick={logout}>
+                Logout
+              </a>
+            ) : (
+              <a href="/login">Login</a>
+            )}
           </li>
         </ul>
       </nav>
