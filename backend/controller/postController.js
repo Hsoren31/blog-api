@@ -87,7 +87,8 @@ async function readPostComments(req, res) {
 
 async function createComment(req, res) {
   try {
-    const { postId, userId, message, parentId } = req.body;
+    const postId = req.params.postId;
+    const { userId, message, parentId } = req.body;
     if (parentId) {
       let comment = await db.createChildComment(
         postId,

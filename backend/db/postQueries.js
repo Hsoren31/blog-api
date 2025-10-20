@@ -20,6 +20,20 @@ async function readPost(id) {
     where: {
       id,
     },
+    include: {
+      comments: {
+        include: {
+          author: {
+            select: {
+              username: true,
+            },
+          },
+        },
+        orderBy: {
+          timestamp: "desc",
+        },
+      },
+    },
   });
   return post;
 }
@@ -100,7 +114,7 @@ async function readPostComments(postId) {
   return comments;
 }
 
-async function createComment(postId, userId, message, parentId) {
+async function createComment(postId, userId, message) {
   const comment = await prisma.comment.create({
     data: {
       message,
