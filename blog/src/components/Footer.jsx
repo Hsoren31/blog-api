@@ -1,3 +1,7 @@
 export default function Footer() {
-  return <p>Made by Haley Sorensen.</p>;
+  return (
+    <footer>
+      <p>Made by Haley Sorensen.</p>
+    </footer>
+  );
 }

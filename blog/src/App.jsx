@@ -13,15 +13,17 @@ function App() {
   return (
     <CurrentUserProvider>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/:authorName">
-          <Route index element={<Author />} />
-          <Route path=":postId" element={<Post />} />
-        </Route>
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/:authorName">
+            <Route index element={<Author />} />
+            <Route path=":postId" element={<Post />} />
+          </Route>
+        </Routes>
+      </main>
       <Footer />
     </CurrentUserProvider>
   );
