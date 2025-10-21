@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { CurrentUserContext } from "../context/CurrentUserContext";
+import { formatLongDate, formatShortDate } from "../utilities/formatDate";
 
 export default function Post() {
   const { postId } = useParams();
@@ -53,7 +54,7 @@ export default function Post() {
       {post ? (
         <>
           <h1>{post.title}</h1>
-          <p>{post.timestamp}</p>
+          <p>{formatLongDate(post.timestamp)}</p>
           <p>{post.description}</p>
           <p>{post.body}</p>
           <h3>Comments</h3>
@@ -76,7 +77,7 @@ export default function Post() {
                 {post.comments.map((comment) => (
                   <div key={comment.id}>
                     <p>{comment.author.username}</p>
-                    <p>{comment.timestamp}</p>
+                    <p>{formatShortDate(comment.timestamp)}</p>
                     <p>{comment.message}</p>
                   </div>
                 ))}

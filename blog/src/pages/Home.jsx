@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { formatDateDistance } from "../utilities/formatDate";
 
 export default function Home() {
   const [posts, setPosts] = useState(null);
@@ -42,7 +43,7 @@ export default function Home() {
                 <p>{post.title}</p>
                 <p>{post.description}</p>
                 <p>{post.user.username}</p>
-                <p>{post.timestamp}</p>
+                <p>{formatDateDistance(post.timestamp)}</p>
                 <p>{post.commentCount}</p>
               </Link>
             </li>
