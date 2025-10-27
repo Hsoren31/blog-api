@@ -1,13 +1,12 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { CurrentUserContext } from "../context/CurrentUserContext";
-import { formatLongDate, formatShortDate } from "../utilities/formatDate";
+import { formatLongDate } from "../utilities/formatDate";
+import CommentSection from "../components/CommentSection";
 
 export default function Post() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
-  const [comment, setComment] = useState("");
-  const { currentUser } = useContext(CurrentUserContext);
 
   async function fetchData() {
     const response = await fetch(`http://localhost:3000/posts/${postId}`, {
@@ -26,29 +25,6 @@ export default function Post() {
     fetchData();
   }, []);
 
-  const addComment = async (e) => {
-    e.preventDefault();
-    try {
-      await fetch(`http://localhost:3000/posts/${postId}/comments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/JSON",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          userId: currentUser.id,
-          message: comment,
-        }),
-      });
-      fetchData();
-    } catch (err) {
-      console.error(err);
-      throw new Error(err);
-    } finally {
-      setComment(" ");
-    }
-  };
-
   return (
     <>
       {post ? (
@@ -57,35 +33,7 @@ export default function Post() {
           <p>{formatLongDate(post.timestamp)}</p>
           <p>{post.description}</p>
           <p>{post.body}</p>
-          <h3>Comments</h3>
-          <form onSubmit={addComment}>
-            <label htmlFor="comment">{currentUser.username}</label>
-            <input
-              type="text"
-              name="comment"
-              placeholder="Add a comment..."
-              value={comment}
-              onChange={(e) => {
-                setComment(e.target.value);
-              }}
-            />
-            <button type="submit">Add</button>
-          </form>
-          {post.comments ? (
-            <div>
-              <ul>
-                {post.comments.map((comment) => (
-                  <div key={comment.id}>
-                    <p>{comment.author.username}</p>
-                    <p>{formatShortDate(comment.timestamp)}</p>
-                    <p>{comment.message}</p>
-                  </div>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p>No Comments Yet.</p>
-          )}
+          <CommentSection />
         </>
       ) : (
         <p>Unable to retrieve post.</p>

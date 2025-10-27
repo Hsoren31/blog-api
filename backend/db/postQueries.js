@@ -20,20 +20,6 @@ async function readPost(id) {
     where: {
       id,
     },
-    include: {
-      comments: {
-        include: {
-          author: {
-            select: {
-              username: true,
-            },
-          },
-        },
-        orderBy: {
-          timestamp: "desc",
-        },
-      },
-    },
   });
   return post;
 }
@@ -99,13 +85,26 @@ async function readAuthor(authorName) {
 
 //Post Comments
 async function readPostComments(postId) {
-  const comments = prisma.comment.findMany({
+  const comments = await prisma.comment.findMany({
     where: {
       postId,
       parentId: null,
     },
     include: {
-      children: true,
+      author: {
+        select: {
+          username: true,
+        },
+      },
+      children: {
+        include: {
+          author: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
     },
     orderBy: {
       timestamp: "desc",
