@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { formatDateDistance } from "../utilities/formatDate";
+import { getAllPosts } from "../utilities/apiRequests";
 
 export default function Home() {
   const [posts, setPosts] = useState(null);
@@ -8,27 +9,13 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/posts", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ` + localStorage.getItem("token"),
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error: Status ${response.status}`);
-        }
-        let postsData = await response.json();
-        setPosts(postsData.posts);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+    getAllPosts().then((data) => {
+      if (!data) {
+        setError("Something went wrong. Try Again.");
       }
-    };
-
-    fetchData();
+      setPosts(data);
+      setLoading(false);
+    });
   }, []);
 
   return (

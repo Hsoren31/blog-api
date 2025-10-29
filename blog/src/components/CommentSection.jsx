@@ -2,68 +2,12 @@ import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { formatShortDate } from "../utilities/formatDate";
 import { CurrentUserContext } from "../context/CurrentUserContext";
-
-const getComments = async (postId) => {
-  try {
-    const response = await fetch(
-      `http://localhost:3000/posts/${postId}/comments`
-    );
-    if (!response.ok) {
-      throw new Error(`HTTP Status: ${response.status}`);
-    }
-    const { comments } = await response.json();
-    return comments;
-  } catch (err) {
-    console.log(err);
-  }
-};
-const createComment = async (postId, userId, text, parentId = null) => {
-  try {
-    await fetch(`http://localhost:3000/posts/${postId}/comments`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/JSON",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        userId,
-        message: text,
-        parentId,
-      }),
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
-const editComment = async (postId, commentId, text) => {
-  try {
-    await fetch(`http://localhost:3000/posts/${postId}/comments/${commentId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/JSON",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        message: text,
-      }),
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const deleteComment = async (postId, commentId) => {
-  try {
-    await fetch(`http://localhost:3000/posts/${postId}/comments/${commentId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+import {
+  getComments,
+  createComment,
+  editComment,
+  deleteComment,
+} from "../utilities/apiRequests";
 
 function EditComment({ commentId, originalComment, updateComment }) {
   const [comment, setComment] = useState(originalComment);

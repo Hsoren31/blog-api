@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { CurrentUserContext } from "./CurrentUserContext";
 import { Navigate, useNavigate } from "react-router-dom";
+import { loginUser } from "../utilities/apiRequests";
 
 function useCurrentUser() {
   const navigate = useNavigate();
   const user = localStorage.getItem("user");
-  const [currentUser, setCurrentUser] = useState(
-    user ? JSON.parse(user) : null
-  );
+  const [currentUser, setCurrentUser] = useState(user ? user : null);
 
   async function register(credentials) {
     try {
@@ -31,21 +30,8 @@ function useCurrentUser() {
 
   async function login(userData) {
     try {
-      const response = await fetch(`http://localhost:3000/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        if (response.status === 400) {
-          throw new Error(data.message);
-        }
-        throw new Error(`HTTP error: Status ${response.status}`);
-      }
-      localStorage.setItem("user", JSON.stringify(data.user));
+      const data = await loginUser(userData);
+      localStorage.setItem("user", data.user);
       localStorage.setItem("token", data.token);
       setCurrentUser(data.user);
       navigate("/");
