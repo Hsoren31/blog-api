@@ -78,7 +78,10 @@ async function readAuthor(req, res) {
 async function readPostComments(req, res) {
   try {
     const { postId } = req.params;
-    const comments = await db.readPostComments(postId);
+    const comments = await db.readPostComments(
+      postId,
+      "aa22e660-fe6f-4bd5-85ce-a0da8440a0be"
+    );
     res.json({ comments });
   } catch (error) {
     res.json({ message: "Could not get comments" });
