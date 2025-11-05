@@ -1,4 +1,4 @@
-require("@dotenvx/dotenvx").config();
+require("@dotenvx/dotenvx").config({ path: "./backend/.env" });
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");

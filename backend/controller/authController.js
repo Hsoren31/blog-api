@@ -1,7 +1,7 @@
-require("@dotenvx/dotenvx").config();
+require("@dotenvx/dotenvx").config({ path: "./backend/.env" });
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
-const { PrismaClient } = require("../../generated/prisma");
+const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 const LocalStrategy = require("passport-local").Strategy;
