@@ -35,10 +35,11 @@ export default function Signup() {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
+      console.log(data);
       setLoading(false);
-      if (!response.ok) {
-        setError(data.error);
-        throw new Error(data.error);
+      if (!response.ok || data.error || data.errors) {
+        setError(data.error || data.errors);
+        throw new Error(`HTTP Status: ${response.status}`);
       }
       setFormData({
         firstName: "",
@@ -56,6 +57,8 @@ export default function Signup() {
     }
   };
 
+  console.log(error);
+
   return (
     <>
       {loading && <p>Loading...</p>}
@@ -64,7 +67,13 @@ export default function Signup() {
         <p>
           Have an Account already? <Link to="/login">Login</Link>
         </p>
-        {error && <p>{error}</p>}
+        {error && (
+          <ul>
+            {error.map((err) => (
+              <li>{err.msg}</li>
+            ))}
+          </ul>
+        )}
         <p>
           Required fields are followed by <span aria-label="required">*</span>.
         </p>
