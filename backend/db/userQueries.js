@@ -1,12 +1,10 @@
 const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
-async function createUser(firstName, lastName, email, username, password) {
+async function createUser(name, username, password) {
   const user = await prisma.user.create({
     data: {
-      firstName,
-      lastName,
-      email,
+      name,
       username,
       password,
     },
@@ -23,25 +21,21 @@ async function readUser(id) {
       id,
     },
     select: {
-      firstName: true,
-      lastName: true,
+      name: true,
       username: true,
-      email: true,
       posts: true,
     },
   });
   return user;
 }
 
-async function updateUser({ id, firstName, lastName, email, username }) {
+async function updateUser({ id, name, username }) {
   const user = await prisma.user.update({
     where: {
       id,
     },
     data: {
-      firstName,
-      lastName,
-      email,
+      name,
       username,
     },
     include: {
@@ -59,15 +53,6 @@ async function deleteUser(id) {
   });
 }
 
-async function findIfUserExists(email) {
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-  return user;
-}
-
 async function findIfUsernameExists(username) {
   const user = await prisma.user.findUnique({
     where: {
@@ -82,6 +67,5 @@ module.exports = {
   readUser,
   updateUser,
   deleteUser,
-  findIfUserExists,
   findIfUsernameExists,
 };

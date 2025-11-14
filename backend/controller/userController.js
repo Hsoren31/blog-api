@@ -3,40 +3,31 @@ const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
 
 const validateUser = [
-  body("firstName")
+  body("name")
     .trim()
-    .notEmpty()
-    .withMessage("First name must not be empty")
-    .isAlpha()
-    .withMessage("First name must only contain alphabet letters.")
-    .isLength({ min: 1, max: 20 })
-    .withMessage("First name must be between 1 and 20 characters"),
-  body("lastName")
-    .trim()
-    .notEmpty()
-    .withMessage("Last name must not be empty")
-    .isAlpha()
-    .withMessage("Last name must only contain alphabet letters.")
-    .isLength({ min: 1, max: 20 })
-    .withMessage("Last name must be between 1 and 20 characters"),
-  body("email")
-    .trim()
-    .notEmpty()
-    .withMessage("Email can not be empty.")
-    .isEmail()
-    .withMessage("Must be a valid Email"),
+    .optional({ values: "falsy" })
+    .isAlpha("en-US", { ignore: " " })
+    .withMessage("Name must only contain letters."),
   body("username")
-    .trim()
     .notEmpty()
     .withMessage("Username must not be empty.")
+    .custom((value) => !/\s/.test(value))
+    .withMessage("Username cannot contain spaces")
     .isLength({ min: 8, max: 15 })
-    .withMessage("Username must be between 8 and 15 characters"),
+    .withMessage("Username must be between 8 and 15 characters")
+    .custom(async (value) => {
+      const existingUser = await db.findIfUsernameExists(value);
+      if (existingUser) {
+        throw new Error("Username already in use.");
+      }
+    }),
   body("password")
-    .trim()
     .notEmpty()
     .withMessage("Password can not be empty")
-    .isLength({ min: 8, max: 15 })
-    .withMessage("Password must be between 8 and 15 characters")
+    .custom((value) => !/\s/.test(value))
+    .withMessage("Password cannot contain spaces")
+    .isLength({ min: 8, max: 25 })
+    .withMessage("Password must be between 8 and 25 characters")
     .isStrongPassword({
       minLength: 8,
       minUppercase: 1,
@@ -60,24 +51,8 @@ createUser = [
         return res.status(400).json(errors);
       }
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      const { firstName, lastName, email, username } = req.body;
-      // check if user exists in the database
-      const userExists = await db.findIfUserExists(email);
-      if (userExists) {
-        return res.status(400).json({ error: "User already exists" });
-      }
-      // check if username is taken
-      const usernameExists = await db.findIfUsernameExists(username);
-      if (usernameExists) {
-        return res.status(400).json({ error: "Username is already taken." });
-      }
-      const user = await db.createUser(
-        firstName,
-        lastName,
-        email,
-        username,
-        hashedPassword
-      );
+      const { name, username } = req.body;
+      const user = await db.createUser(name, username, hashedPassword);
       res.json({ user });
     } catch (error) {
       console.error(error);
@@ -103,21 +78,9 @@ async function updateUser(req, res) {
   try {
     const { userId } = req.params;
     const { userData } = req.body;
-    // check if new email exists in the database
-    const userExists = await db.findIfUserExists(userData.email);
-    if (userExists && userData.emailChange) {
-      return res.status(400).json({ error: "User already exists" });
-    }
-    // check if new username is taken
-    const usernameExists = await db.findIfUsernameExists(userData.username);
-    if (usernameExists && userData.usernameChange) {
-      return res.status(400).json({ error: "Username is already taken." });
-    }
     const user = await db.updateUser({
       id: userId,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
+      name: userData.name,
       username: userData.username,
     });
     res.json({ user });

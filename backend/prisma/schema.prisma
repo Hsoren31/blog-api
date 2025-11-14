@@ -15,14 +15,12 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  firstName String    @db.VarChar(20)
-  lastName  String    @db.VarChar(20)
-  email     String    @unique
-  username  String    @unique @db.VarChar(255)
-  password  String    @db.VarChar(255)
-  posts     Post[]
-  comments  Comment[]
+  id       String    @id @default(uuid())
+  username String    @unique @db.VarChar(255)
+  password String    @db.VarChar(255)
+  name     String?   @db.VarChar(50)
+  comments Comment[]
+  posts    Post[]
 }
 
 model Post {

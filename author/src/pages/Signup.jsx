@@ -7,9 +7,7 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+    name: "",
     username: "",
     password: "",
     confirmPassword: "",
@@ -35,16 +33,13 @@ export default function Signup() {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      console.log(data);
       setLoading(false);
       if (!response.ok || data.error || data.errors) {
         setError(data.error || data.errors);
         throw new Error(`HTTP Status: ${response.status}`);
       }
       setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
+        name: "",
         username: "",
         password: "",
         confirmPassword: "",
@@ -57,8 +52,6 @@ export default function Signup() {
     }
   };
 
-  console.log(error);
-
   return (
     <>
       {loading && <p>Loading...</p>}
@@ -68,52 +61,24 @@ export default function Signup() {
           Have an Account already? <Link to="/login">Login</Link>
         </p>
         {error && (
-          <ul>
+          <>
             {error.map((err) => (
-              <li>{err.msg}</li>
+              <p>{err.msg}</p>
             ))}
-          </ul>
+          </>
         )}
         <p>
           Required fields are followed by <span aria-label="required">*</span>.
         </p>
         <div>
-          <label htmlFor="firstName">
-            First Name<span aria-label="required">*</span>:
-          </label>
+          <label htmlFor="name">Name: </label>
           <input
             type="text"
-            name="firstName"
-            id="firstName"
-            value={formData.firstName}
+            name="name"
+            id="name"
+            placeholder="John"
+            value={formData.name}
             onChange={handleChange}
-            minLength="1"
-            maxLength="20"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="lastName">Last Name: </label>
-          <input
-            type="text"
-            name="lastName"
-            id="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            maxLength="20"
-          />
-        </div>
-        <div>
-          <label htmlFor="email">
-            Email<span aria-label="required">*</span>:
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
           />
         </div>
         <div>
@@ -143,7 +108,7 @@ export default function Signup() {
             onChange={handleChange}
             required
             minLength="8"
-            maxLength="15"
+            maxLength="25"
           />
         </div>
         <div>
@@ -158,7 +123,7 @@ export default function Signup() {
             onChange={handleChange}
             required
             minLength="8"
-            maxLength="15"
+            maxLength="25"
           />
         </div>
         <button type="submit">Create Account</button>
