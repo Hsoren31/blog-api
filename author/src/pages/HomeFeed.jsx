@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import PostList from "../components/PostList";
+import Post from "./Post";
 
 export default function HomeFeed() {
   const [user, setUser] = useState(null);
-  const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [draftPosts, setDraftPosts] = useState(null);
+  const [publishedPosts, setPublishedPosts] = useState(null);
+  const [visiblePosts, setVisiblePosts] = useState("drafts");
+
+  const changeVisiblePosts = (e) => {
+    setVisiblePosts(e.target.value);
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -21,16 +28,16 @@ export default function HomeFeed() {
         if (!response.ok) {
           throw new Error(`HTTP error: Status ${response.status}`);
         }
-        let userData = await response.json();
+        let { user } = await response.json();
         if (response.error) {
           throw new Error(response.error);
         }
-        setUser(userData.user);
-        setPosts(userData.user.posts);
+        setUser(user);
+        setDraftPosts(user.posts.filter((post) => post.published === false));
+        setPublishedPosts(user.posts.filter((post) => post.published === true));
         setError(null);
       } catch (err) {
         setError(err.message);
-        setPosts(null);
       } finally {
         setLoading(false);
       }
@@ -40,26 +47,36 @@ export default function HomeFeed() {
 
   if (loading) return <h1>Loading...</h1>;
   if (error) return <p>{error}</p>;
+
   return (
     <>
       <h1>Welcome Back {user.username}!</h1>
-      <ul>
-        {posts.length == 0 ? (
-          <p>No Posts yet.</p>
-        ) : (
-          posts.map((post) => (
-            <li key={post.id}>
-              <Link to={"/" + post.id}>
-                <h3>{post.title}</h3>
-                <p>{post.description}</p>
-                <p>{post.timestamp}</p>
-                <p>{post.published ? "Published" : "Unpublished"}</p>
-              </Link>
-              <Link to={"/" + post.id + "/edit"}>Edit</Link>
-            </li>
-          ))
-        )}
-      </ul>
+      <h2>Your Posts</h2>
+      <nav>
+        <button
+          style={{
+            textDecoration: visiblePosts === "drafts" ? "underline" : "none",
+          }}
+          value={"drafts"}
+          onClick={changeVisiblePosts}
+        >
+          Drafts <span>({draftPosts.length})</span>
+        </button>
+        <button
+          style={{
+            textDecoration: visiblePosts === "published" ? "underline" : "none",
+          }}
+          value={"published"}
+          onClick={changeVisiblePosts}
+        >
+          Published <span>({publishedPosts.length})</span>
+        </button>
+      </nav>
+      {visiblePosts === "drafts" ? (
+        <PostList list={draftPosts} />
+      ) : (
+        <PostList list={publishedPosts} />
+      )}
     </>
   );
 }
