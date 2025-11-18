@@ -26,10 +26,11 @@ model User {
 model Post {
   id          String    @id @default(uuid())
   title       String    @db.VarChar(30)
-  description String    @db.VarChar(100)
-  body        String    @db.VarChar(7500)
-  timestamp   DateTime  @default(now())
-  published   Boolean
+  description String?   @db.VarChar(100)
+  body        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  published   Boolean   @default(false)
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   comments    Comment[]
