@@ -92,7 +92,7 @@ async function updateUser(req, res) {
 async function deleteUser(req, res) {
   try {
     const { userId } = req.params;
-    await db.deleteUser(userId);
+    const user = await db.deleteUser(userId);
     res.json({ message: "Deleted user successfully." });
   } catch (error) {
     res.json({ error: "Could not find user to delete" });

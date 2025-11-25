@@ -46,11 +46,16 @@ async function updateUser({ id, name, username }) {
 }
 
 async function deleteUser(id) {
-  await prisma.user.delete({
-    where: {
-      id,
-    },
-  });
+  try {
+    const user = await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function findIfUsernameExists(username) {
