@@ -44,9 +44,8 @@ export default function Account() {
   return (
     <>
       <h1>Account Details</h1>
-      <p>Name: {user.firstName + " " + user.lastName}</p>
+      <p>Name: {user.name}</p>
       <p>Username: {user.username}</p>
-      <p>Email: {user.email}</p>
       <button onClick={onEdit}>Edit</button>
     </>
   );

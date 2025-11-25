@@ -6,18 +6,12 @@ export default function EditAccount() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [initialData, setInitialData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     username: "",
-    email: "",
   });
   const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     username: "",
-    email: "",
-    emailChange: false,
-    usernameChange: false,
   });
 
   useEffect(() => {
@@ -34,18 +28,14 @@ export default function EditAccount() {
         if (!response.ok) {
           throw new Error(`HTTP error: Status ${response.status}`);
         }
-        let userData = await response.json();
+        let { user } = await response.json();
         setInitialData({
-          firstName: userData.user.firstName,
-          lastName: userData.user.lastName,
-          username: userData.user.username,
-          email: userData.user.email,
+          name: user.name,
+          username: user.username,
         });
         setUserData({
-          firstName: userData.user.firstName,
-          lastName: userData.user.lastName,
-          username: userData.user.username,
-          email: userData.user.email,
+          name: user.name,
+          username: user.username,
         });
         setError(null);
       } catch (error) {
@@ -77,7 +67,7 @@ export default function EditAccount() {
             "Content-Type": "application/JSON",
             Authorization: "Bearer " + localStorage.getItem("accessToken"),
           },
-          body: JSON.stringify({ userData }),
+          body: JSON.stringify(userData),
         }
       );
       const results = await response.json();
@@ -117,31 +107,16 @@ export default function EditAccount() {
       <form>
         {error && <p>{error}</p>}
         <div>
-          <label htmlFor="firstName">First Name: </label>
+          <label htmlFor="name">Name: </label>
           <input
             type="text"
-            name="firstName"
-            id="firstName"
-            value={userData.firstName}
+            name="name"
+            id="name"
+            value={userData.name}
             onChange={(e) => {
               setUserData((prevData) => ({
                 ...prevData,
-                firstName: e.target.value,
-              }));
-            }}
-          />
-        </div>
-        <div>
-          <label htmlFor="lastName">Last Name: </label>
-          <input
-            type="text"
-            name="lastName"
-            id="lastName"
-            value={userData.lastName}
-            onChange={(e) => {
-              setUserData((prevData) => ({
-                ...prevData,
-                lastName: e.target.value,
+                name: e.target.value,
               }));
             }}
           />
@@ -159,23 +134,6 @@ export default function EditAccount() {
                 username: e.target.value,
                 usernameChange:
                   e.target.value === initialData.username ? false : true,
-              }));
-            }}
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email: </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={userData.email}
-            onChange={(e) => {
-              setUserData((prevData) => ({
-                ...prevData,
-                email: e.target.value,
-                emailChange:
-                  e.target.value === initialData.email ? false : true,
               }));
             }}
           />
