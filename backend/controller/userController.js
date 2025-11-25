@@ -77,11 +77,11 @@ async function readUser(req, res) {
 async function updateUser(req, res) {
   try {
     const { userId } = req.params;
-    const { userData } = req.body;
+    const { name, username } = req.body;
     const user = await db.updateUser({
       id: userId,
-      name: userData.name,
-      username: userData.username,
+      name,
+      username,
     });
     res.json({ user });
   } catch (error) {
