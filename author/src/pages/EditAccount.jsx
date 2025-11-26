@@ -25,14 +25,17 @@ export default function EditAccount() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3000/users/3`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/JSON",
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-        body: JSON.stringify(changedData),
-      });
+      const response = await fetch(
+        `http://localhost:3000/users/${localStorage.getItem("userId")}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/JSON",
+            Authorization: "Bearer " + localStorage.getItem("accessToken"),
+          },
+          body: JSON.stringify(changedData),
+        }
+      );
       const results = await response.json();
       if (!response.ok || results.errors || results.error) {
         setError(results.errors || results.error);
