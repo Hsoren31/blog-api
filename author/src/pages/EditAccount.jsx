@@ -45,7 +45,9 @@ export default function EditAccount() {
   };
   const onDelete = async (e) => {
     e.preventDefault();
-    let result = confirm("Are you sure you want to delete your account?");
+    let result = confirm(
+      "Are you sure you want to delete your account? This cannot be undone."
+    );
     if (!result) return;
     try {
       fetch(`http://localhost:3000/users/${localStorage.getItem("userId")}`, {
@@ -105,6 +107,8 @@ export default function EditAccount() {
           Submit
         </button>
       </form>
+      <h2>Delete Account</h2>
+      <p>Permanently delete your account and all of your content.</p>
       <button onClick={onDelete}>Delete</button>
     </>
   );
