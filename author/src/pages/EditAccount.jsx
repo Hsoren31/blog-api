@@ -1,52 +1,22 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useState, useRef } from "react";
+import { useNavigate, useLocation } from "react-router";
 
 export default function EditAccount() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
+  const initialUser = useRef(state.user);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [initialData, setInitialData] = useState({
-    name: "",
-    username: "",
-  });
-  const [userData, setUserData] = useState({
-    name: "",
-    username: "",
-  });
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/users/${localStorage.getItem("userId")}`,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error: Status ${response.status}`);
-        }
-        let { user } = await response.json();
-        setInitialData({
-          name: user.name,
-          username: user.username,
-        });
-        setUserData({
-          name: user.name,
-          username: user.username,
-        });
-        setError(null);
-      } catch (error) {
-        setError(error);
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUser();
-  }, []);
+  const [userData, setUserData] = useState(state.user);
+  const submitDisable = initialUser.current === userData ? true : false;
+  const changedData = {
+    name:
+      initialUser.current.name !== userData.name ? userData.name : undefined,
+    username:
+      initialUser.current.username !== userData.username
+        ? userData.username
+        : undefined,
+  };
 
   function onCancel() {
     navigate("/");
@@ -54,26 +24,19 @@ export default function EditAccount() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (JSON.stringify(initialData) == JSON.stringify(userData)) {
-      setError("There are no changes to submit");
-      return;
-    }
     try {
-      const response = await fetch(
-        `http://localhost:3000/users/${localStorage.getItem("userId")}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/JSON",
-            Authorization: "Bearer " + localStorage.getItem("accessToken"),
-          },
-          body: JSON.stringify(userData),
-        }
-      );
+      const response = await fetch(`http://localhost:3000/users/3`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/JSON",
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
+        body: JSON.stringify(changedData),
+      });
       const results = await response.json();
-      if (!response.ok || results.error) {
-        setError(results.error);
-        throw new Error(results.error);
+      if (!response.ok || results.errors || results.error) {
+        setError(results.errors || results.error);
+        throw new Error(results.errors);
       }
       navigate("/account");
     } catch (error) {
@@ -100,12 +63,23 @@ export default function EditAccount() {
     }
   };
 
-  if (loading) return <h1>Loading...</h1>;
+  function formChange(e) {
+    setUserData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  }
   return (
     <>
       <h1>Edit Account</h1>
       <form>
-        {error && <p>{error}</p>}
+        {error && (
+          <>
+            {error.map((err) => (
+              <p>{err.msg}</p>
+            ))}
+          </>
+        )}
         <div>
           <label htmlFor="name">Name: </label>
           <input
@@ -113,12 +87,7 @@ export default function EditAccount() {
             name="name"
             id="name"
             value={userData.name}
-            onChange={(e) => {
-              setUserData((prevData) => ({
-                ...prevData,
-                name: e.target.value,
-              }));
-            }}
+            onChange={formChange}
           />
         </div>
         <div>
@@ -128,18 +97,13 @@ export default function EditAccount() {
             name="username"
             id="username"
             value={userData.username}
-            onChange={(e) => {
-              setUserData((prevData) => ({
-                ...prevData,
-                username: e.target.value,
-                usernameChange:
-                  e.target.value === initialData.username ? false : true,
-              }));
-            }}
+            onChange={formChange}
           />
         </div>
         <button onClick={onCancel}>Cancel</button>
-        <button onClick={onSubmit}>Submit</button>
+        <button onClick={onSubmit} disabled={submitDisable}>
+          Submit
+        </button>
       </form>
       <button onClick={onDelete}>Delete</button>
     </>

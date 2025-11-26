@@ -35,7 +35,14 @@ export default function Account() {
   }, []);
 
   function onEdit() {
-    navigate("/account/edit");
+    navigate("/account/edit", {
+      state: {
+        user: {
+          name: user.name,
+          username: user.username,
+        },
+      },
+    });
   }
 
   if (loading) return <h1>Loading...</h1>;
