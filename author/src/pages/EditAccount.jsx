@@ -19,7 +19,7 @@ export default function EditAccount() {
   };
 
   function onCancel() {
-    navigate("/");
+    navigate("/account");
   }
 
   const onSubmit = async (e) => {
