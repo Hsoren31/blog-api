@@ -33,11 +33,11 @@ model Comment {
   id        String    @id @default(uuid())
   message   String    @db.VarChar(250)
   timestamp DateTime  @default(now())
-  post      Post      @relation(fields: [postId], references: [id])
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
   parentId  String?
-  parent    Comment?  @relation("CommentChildren", fields: [parentId], references: [id])
+  parent    Comment?  @relation("CommentChildren", fields: [parentId], references: [id], onDelete: Cascade)
   children  Comment[] @relation("CommentChildren")
 }
