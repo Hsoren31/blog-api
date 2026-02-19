@@ -1,11 +1,13 @@
-const { Router } = require("express");
+import { Router } from "express";
+import * as userController from "../controller/userController.js";
+import { verifyToken } from "../controller/authController.js";
+
 const usersRouter = new Router();
-const userController = require("../controller/userController");
-const verifyToken = require("../controller/authController").verifyToken;
+
 //user crud operation routes
 usersRouter.post("/", userController.createUser);
 usersRouter.get("/:userId", verifyToken, userController.readUser);
 usersRouter.put("/:userId", verifyToken, userController.updateUser);
 usersRouter.delete("/:userId", verifyToken, userController.deleteUser);
 
-module.exports = usersRouter;
+export default usersRouter;

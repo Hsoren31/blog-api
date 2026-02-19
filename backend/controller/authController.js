@@ -1,11 +1,10 @@
-require("@dotenvx/dotenvx").config({ path: "./backend/.env" });
-const jwt = require("jsonwebtoken");
-const passport = require("passport");
-const { PrismaClient } = require("../generated/prisma");
-const prisma = new PrismaClient();
+import "@dotenvx/dotenvx/config";
+import jwt from "jsonwebtoken";
+import passport from "passport";
+import { prisma } from "../lib/prisma.js";
 
-const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcryptjs");
+import { Strategy as LocalStrategy } from "passport-local";
+import bcrypt from "bcryptjs";
 
 //Passport's Local Strategy to authenticate users
 passport.use(
@@ -63,8 +62,4 @@ async function verifyToken(req, res, next) {
   });
 }
 
-module.exports = {
-  getLogin,
-  postLogin,
-  verifyToken,
-};
+export { getLogin, postLogin, verifyToken };

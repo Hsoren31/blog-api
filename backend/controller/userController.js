@@ -1,6 +1,6 @@
-const db = require("../db/userQueries");
-const bcrypt = require("bcryptjs");
-const { body, validationResult } = require("express-validator");
+import * as db from "../db/userQueries.js";
+import bcrypt from "bcryptjs";
+import { body, validationResult } from "express-validator";
 
 const validateUser = [
   body("name")
@@ -42,7 +42,7 @@ const validateUser = [
     .withMessage("Passwords must match."),
 ];
 
-createUser = [
+const createUser = [
   validateUser,
   async (req, res) => {
     try {
@@ -122,9 +122,4 @@ async function deleteUser(req, res) {
   }
 }
 
-module.exports = {
-  createUser,
-  readUser,
-  updateUser,
-  deleteUser,
-};
+export { createUser, readUser, updateUser, deleteUser };

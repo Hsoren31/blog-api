@@ -1,7 +1,8 @@
-const { Router } = require("express");
+import { Router } from "express";
+import * as postController from "../controller/postController.js";
+import { verifyToken } from "../controller/authController.js";
 const postsRouter = new Router();
-const postController = require("../controller/postController");
-const verifyToken = require("../controller/authController").verifyToken;
+
 //post crud operations
 postsRouter.post("/", verifyToken, postController.createPost);
 postsRouter.get("/:postId", verifyToken, postController.readPost);
@@ -28,4 +29,4 @@ postsRouter.delete(
   postController.deleteComment
 );
 
-module.exports = postsRouter;
+export default postsRouter;

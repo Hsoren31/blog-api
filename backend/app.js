@@ -1,14 +1,14 @@
-require("@dotenvx/dotenvx").config({ path: "./backend/.env" });
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
+import "@dotenvx/dotenvx/config";
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
 
 //routers
-const postsRouter = require("./routes/postsRouter");
-const usersRouter = require("./routes/usersRouter");
-const authRouter = require("./routes/authRouter");
+import postsRouter from "./routes/postsRouter.js";
+import usersRouter from "./routes/usersRouter.js";
+import authRouter from "./routes/authRouter.js";
 
-const verifyToken = require("./controller/authController").verifyToken;
+import { verifyToken } from "./controller/authController.js";
 
 const app = express();
 

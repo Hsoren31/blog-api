@@ -1,4 +1,4 @@
-const db = require("../db/postQueries.js");
+import * as db from "../db/postQueries.js";
 
 //CRUD Post
 async function readPost(req, res) {
@@ -129,7 +129,7 @@ async function deleteComment(req, res) {
   }
 }
 
-module.exports = {
+export {
   createPost,
   readPost,
   updatePost,
