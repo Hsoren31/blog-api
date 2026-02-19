@@ -1,5 +1,4 @@
-const { PrismaClient } = require("../generated/prisma");
-const prisma = new PrismaClient();
+import { prisma } from "../lib/prisma.js";
 
 //Posts
 async function createPost(userId, title, description, body, published) {
@@ -176,7 +175,7 @@ async function deleteComment(commentId) {
   });
 }
 
-module.exports = {
+export {
   createPost,
   readPost,
   updatePost,

@@ -1,5 +1,4 @@
-const { PrismaClient } = require("../generated/prisma");
-const prisma = new PrismaClient();
+import { prisma } from "../lib/prisma.js";
 
 async function createUser(name, username, password) {
   const user = await prisma.user.create({
@@ -67,10 +66,4 @@ async function findIfUsernameExists(username) {
   return user;
 }
 
-module.exports = {
-  createUser,
-  readUser,
-  updateUser,
-  deleteUser,
-  findIfUsernameExists,
-};
+export { createUser, readUser, updateUser, deleteUser, findIfUsernameExists };
