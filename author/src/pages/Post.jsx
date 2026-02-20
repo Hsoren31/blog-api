@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router";
 import { useState, useEffect } from "react";
+import { formatLongDate } from "../utils/formatTime";
 
 export default function Post() {
   const params = useParams();
@@ -46,7 +47,7 @@ export default function Post() {
       <h1>{post.title}</h1>
       <p>{post.description}</p>
       <p>{post.body}</p>
-      <p>{post.timestamp}</p>
+      <p>{formatLongDate(post.timestamp)}</p>
       {post.comments && (
         <ul>
           {post.comments.map((comment) => (

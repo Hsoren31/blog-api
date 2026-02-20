@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { formatDateDistance } from "../utils/formatTime";
 
 export default function PostItem({ post }) {
   return (
@@ -6,7 +7,7 @@ export default function PostItem({ post }) {
       <Link to={"/" + post.id}>
         <h3>{post.title}</h3>
       </Link>
-      <p>{post.timestamp}</p>
+      <p>{formatDateDistance(post.timestamp)}</p>
       <Link to={"/" + post.id + "/edit"}>Edit</Link>
     </li>
   );
