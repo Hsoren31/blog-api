@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
 
 export default function Header() {
+  const currentUser = localStorage.getItem("userId");
+
   function onLogout() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userId");
   }
+
   return (
     <header>
       <h1>Blog</h1>
+      <p>{currentUser}</p>
       <nav>
         <ul className="nav">
           <li>
@@ -21,7 +25,7 @@ export default function Header() {
           </li>
           <li>
             <a href="/login" onClick={onLogout}>
-              Logout
+              {currentUser ? "Logout" : "Login"}
             </a>
           </li>
         </ul>
