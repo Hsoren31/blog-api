@@ -1,4 +1,9 @@
 import { Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import {
+  CurrentUserContext,
+  CurrentUserDispatchContext,
+} from "./context/CurrentUserContext.js";
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -14,29 +19,34 @@ import NotFound from "./pages/NotFound";
 import PrivateRoutes from "./PrivateRoutes";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState();
   return (
     <>
-      <Header />
-      <main>
-        <Routes>
-          <Route element={<PrivateRoutes />}>
-            <Route path="/" element={<HomeFeed />} />
-            <Route path=":postId">
-              <Route index element={<Post />} />
-              <Route path="edit" element={<EditPost />} />
-            </Route>
-            <Route path="create" element={<CreatePost />} />
-            <Route path="account">
-              <Route index element={<Account />} />
-              <Route path="edit" element={<EditAccount />} />
-            </Route>
-          </Route>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-      <Footer />
+      <CurrentUserContext value={currentUser}>
+        <CurrentUserDispatchContext value={setCurrentUser}>
+          <Header />
+          <main>
+            <Routes>
+              <Route element={<PrivateRoutes />}>
+                <Route path="/" element={<HomeFeed />} />
+                <Route path=":postId">
+                  <Route index element={<Post />} />
+                  <Route path="edit" element={<EditPost />} />
+                </Route>
+                <Route path="create" element={<CreatePost />} />
+                <Route path="account">
+                  <Route index element={<Account />} />
+                  <Route path="edit" element={<EditAccount />} />
+                </Route>
+              </Route>
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+          <Footer />
+        </CurrentUserDispatchContext>
+      </CurrentUserContext>
     </>
   );
 }

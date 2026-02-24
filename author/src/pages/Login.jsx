@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { CurrentUserDispatchContext } from "../context/CurrentUserContext";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ export default function Login() {
     username: "",
     password: "",
   });
+  const currentUserDispatch = useContext(CurrentUserDispatchContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +38,7 @@ export default function Login() {
         setError(data.message);
         throw new Error(data.message);
       }
+      currentUserDispatch(data.user.id);
       localStorage.setItem("userId", data.user.id);
       localStorage.setItem("accessToken", data.token);
       navigate("/");
