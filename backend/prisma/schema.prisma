@@ -8,35 +8,80 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(uuid())
-  username String    @unique @db.VarChar(255)
-  password String    @db.VarChar(255)
-  name     String?   @db.VarChar(50)
-  comments Comment[]
-  posts    Post[]
+  id       String   @id @default(uuid())
+  username String   @unique @db.VarChar(15)
+  password String
+  role     Role     @default(USER)
+  profile  Profile?
+}
+
+model Profile {
+  id         String    @id @default(uuid())
+  name       String    @db.VarChar(20)
+  bio        String?   @db.VarChar(100)
+  avatar     String?
+  posts      Post[]
+  comments   Comment[]
+  followedBy Follows[] @relation("followedBy")
+  following  Follows[] @relation("following")
+  users      User      @relation(fields: [userId], references: [id])
+  userId     String    @unique
+}
+
+model Follows {
+  followedBy   Profile @relation("followedBy", fields: [followedById], references: [id])
+  followedById String
+  following    Profile @relation("following", fields: [followingId], references: [id])
+  followingId  String
+
+  @@id([followedById, followingId])
 }
 
 model Post {
-  id          String    @id @default(uuid())
-  title       String    @db.VarChar(30)
-  description String    @db.VarChar(100)
-  body        String    @db.VarChar(7500)
-  timestamp   DateTime  @default(now())
+  id          String        @id @default(uuid())
+  title       String        @db.VarChar(50)
+  description String        @db.VarChar(150)
+  body        String        @db.VarChar(3000)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime
+  author      Profile       @relation(fields: [authorId], references: [id])
+  authorId    String
   published   Boolean
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
   comments    Comment[]
+  tags        Tag[]
+  tagsOnPosts TagsOnPosts[]
 }
 
 model Comment {
   id        String    @id @default(uuid())
-  message   String    @db.VarChar(250)
-  timestamp DateTime  @default(now())
-  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    String
-  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  text      String    @db.VarChar(150)
+  author    Profile   @relation(fields: [authorId], references: [id])
   authorId  String
+  createdAt DateTime  @default(now())
+  post      Post      @relation(fields: [postId], references: [id])
+  postId    String
+  parent    Comment?  @relation("CommentChildren", fields: [parentId], references: [id])
   parentId  String?
-  parent    Comment?  @relation("CommentChildren", fields: [parentId], references: [id], onDelete: Cascade)
   children  Comment[] @relation("CommentChildren")
+}
+
+model Tag {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique @db.VarChar(20)
+  post        Post[]
+  tagsOnPosts TagsOnPosts[]
+}
+
+model TagsOnPosts {
+  tag    Tag    @relation(fields: [tagId], references: [id])
+  tagId  Int
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+
+  @@id([tagId, postId])
+}
+
+enum Role {
+  USER
+  ADMIN
 }
