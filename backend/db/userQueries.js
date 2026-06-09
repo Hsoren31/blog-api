@@ -3,7 +3,6 @@ import { prisma } from "../lib/prisma.js";
 async function createUser(name, username, password) {
   const user = await prisma.user.create({
     data: {
-      name,
       username,
       password,
     },
@@ -11,7 +10,24 @@ async function createUser(name, username, password) {
       password: false,
     },
   });
-  return user;
+  const profile = await prisma.profile.create({
+    data: {
+      name,
+      users: {
+        connect: {
+          id: user.id,
+        },
+      },
+    },
+    include: {
+      users: {
+        select: {
+          username: true,
+        },
+      },
+    },
+  });
+  return profile;
 }
 
 async function readUser(id) {
