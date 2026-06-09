@@ -21,4 +21,5 @@ app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 app.get("/", verifyToken, (req, res) => res.json({ message: "hello world" }));
 
-app.listen(3000, console.log("listening..."));
+const PORT = process.env.PORT || 3000;
+app.listen(3000, console.log(`App listening on port ${PORT}`));
