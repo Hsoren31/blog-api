@@ -99,10 +99,9 @@ async function postLogin(req, res) {
     if (!user) {
       res.status(400).json({ message: options.message });
     }
-    const info = { id: user.id, username: user.username };
+    user = { id: user.id, username: user.username };
     jwt.sign({ user }, process.env.SECRET_KEY, (err, token) => {
       res.json({
-        user: info,
         token,
       });
     });
