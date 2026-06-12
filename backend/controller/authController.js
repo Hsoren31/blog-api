@@ -57,8 +57,8 @@ const signup = [
       }
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const { name, username } = req.body;
-      const user = await db.createUser(name, username, hashedPassword);
-      res.json({ user });
+      await db.createUser(name, username, hashedPassword);
+      res.redirect("/auth/login");
     } catch (error) {
       console.error(error);
       res.json({ error: "Something went wrong. Try again." });
@@ -122,4 +122,13 @@ async function verifyToken(req, res, next) {
   });
 }
 
-export { signup, getLogin, postLogin, verifyToken };
+async function logout(req, res, next) {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+}
+
+export { signup, getLogin, postLogin, verifyToken, logout };
