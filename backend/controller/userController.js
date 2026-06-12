@@ -3,13 +3,14 @@ import { body, validationResult } from "express-validator";
 
 async function readUser(req, res) {
   try {
-    const { userId } = req.params;
-    const user = await db.readUser(userId);
+    const { username } = req.params;
+    const user = await db.readUser(username);
     if (!user) {
       res.status(400).json({ error: "Could not find user." });
     }
     res.json({ user });
   } catch (error) {
+    console.error(error);
     res.json({ error: "Something went wrong. Try again." });
   }
 }

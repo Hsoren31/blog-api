@@ -30,15 +30,19 @@ async function createUser(name, username, password) {
   return profile;
 }
 
-async function readUser(id) {
-  const user = await prisma.user.findFirst({
+async function readUser(username) {
+  const user = await prisma.profile.findFirst({
     where: {
-      id,
+      users: {
+        username,
+      },
     },
-    select: {
-      name: true,
-      username: true,
-      posts: true,
+    include: {
+      users: {
+        select: {
+          username: true,
+        },
+      },
     },
   });
   return user;
