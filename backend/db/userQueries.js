@@ -86,4 +86,102 @@ async function findIfUsernameExists(username) {
   return user;
 }
 
-export { createUser, readUser, updateUser, deleteUser, findIfUsernameExists };
+async function followUser(followerId, followingUsername) {
+  const followingId = await prisma.profile.findFirst({
+    where: {
+      users: {
+        username: followingUsername,
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+  const followedById = await prisma.profile.findFirst({
+    where: {
+      users: {
+        id: followerId,
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+  return await prisma.follows.create({
+    data: {
+      followedBy: {
+        connect: { id: followedById.id },
+      },
+      following: {
+        connect: { id: followingId.id },
+      },
+    },
+  });
+}
+
+async function unfollowUser(followerUserId, followingUsername) {
+  const followedById = await prisma.profile.findFirst({
+    where: {
+      userId: followerUserId,
+    },
+    select: {
+      id: true,
+    },
+  });
+  const followingId = await prisma.profile.findFirst({
+    where: {
+      users: {
+        username: followingUsername,
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+  return await prisma.follows.delete({
+    where: {
+      followedById_followingId: {
+        followedById: followedById.id,
+        followingId: followingId.id,
+      },
+    },
+  });
+}
+
+async function checkFollowsConnection(followedByUserId, followingUsername) {
+  const followedById = await prisma.profile.findFirst({
+    where: {
+      userId: followedByUserId,
+    },
+    select: {
+      id: true,
+    },
+  });
+  const followingId = await prisma.profile.findFirst({
+    where: {
+      users: {
+        username: followingUsername,
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+  return await prisma.follows.findFirst({
+    where: {
+      followedById: followedById.id,
+      followingId: followingId.id,
+    },
+  });
+}
+
+export {
+  createUser,
+  readUser,
+  updateUser,
+  deleteUser,
+  findIfUsernameExists,
+  followUser,
+  unfollowUser,
+  checkFollowsConnection,
+};

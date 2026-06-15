@@ -63,4 +63,46 @@ async function deleteUser(req, res) {
   }
 }
 
-export { readUser, updateUser, deleteUser };
+async function followUser(req, res) {
+  try {
+    const { username } = req.params;
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
+    const connectionExists = await db.checkFollowsConnection(
+      req.user.user.id,
+      username
+    );
+    if (connectionExists) {
+      res.json({ error: "Cannot follow a profile you are already following." });
+    }
+    await db.followUser(req.user.user.id, username);
+    res.json({ message: `Now following ${username}` });
+  } catch (error) {
+    console.error(error);
+    res.json({ error: "Something went wrong." });
+  }
+}
+
+async function unfollowUser(req, res) {
+  try {
+    const { username } = req.params;
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
+    const connectionExists = await db.checkFollowsConnection(
+      req.user.user.id,
+      username
+    );
+    if (!connectionExists) {
+      res.json({ error: "Cannot unfollow a profile you are not following." });
+    }
+    await db.unfollowUser(req.user.user.id, username);
+    res.json({ message: `Successfully unfollowed ${username}` });
+  } catch (error) {
+    console.error(error);
+    res.json({ error: "Something went wrong." });
+  }
+}
+
+export { readUser, updateUser, deleteUser, followUser, unfollowUser };

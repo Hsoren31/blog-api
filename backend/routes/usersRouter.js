@@ -9,4 +9,11 @@ usersRouter.get("/:username", verifyToken, userController.readUser);
 usersRouter.put("/:userId", verifyToken, userController.updateUser);
 usersRouter.delete("/:userId", verifyToken, userController.deleteUser);
 
+usersRouter.post("/:username/follow", verifyToken, userController.followUser);
+usersRouter.delete(
+  "/:username/follow",
+  verifyToken,
+  userController.unfollowUser
+);
+
 export default usersRouter;
