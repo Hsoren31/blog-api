@@ -6,7 +6,7 @@ async function readUser(req, res) {
     const { username } = req.params;
     const user = await db.readUser(username);
     if (!user) {
-      res.status(400).json({ error: "Could not find user." });
+      return res.status(404).json({ error: "Could not find user." });
     }
     res.json({ user });
   } catch (error) {
