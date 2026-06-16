@@ -57,17 +57,15 @@ async function readUser(username) {
   return user;
 }
 
-async function updateUser({ id, name, username }) {
-  const user = await prisma.user.update({
+async function updateProfile({ userId, name, bio, avatar }) {
+  const user = await prisma.profile.update({
     where: {
-      id,
+      userId,
     },
     data: {
       name,
-      username,
-    },
-    include: {
-      password: false,
+      bio,
+      avatar,
     },
   });
   return user;
@@ -184,13 +182,36 @@ async function checkFollowsConnection(followedByUserId, followingUsername) {
   });
 }
 
+async function readUserId(username) {
+  const { id } = await prisma.user.findFirst({
+    where: {
+      username,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return id;
+}
+
+async function checkUserExists(username) {
+  const user = await prisma.user.findFirst({
+    where: {
+      username,
+    },
+  });
+  return user;
+}
+
 export {
   createUser,
   readUser,
-  updateUser,
+  updateProfile,
   deleteUser,
   findIfUsernameExists,
   followUser,
   unfollowUser,
   checkFollowsConnection,
+  readUserId,
+  checkUserExists,
 };

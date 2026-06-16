@@ -6,7 +6,7 @@ const usersRouter = new Router();
 
 //user crud operation routes
 usersRouter.get("/:username", verifyToken, userController.readUser);
-usersRouter.put("/:userId", verifyToken, userController.updateUser);
+usersRouter.put("/:username", verifyToken, userController.updateProfile);
 usersRouter.delete("/:userId", verifyToken, userController.deleteUser);
 
 usersRouter.post("/:username/follow", verifyToken, userController.followUser);

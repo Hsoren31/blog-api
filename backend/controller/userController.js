@@ -15,40 +15,55 @@ async function readUser(req, res) {
   }
 }
 
-const updateUser = [
+const updateProfile = [
   body("name")
     .trim()
     .optional({ values: "falsy" })
     .isAlpha("en-US", { ignore: " " })
     .withMessage("Name must only contain letters."),
-  body("username")
-    .optional({ values: "falsy" })
-    .custom((value) => !/\s/.test(value))
-    .withMessage("Username cannot contain spaces")
-    .isLength({ min: 8, max: 15 })
-    .withMessage("Username must be between 8 and 15 characters")
-    .custom(async (value) => {
-      const existingUser = await db.findIfUsernameExists(value);
-      if (existingUser) {
-        throw new Error("Username already in use.");
-      }
-    }),
   async (req, res) => {
     try {
+      // Check validation
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json(errors);
       }
-      const { userId } = req.params;
-      const { name, username } = req.body;
-      const user = await db.updateUser({
-        id: userId,
+
+      const { username } = req.params;
+      const { name, bio, avatar } = req.body;
+
+      //Check if user was found
+      const userExists = await db.checkUserExists(username);
+      if (!userExists) {
+        return res.status(404).json({ error: "Could not find user." });
+      }
+
+      // Check user authentication
+      if (!req.user) {
+        return res.status(401).json({ error: "Authentication failed." });
+      }
+
+      // Check if unauthorized account is trying to update account.
+      const userId = await db.readUserId(username);
+      if (userId !== req.user.user.id) {
+        return res
+          .status(403)
+          .json({ error: "You don't have access to change this account." });
+      }
+
+      //Update Profile
+      const user = await db.updateProfile({
+        userId: req.user.user.id,
         name,
-        username,
+        bio,
+        avatar,
       });
       res.json({ user });
     } catch (error) {
-      res.json({ error: "Could not find user to be updated." });
+      console.log(error);
+      res
+        .status(500)
+        .json({ error: "Something unexpected occured. Please try again." });
     }
   },
 ];
@@ -105,4 +120,4 @@ async function unfollowUser(req, res) {
   }
 }
 
-export { readUser, updateUser, deleteUser, followUser, unfollowUser };
+export { readUser, updateProfile, deleteUser, followUser, unfollowUser };
