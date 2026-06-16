@@ -70,15 +70,19 @@ const updateProfile = [
 
 async function deleteUser(req, res) {
   try {
-    const { userId } = req.params;
-    const userExists = await db.checkUserExists(userId);
+    const { username } = req.params;
+    // Check if user Exists
+    const userExists = await db.checkUserExists(username);
     if (!userExists) {
       return res.status(404).json({ error: "Could not find user." });
     }
-    const user = await db.deleteUser(userId);
+
+    // Delete User
+    const user = await db.deleteUser(req.user.user.id);
     res.status(200).json({ message: "Deleted user successfully.", user });
   } catch (error) {
-    res.json({ error: "Could not find user to delete" });
+    console.error(error);
+    res.status(500).json({ error: "Something unexpected happen." });
   }
 }
 
