@@ -38,18 +38,17 @@ model Follows {
 }
 
 model Post {
-  id          String        @id @default(uuid())
-  title       String        @db.VarChar(50)
-  description String        @db.VarChar(150)
-  body        String        @db.VarChar(3000)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime
-  author      Profile       @relation(fields: [authorId], references: [id])
+  id          String    @id @default(uuid())
+  title       String    @db.VarChar(50)
+  description String    @db.VarChar(150)
+  body        String    @db.VarChar(3000)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime?
+  author      Profile   @relation(fields: [authorId], references: [id])
   authorId    String
   published   Boolean
   comments    Comment[]
   tags        Tag[]
-  tagsOnPosts TagsOnPosts[]
 }
 
 model Comment {
@@ -66,19 +65,9 @@ model Comment {
 }
 
 model Tag {
-  id          Int           @id @default(autoincrement())
-  name        String        @unique @db.VarChar(20)
-  post        Post[]
-  tagsOnPosts TagsOnPosts[]
-}
-
-model TagsOnPosts {
-  tag    Tag    @relation(fields: [tagId], references: [id])
-  tagId  Int
-  post   Post   @relation(fields: [postId], references: [id])
-  postId String
-
-  @@id([tagId, postId])
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.VarChar(20)
+  post Post[]
 }
 
 enum Role {
