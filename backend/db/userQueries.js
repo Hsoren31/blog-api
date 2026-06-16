@@ -194,10 +194,11 @@ async function readUserId(username) {
   return id;
 }
 
-async function checkUserExists(username) {
+async function checkUserExists(username, userId) {
   const user = await prisma.user.findFirst({
     where: {
       username,
+      id: userId,
     },
   });
   return user;

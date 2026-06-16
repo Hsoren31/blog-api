@@ -71,8 +71,12 @@ const updateProfile = [
 async function deleteUser(req, res) {
   try {
     const { userId } = req.params;
+    const userExists = await db.checkUserExists(userId);
+    if (!userExists) {
+      return res.status(404).json({ error: "Could not find user." });
+    }
     const user = await db.deleteUser(userId);
-    res.json({ message: "Deleted user successfully." });
+    res.status(200).json({ message: "Deleted user successfully.", user });
   } catch (error) {
     res.json({ error: "Could not find user to delete" });
   }

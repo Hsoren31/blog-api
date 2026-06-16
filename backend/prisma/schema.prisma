@@ -24,7 +24,7 @@ model Profile {
   comments   Comment[]
   followedBy Follows[] @relation("followedBy")
   following  Follows[] @relation("following")
-  users      User      @relation(fields: [userId], references: [id])
+  users      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String    @unique
 }
 
