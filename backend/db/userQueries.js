@@ -43,6 +43,15 @@ async function readUser(username) {
           username: true,
         },
       },
+      posts: true,
+      _count: {
+        select: {
+          following: true,
+          followedBy: true,
+        },
+      },
+      following: true,
+      followedBy: true,
     },
   });
   return user;
