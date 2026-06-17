@@ -70,6 +70,21 @@ async function updatePost(req, res) {
 async function deletePost(req, res) {
   try {
     const { postId } = req.params;
+
+    //Check if post exists
+    const postExists = await db.readPost(postId);
+    if (!postExists) {
+      return res.status(404).json({ error: "Could not find post to delete." });
+    }
+
+    // Check if user is author of post
+    const authorId = await db.getPostUserId(postId);
+    if (req.user.user.id !== authorId) {
+      return res
+        .status(401)
+        .json({ error: "You are not authorized to delete post." });
+    }
+
     await db.deletePost(postId);
     res.json({ message: "Post delete successfully." });
   } catch (error) {
