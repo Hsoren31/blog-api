@@ -47,6 +47,10 @@ async function readPost(id) {
     where: {
       id,
     },
+    include: {
+      comments: true,
+      tags: true,
+    },
   });
   return post;
 }
