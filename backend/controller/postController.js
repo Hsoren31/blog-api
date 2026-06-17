@@ -36,17 +36,34 @@ async function createPost(req, res) {
 async function updatePost(req, res) {
   try {
     const { postId } = req.params;
-    const { title, description, body, published } = req.body;
+    const { title, description, body, published, tags } = req.body;
+
+    // Check if post exists
+    const postExists = await db.readPost(postId);
+    if (!postExists) {
+      return res.status(404).json({ error: "Cannot find post." });
+    }
+
+    // Check if user is author of post
+    const userId = await db.getPostUserId(postId);
+    if (req.user.user.id !== userId) {
+      return res
+        .status(401)
+        .json({ error: "You are not authorized to change this post." });
+    }
+
     const post = await db.updatePost(
       postId,
       title,
       description,
       body,
-      published
+      published,
+      tags
     );
     res.json({ post });
   } catch (error) {
-    res.json({ error: "Could not find post to update" });
+    console.error(error);
+    res.json({ error: "Something unexpected occured." });
   }
 }
 

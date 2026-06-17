@@ -55,7 +55,14 @@ async function readPost(id) {
   return post;
 }
 
-async function updatePost(postId, title, description, body, published) {
+async function updatePost(
+  postId,
+  title,
+  description,
+  body,
+  published,
+  tagNames
+) {
   const post = await prisma.post.update({
     where: {
       id: postId,
@@ -65,6 +72,13 @@ async function updatePost(postId, title, description, body, published) {
       description,
       body,
       published,
+      tags: {
+        deleteMany: {},
+        connectOrCreate: tagNames.map((tagName) => ({
+          where: { name: tagName },
+          create: { name: tagName },
+        })),
+      },
     },
   });
   return post;
@@ -207,6 +221,22 @@ async function deleteComment(commentId) {
   });
 }
 
+async function getPostUserId(postId) {
+  const { author } = await prisma.post.findFirst({
+    where: {
+      id: postId,
+    },
+    select: {
+      author: {
+        select: {
+          userId: true,
+        },
+      },
+    },
+  });
+  return author.userId;
+}
+
 export {
   createPost,
   readPost,
@@ -219,4 +249,5 @@ export {
   createChildComment,
   updateComment,
   deleteComment,
+  getPostUserId,
 };
