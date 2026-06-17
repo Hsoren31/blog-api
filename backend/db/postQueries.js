@@ -1,14 +1,42 @@
 import { prisma } from "../lib/prisma.js";
 
 //Posts
-async function createPost(userId, title, description, body, published) {
+async function createPost(
+  userId,
+  title,
+  description,
+  body,
+  published,
+  tagNames
+) {
+  const { id } = await prisma.profile.findFirst({
+    where: {
+      userId,
+    },
+    select: {
+      id: true,
+    },
+  });
   const post = await prisma.post.create({
     data: {
       title,
       description,
       body,
-      userId,
       published,
+      author: {
+        connect: {
+          id,
+        },
+      },
+      tags: {
+        connectOrCreate: tagNames.map((tagName) => ({
+          where: { name: tagName },
+          create: { name: tagName },
+        })),
+      },
+    },
+    include: {
+      tags: true,
     },
   });
   return post;

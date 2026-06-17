@@ -13,13 +13,18 @@ async function readPost(req, res) {
 
 async function createPost(req, res) {
   try {
-    const { userId, title, description, body, published } = req.body;
+    const { title, description, body, published, tags } = req.body;
+    const id = req.user.user.id;
+    if (!id) {
+      return res.status(401).json({ error: "Authorization failed." });
+    }
     const post = await db.createPost(
-      userId,
+      id,
       title,
       description,
       body,
-      published
+      published,
+      tags
     );
     res.json({ post });
   } catch (error) {
