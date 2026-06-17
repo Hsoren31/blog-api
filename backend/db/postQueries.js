@@ -98,11 +98,12 @@ async function readPosts() {
       published: true,
     },
     include: {
-      user: {
+      author: {
         select: {
-          username: true,
+          name: true,
         },
       },
+      tags: true,
     },
   });
   return posts;
