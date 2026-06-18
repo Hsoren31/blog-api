@@ -105,6 +105,9 @@ async function readAuthor(req, res) {
   try {
     const { authorName } = req.params;
     const author = await db.readAuthor(authorName);
+    if (!author) {
+      return res.status(404).json({ error: "Could not find Author." });
+    }
     res.json({ author });
   } catch (err) {
     res.json({ message: "Could not retrieve Author. Try Again." });

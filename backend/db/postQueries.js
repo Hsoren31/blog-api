@@ -110,22 +110,22 @@ async function readPosts() {
 }
 
 async function readAuthor(authorName) {
-  const author = await prisma.user.findFirst({
+  const author = await prisma.profile.findFirst({
     where: {
-      username: authorName,
+      users: {
+        username: authorName,
+      },
     },
-    select: {
-      username: true,
-      firstName: true,
-      lastName: true,
+    include: {
       posts: {
         where: {
           published: true,
         },
       },
+      following: true,
+      followedBy: true,
     },
   });
-  console.log(author);
   return author;
 }
 
