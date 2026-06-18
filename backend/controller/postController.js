@@ -172,10 +172,15 @@ async function updateComment(req, res) {
 async function deleteComment(req, res) {
   try {
     const { commentId } = req.params;
+    const commentExists = await db.readComment(commentId);
+    if (!commentExists) {
+      return res.status(404).json({ error: "Could not find comment." });
+    }
     await db.deleteComment(commentId);
     res.json({ message: "Comment deleted successfully" });
   } catch (error) {
-    res.json({ message: "Could not find comment to delete." });
+    console.error(error);
+    res.status(500).json({ error: "Something unexpected occured." });
   }
 }
 
