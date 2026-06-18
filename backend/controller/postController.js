@@ -157,10 +157,15 @@ async function updateComment(req, res) {
   try {
     const { commentId } = req.params;
     const { message } = req.body;
+    const commentExists = await db.readComment(commentId);
+    if (!commentExists) {
+      return res.status(404).json({ error: "Could not find comment." });
+    }
     const comment = await db.updateComment(commentId, message);
-    res.json({ comment });
-  } catch (error) {
-    res.json({ message: "Could not find comment to update" });
+    res.json(comment);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Something unexpected occured." });
   }
 }
 

@@ -185,7 +185,7 @@ async function updateComment(commentId, message) {
       id: commentId,
     },
     data: {
-      message,
+      text: message,
     },
   });
   return comment;
@@ -197,6 +197,15 @@ async function deleteComment(commentId) {
       id: commentId,
     },
   });
+}
+
+async function readComment(commentId) {
+  const comment = await prisma.comment.findFirst({
+    where: {
+      id: commentId,
+    },
+  });
+  return comment;
 }
 
 async function getPostUserId(postId) {
@@ -226,5 +235,6 @@ export {
   createComment,
   updateComment,
   deleteComment,
+  readComment,
   getPostUserId,
 };
