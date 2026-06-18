@@ -130,21 +130,24 @@ async function readPostComments(req, res) {
 
 async function createComment(req, res) {
   try {
-    const postId = req.params.postId;
-    const { userId, message, parentId } = req.body;
-    if (parentId) {
-      let comment = await db.createChildComment(
-        postId,
-        userId,
-        message,
-        parentId
-      );
-      return res.json({ comment });
+    const { postId } = req.params;
+    const { message, parentId } = req.body;
+    const post = await db.readPost(postId);
+    if (!post) {
+      return res
+        .status(404)
+        .json({ error: "Could not find Post to comment on." });
     }
-    let comment = await db.createComment(postId, userId, message);
+    const comment = await db.createComment(
+      postId,
+      req.user.user.id,
+      message,
+      parentId
+    );
     res.json({ comment });
   } catch (error) {
-    res.json({ message: "Could not create comment." });
+    console.error(error);
+    res.status(500).json({ error: "Something unexpected occured." });
   }
 }
 

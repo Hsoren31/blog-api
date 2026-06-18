@@ -159,44 +159,29 @@ async function readPostComments(postId) {
   return comments;
 }
 
-async function createComment(postId, userId, message) {
-  const comment = await prisma.comment.create({
-    data: {
-      message,
-      author: {
-        connect: {
-          id: userId,
-        },
-      },
-      post: {
-        connect: {
-          id: postId,
-        },
-      },
+async function createComment(postId, userId, message, parentId) {
+  const profileId = await prisma.profile.findFirst({
+    where: {
+      userId,
+    },
+    select: {
+      id: true,
     },
   });
-  return comment;
-}
-
-async function createChildComment(postId, userId, message, parentId) {
   const comment = await prisma.comment.create({
     data: {
-      message,
-      author: {
-        connect: {
-          id: userId,
-        },
-      },
       post: {
         connect: {
           id: postId,
         },
       },
-      parent: {
+      author: {
         connect: {
-          id: parentId,
+          id: profileId.id,
         },
       },
+      text: message,
+      parent: parentId ? { connect: { id: parentId } } : undefined,
     },
   });
   return comment;
@@ -247,7 +232,6 @@ export {
   readAuthor,
   readPostComments,
   createComment,
-  createChildComment,
   updateComment,
   deleteComment,
   getPostUserId,
