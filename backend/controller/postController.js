@@ -118,13 +118,15 @@ async function readAuthor(req, res) {
 async function readPostComments(req, res) {
   try {
     const { postId } = req.params;
-    const comments = await db.readPostComments(
-      postId,
-      "aa22e660-fe6f-4bd5-85ce-a0da8440a0be"
-    );
-    res.json({ comments });
-  } catch (error) {
-    res.json({ message: "Could not get comments" });
+    const post = await db.readPost(postId);
+    if (!post) {
+      return res.status(404).json({ error: "Could not find Post." });
+    }
+    const comments = await db.readPostComments(postId);
+    res.json(comments);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Something unexpected occured." });
   }
 }
 
