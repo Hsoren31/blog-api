@@ -121,13 +121,4 @@ async function verifyToken(req, res, next) {
   });
 }
 
-async function logout(req, res, next) {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
-}
-
-export { signup, getLogin, postLogin, verifyToken, logout };
+export { signup, getLogin, postLogin, verifyToken };
