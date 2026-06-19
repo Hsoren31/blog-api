@@ -57,9 +57,9 @@ model Comment {
   author    Profile   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
   createdAt DateTime  @default(now())
-  post      Post      @relation(fields: [postId], references: [id])
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String
-  parent    Comment?  @relation("CommentChildren", fields: [parentId], references: [id])
+  parent    Comment?  @relation("CommentChildren", fields: [parentId], references: [id], onDelete: SetNull)
   parentId  String?
   children  Comment[] @relation("CommentChildren")
 }
