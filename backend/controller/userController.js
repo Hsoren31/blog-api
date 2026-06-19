@@ -73,7 +73,6 @@ async function deleteUser(req, res) {
     }
 
     // Delete User
-    console.log(req.user.id);
     const user = await db.deleteUser(req.user.id);
     res.status(200).json({ message: "Deleted user successfully.", user });
   } catch (error) {
@@ -91,7 +90,9 @@ async function followUser(req, res) {
       username
     );
     if (connectionExists) {
-      res.json({ error: "Cannot follow a profile you are already following." });
+      return res.status(409).json({
+        error: "Cannot follow a profile you are already following.",
+      });
     }
     await db.followUser(req.user.id, username);
     res.json({ message: `Now following ${username}` });
@@ -109,7 +110,9 @@ async function unfollowUser(req, res) {
       username
     );
     if (!connectionExists) {
-      res.json({ error: "Cannot unfollow a profile you are not following." });
+      return res.status(409).json({
+        error: "Cannot unfollow a profile you are not following.",
+      });
     }
     await db.unfollowUser(req.user.id, username);
     res.json({ message: `Successfully unfollowed ${username}` });
