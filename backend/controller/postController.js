@@ -14,7 +14,7 @@ async function readPost(req, res) {
 async function createPost(req, res) {
   try {
     const { title, description, body, published, tags } = req.body;
-    const id = req.user.user.id;
+    const id = req.user.id;
     if (!id) {
       return res.status(401).json({ error: "Authorization failed." });
     }
@@ -46,7 +46,7 @@ async function updatePost(req, res) {
 
     // Check if user is author of post
     const userId = await db.getPostUserId(postId);
-    if (req.user.user.id !== userId) {
+    if (req.user.id !== userId) {
       return res
         .status(401)
         .json({ error: "You are not authorized to change this post." });
@@ -79,7 +79,7 @@ async function deletePost(req, res) {
 
     // Check if user is author of post
     const authorId = await db.getPostUserId(postId);
-    if (req.user.user.id !== authorId) {
+    if (req.user.id !== authorId) {
       return res
         .status(401)
         .json({ error: "You are not authorized to delete post." });
@@ -142,7 +142,7 @@ async function createComment(req, res) {
     }
     const comment = await db.createComment(
       postId,
-      req.user.user.id,
+      req.user.id,
       message,
       parentId
     );

@@ -100,7 +100,7 @@ async function postLogin(req, res) {
       res.status(400).json({ message: options.message });
     }
     user = { id: user.id, username: user.username };
-    jwt.sign({ user }, process.env.SECRET_KEY, (err, token) => {
+    jwt.sign(user, process.env.SECRET_KEY, (err, token) => {
       res.json({
         token,
       });

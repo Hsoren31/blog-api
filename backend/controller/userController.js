@@ -38,14 +38,9 @@ const updateProfile = [
         return res.status(404).json({ error: "Could not find user." });
       }
 
-      // Check user authentication
-      if (!req.user) {
-        return res.status(401).json({ error: "Authentication failed." });
-      }
-
       // Check if unauthorized account is trying to update account.
       const userId = await db.readUserId(username);
-      if (userId !== req.user.user.id) {
+      if (userId !== req.user.id) {
         return res
           .status(403)
           .json({ error: "You don't have access to change this account." });
@@ -53,7 +48,7 @@ const updateProfile = [
 
       //Update Profile
       const user = await db.updateProfile({
-        userId: req.user.user.id,
+        userId: req.user.id,
         name,
         bio,
         avatar,
@@ -78,7 +73,8 @@ async function deleteUser(req, res) {
     }
 
     // Delete User
-    const user = await db.deleteUser(req.user.user.id);
+    console.log(req.user.id);
+    const user = await db.deleteUser(req.user.id);
     res.status(200).json({ message: "Deleted user successfully.", user });
   } catch (error) {
     console.error(error);
@@ -89,17 +85,15 @@ async function deleteUser(req, res) {
 async function followUser(req, res) {
   try {
     const { username } = req.params;
-    if (!req.user) {
-      return res.sendStatus(401);
-    }
+
     const connectionExists = await db.checkFollowsConnection(
-      req.user.user.id,
+      req.user.id,
       username
     );
     if (connectionExists) {
       res.json({ error: "Cannot follow a profile you are already following." });
     }
-    await db.followUser(req.user.user.id, username);
+    await db.followUser(req.user.id, username);
     res.json({ message: `Now following ${username}` });
   } catch (error) {
     console.error(error);
@@ -110,17 +104,14 @@ async function followUser(req, res) {
 async function unfollowUser(req, res) {
   try {
     const { username } = req.params;
-    if (!req.user) {
-      return res.sendStatus(401);
-    }
     const connectionExists = await db.checkFollowsConnection(
-      req.user.user.id,
+      req.user.id,
       username
     );
     if (!connectionExists) {
       res.json({ error: "Cannot unfollow a profile you are not following." });
     }
-    await db.unfollowUser(req.user.user.id, username);
+    await db.unfollowUser(req.user.id, username);
     res.json({ message: `Successfully unfollowed ${username}` });
   } catch (error) {
     console.error(error);
