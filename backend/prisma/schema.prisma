@@ -44,7 +44,7 @@ model Post {
   body        String    @db.VarChar(3000)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
-  author      Profile   @relation(fields: [authorId], references: [id])
+  author      Profile   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String
   published   Boolean
   comments    Comment[]
@@ -54,7 +54,7 @@ model Post {
 model Comment {
   id        String    @id @default(uuid())
   text      String    @db.VarChar(150)
-  author    Profile   @relation(fields: [authorId], references: [id])
+  author    Profile   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
   createdAt DateTime  @default(now())
   post      Post      @relation(fields: [postId], references: [id])
