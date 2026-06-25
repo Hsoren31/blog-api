@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { useNavigate } from "react-router-dom";
+import * as api from "../utils/apiFetches.js";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -25,30 +26,13 @@ export default function Signup() {
     event.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/users/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "Application/JSON",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-      setLoading(false);
-      if (!response.ok || data.error || data.errors) {
-        setError(data.error || data.errors);
-        throw new Error(`HTTP Status: ${response.status}`);
-      }
-      setFormData({
-        name: "",
-        username: "",
-        password: "",
-        confirmPassword: "",
-      });
-      setError(null);
-      console.log("success");
+      await api.postSignupRequest(formData);
       navigate("/login");
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      setError(err);
+    } finally {
+      setLoading(false);
     }
   };
 
