@@ -44,13 +44,14 @@ export default function Signup() {
         <p>
           Have an Account already? <Link to="/login">Login</Link>
         </p>
-        {error && (
-          <>
-            {error.map((err) => (
-              <p>{err.msg}</p>
+        <>
+          {error &&
+            (Array.isArray(error) ? (
+              error.map((err) => <p>{err.msg}</p>)
+            ) : (
+              <p>{error.msg}</p>
             ))}
-          </>
-        )}
+        </>
         <p>
           Required fields are followed by <span aria-label="required">*</span>.
         </p>
