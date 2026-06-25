@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { CurrentUserDispatchContext } from "../context/CurrentUserContext";
+import { postLoginRequest } from "../utils/apiFetches";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,7 +10,6 @@ export default function Login() {
     username: "",
     password: "",
   });
-  const currentUserDispatch = useContext(CurrentUserDispatchContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,26 +23,14 @@ export default function Login() {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/JSON",
-        },
-        body: JSON.stringify(user),
-      });
-      const data = await response.json();
-      setLoading(false);
-
-      if (!response.ok) {
-        setError(data.message);
-        throw new Error(data.message);
-      }
-      currentUserDispatch(data.user.id);
-      localStorage.setItem("userId", data.user.id);
-      localStorage.setItem("accessToken", data.token);
+      const response = await postLoginRequest(user);
+      localStorage.setItem("token", response.token);
       navigate("/");
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      setError(err);
+    } finally {
+      setLoading(false);
     }
   };
 
