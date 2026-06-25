@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PostList from "../components/PostList";
 import Post from "./Post";
+import { getUserDashboardRequest } from "../utils/apiFetches";
 
 export default function HomeFeed() {
   const [user, setUser] = useState(null);
@@ -15,34 +16,21 @@ export default function HomeFeed() {
   };
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchUser = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/users/${localStorage.getItem("userId")}`,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error: Status ${response.status}`);
-        }
-        let { user } = await response.json();
-        if (response.error) {
-          throw new Error(response.error);
-        }
+        const { user } = await getUserDashboardRequest();
         setUser(user);
         setDraftPosts(user.posts.filter((post) => post.published === false));
         setPublishedPosts(user.posts.filter((post) => post.published === true));
-        setError(null);
       } catch (err) {
+        console.error(err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-    fetchPosts();
+
+    fetchUser();
   }, []);
 
   if (loading) return <h1>Loading...</h1>;

@@ -24,6 +24,7 @@ export default function Login() {
     try {
       setLoading(true);
       const response = await postLoginRequest(user);
+      localStorage.setItem("username", user.username);
       localStorage.setItem("token", response.token);
       navigate("/");
     } catch (err) {
