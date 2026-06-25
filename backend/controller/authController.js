@@ -58,7 +58,7 @@ const signup = [
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const { name, username } = req.body;
       await db.createUser(name, username, hashedPassword);
-      res.redirect("/auth/login");
+      res.status(200).json({ message: "Successfully Signed Up" });
     } catch (error) {
       console.error(error);
       res.json({ error: "Something went wrong. Try again." });
