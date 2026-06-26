@@ -52,4 +52,24 @@ const getUserDashboardRequest = async () => {
   return response.json();
 };
 
-export { postSignupRequest, postLoginRequest, getUserDashboardRequest };
+const getSinglePost = async (postId) => {
+  const response = await fetch(`${ApiUrl}/api/posts/${postId}`, {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  });
+
+  if (!response.ok) {
+    const { error } = await response.json();
+    throw error;
+  }
+
+  return response.json();
+};
+
+export {
+  postSignupRequest,
+  postLoginRequest,
+  getUserDashboardRequest,
+  getSinglePost,
+};

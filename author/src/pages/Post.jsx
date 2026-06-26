@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router";
 import { useState, useEffect } from "react";
 import { formatLongDate } from "../utils/formatTime";
+import { getSinglePost } from "../utils/apiFetches";
 
 export default function Post() {
   const params = useParams();
@@ -11,32 +12,17 @@ export default function Post() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/posts/${params.postId}`,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error: Status ${response.status}`);
-        }
-        let postData = await response.json();
-        if (response.error) {
-          throw new Error(response.error);
-        }
+        let postData = await getSinglePost(params.postId);
         setPost(postData.post);
-        setError(null);
       } catch (err) {
-        setError(err.message);
-        setPost(null);
+        console.error(err);
+        setError(err);
       } finally {
         setLoading(false);
       }
     };
     fetchPost();
-  }, []);
+  }, [params.postId]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
