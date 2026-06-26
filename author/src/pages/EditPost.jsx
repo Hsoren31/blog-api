@@ -1,81 +1,53 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  deletePostRequest,
+  getSinglePost,
+  putPostRequest,
+} from "../utils/apiFetches";
 
 export default function EditPost() {
   const navigate = useNavigate();
   const { postId } = useParams();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [body, setBody] = useState("");
-  const [published, setPublished] = useState(false);
+  const [postData, setPostData] = useState(null);
 
   const onCancel = () => {
     navigate(`/${postId}`);
   };
 
+  function handleChange(e) {
+    setPostData({
+      ...postData,
+      [e.target.name]: e.target.value,
+    });
+  }
+
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/posts/${postId}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("accessToken"),
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error: Status ${response.status}`);
-        }
-        let postData = await response.json();
-        if (response.error) {
-          throw new Error(response.error);
-        }
-        setTitle(postData.post.title);
-        setDescription(postData.post.description);
-        setBody(postData.post.body);
-        setPublished(postData.post.published);
-        setError(null);
+        const { post } = await getSinglePost(postId);
+        setPostData(post);
       } catch (err) {
-        setError(err.message);
-        setTitle("");
-        setDescription("");
-        setBody("");
-        setPublished(false);
+        console.error(err);
+        setError(err);
+        setPostData(null);
       } finally {
         setLoading(false);
       }
     };
+
     fetchPost();
-  }, []);
+  }, [postId]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/posts/${postId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/JSON",
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-        body: JSON.stringify({
-          userId: localStorage.getItem("userId"),
-          title,
-          description,
-          body,
-          published,
-        }),
-      });
-      const data = await response.json();
-      if (!response.ok || response.error) {
-        setError(data.error);
-        throw new Error(data.error);
-      }
+      await putPostRequest(postId, postData);
       navigate(`/${postId}`);
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -84,16 +56,11 @@ export default function EditPost() {
     let result = confirm("Are you sure you want to delete this post?");
     if (!result) return;
     try {
-      fetch(`http://localhost:3000/posts/${postId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-      });
+      await deletePostRequest(postId);
       navigate("/");
-    } catch (error) {
-      setError(error);
-      console.error(error);
+    } catch (err) {
+      setError(err);
+      console.error(err);
     }
   };
 
@@ -110,8 +77,8 @@ export default function EditPost() {
             type="text"
             name="title"
             id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={postData.title}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -119,8 +86,8 @@ export default function EditPost() {
           <textarea
             name="description"
             id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={postData.description}
+            onChange={handleChange}
           ></textarea>
         </div>
         <div>
@@ -128,17 +95,17 @@ export default function EditPost() {
           <textarea
             name="body"
             id="body"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
+            value={postData.body}
+            onChange={handleChange}
           ></textarea>
         </div>
         <div>
           <input
             type="checkbox"
-            name="publish"
-            id="publish"
-            checked={published}
-            onChange={(e) => setPublished(e.target.checked)}
+            name="published"
+            id="published"
+            checked={postData.published}
+            onChange={handleChange}
           />
           <label htmlFor="checkbox">Publish</label>
         </div>
