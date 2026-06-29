@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { writePostRequest } from "../utils/apiFetches";
 
 export default function CreatePost() {
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [body, setBody] = useState("");
-  const [published, setPublished] = useState(false);
+  const [postData, setPostData] = useState({
+    title: "",
+    description: "",
+    body: "",
+    published: false,
+    tags: [],
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -14,39 +18,30 @@ export default function CreatePost() {
     navigate("/");
   }
 
+  function onChange(e) {
+    setPostData({
+      ...postData,
+      [e.target.name]: e.target.value || e.target.checked,
+    });
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/JSON",
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-        body: JSON.stringify({
-          userId: localStorage.getItem("userId"),
-          title,
-          description,
-          body,
-          published,
-          timestamp: new Date(),
-        }),
-      });
-      const data = await response.json();
-      if (!response.ok || response.error) {
-        setError(data.error);
-        throw new Error(data.error);
-      }
+      await writePostRequest(postData);
       navigate("/");
     } catch (err) {
       console.log(err);
+      setError(err);
     } finally {
       setLoading(false);
     }
   };
+
   if (loading) return <h1>Loading...</h1>;
   if (error) return <p>{error}</p>;
+
   return (
     <>
       <h1>Create Post</h1>
@@ -57,10 +52,8 @@ export default function CreatePost() {
             type="text"
             name="title"
             id="title"
-            value={title}
-            onInput={(e) => {
-              setTitle(e.target.value);
-            }}
+            value={postData.title}
+            onInput={onChange}
           />
         </div>
         <div>
@@ -68,10 +61,8 @@ export default function CreatePost() {
           <textarea
             name="description"
             id="description"
-            value={description}
-            onInput={(e) => {
-              setDescription(e.target.value);
-            }}
+            value={postData.description}
+            onInput={onChange}
           />
         </div>
         <div>
@@ -79,8 +70,8 @@ export default function CreatePost() {
           <textarea
             name="body"
             id="body"
-            value={body}
-            onInput={(e) => setBody(e.target.value)}
+            value={postData.body}
+            onInput={onChange}
           ></textarea>
         </div>
         <div>
@@ -88,8 +79,8 @@ export default function CreatePost() {
             type="checkbox"
             name="publish"
             id="publish"
-            checked={published}
-            onChange={(e) => setPublished(e.target.checked)}
+            checked={postData.published}
+            onChange={onChange}
           />
           <label htmlFor="checkbox">Publish</label>
         </div>

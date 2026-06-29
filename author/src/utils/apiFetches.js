@@ -67,6 +67,24 @@ const getSinglePost = async (postId) => {
   return response.json();
 };
 
+const writePostRequest = async (postData) => {
+  const response = await fetch(`${ApiUrl}/api/posts`, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(postData),
+  });
+
+  if (!response.ok) {
+    const { error } = await response.json();
+    throw error;
+  }
+
+  return response.json();
+};
+
 const putPostRequest = async (postId, postData) => {
   const response = await fetch(`${ApiUrl}/api/posts/${postId}`, {
     method: "PUT",
@@ -106,6 +124,7 @@ export {
   postLoginRequest,
   getUserDashboardRequest,
   getSinglePost,
+  writePostRequest,
   putPostRequest,
   deletePostRequest,
 };
