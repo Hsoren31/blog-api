@@ -33,7 +33,7 @@ export default function Post() {
       <h1>{post.title}</h1>
       <p>{post.description}</p>
       <p>{post.body}</p>
-      <p>{formatLongDate(post.timestamp)}</p>
+      <p>{formatLongDate(post.updatedAt || post.createdAt)}</p>
       {post.comments && (
         <ul>
           {post.comments.map((comment) => (

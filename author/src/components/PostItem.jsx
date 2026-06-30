@@ -7,7 +7,7 @@ export default function PostItem({ post }) {
       <Link to={"/" + post.id}>
         <h3>{post.title}</h3>
       </Link>
-      <p>{formatDateDistance(post.timestamp)}</p>
+      <p>{formatDateDistance(post.updatedAt || post.createdAt)}</p>
       <Link to={"/" + post.id + "/edit"}>Edit</Link>
     </li>
   );
