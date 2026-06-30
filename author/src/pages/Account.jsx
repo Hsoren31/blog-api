@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { CurrentUserContext } from "../context/CurrentUserContext";
+import { getAccountRequest } from "../utils/apiFetches";
 
 export default function Account() {
   const navigate = useNavigate();
+  const { currentUser } = useContext(CurrentUserContext);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -10,20 +13,8 @@ export default function Account() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/users/${localStorage.getItem("userId")}`,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error: Status ${response.status}`);
-        }
-        let userData = await response.json();
-        setUser(userData.user);
-        setError(null);
+        const { user } = await getAccountRequest(currentUser.username);
+        setUser(user);
       } catch (error) {
         setError(error);
         console.error(error);
@@ -31,8 +22,9 @@ export default function Account() {
         setLoading(false);
       }
     };
+
     fetchUser();
-  }, []);
+  }, [currentUser]);
 
   function onEdit() {
     navigate("/account/edit", {
@@ -52,7 +44,12 @@ export default function Account() {
     <>
       <h1>Account Details</h1>
       <p>Name: {user.name}</p>
-      <p>Username: {user.username}</p>
+      <p>Bio: {user.bio}</p>
+      <p>Username: {user.users.username}</p>
+      <ul>
+        <li>{user._count.followedBy} followers</li>
+        <li>{user._count.following} following</li>
+      </ul>
       <button onClick={onEdit}>Edit</button>
     </>
   );

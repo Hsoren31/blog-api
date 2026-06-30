@@ -119,6 +119,21 @@ const deletePostRequest = async (postId) => {
   return response.json();
 };
 
+const getAccountRequest = async (username) => {
+  const response = await fetch(`${ApiUrl}/api/users/${username}`, {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  });
+
+  if (!response.ok) {
+    const { error } = await response.json();
+    throw error;
+  }
+
+  return response.json();
+};
+
 export {
   postSignupRequest,
   postLoginRequest,
@@ -127,4 +142,5 @@ export {
   writePostRequest,
   putPostRequest,
   deletePostRequest,
+  getAccountRequest,
 };
