@@ -1,24 +1,15 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import {
-  CurrentUserContext,
-  CurrentUserDispatchContext,
-} from "../context/CurrentUserContext";
 
 export default function Header() {
-  const currentUser = useContext(CurrentUserContext);
-  const currentUserDispatch = useContext(CurrentUserDispatchContext);
-
   function onLogout() {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userId");
-    currentUserDispatch(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   }
 
   return (
     <header>
       <h1>Blog</h1>
-      {currentUser ? (
+      {localStorage.getItem("user") ? (
         <nav>
           <ul className="nav">
             <li>
