@@ -1,11 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { CurrentUserContext } from "../context/CurrentUserContext";
 import { getAccountRequest } from "../utils/apiFetches";
 
 export default function Account() {
   const navigate = useNavigate();
-  const { currentUser } = useContext(CurrentUserContext);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,7 +11,7 @@ export default function Account() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { user } = await getAccountRequest(currentUser.username);
+        const { user } = await getAccountRequest();
         setUser(user);
       } catch (error) {
         setError(error);
@@ -24,7 +22,7 @@ export default function Account() {
     };
 
     fetchUser();
-  }, [currentUser]);
+  }, []);
 
   function onEdit() {
     navigate("/account/edit", {
