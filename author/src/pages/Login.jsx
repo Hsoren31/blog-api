@@ -1,19 +1,21 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router";
 import { postLoginRequest } from "../utils/apiFetches";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { setUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState({
+  const [userCredentials, setUserCredentials] = useState({
     username: "",
     password: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser((prevUser) => ({
+    setUserCredentials((prevUser) => ({
       ...prevUser,
       [name]: value,
     }));
@@ -23,9 +25,10 @@ export default function Login() {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await postLoginRequest(user);
-      localStorage.setItem("user", response.body);
+      const response = await postLoginRequest(userCredentials);
+      localStorage.setItem("user", JSON.stringify(response.body));
       localStorage.setItem("token", response.token);
+      setUser(response.body);
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -47,7 +50,7 @@ export default function Login() {
             type="text"
             name="username"
             id="username"
-            value={user.username}
+            value={userCredentials.username}
             onChange={handleChange}
           />
         </div>
@@ -57,7 +60,7 @@ export default function Login() {
             type="password"
             name="password"
             id="password"
-            value={user.password}
+            value={userCredentials.password}
             onChange={handleChange}
           />
         </div>

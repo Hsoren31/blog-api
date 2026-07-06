@@ -1,15 +1,19 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 export default function Header() {
-  function onLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  const { user, setUser } = useContext(AuthContext);
+
+  function logout() {
+    localStorage.clear();
+    setUser(null);
   }
 
   return (
     <header>
       <h1>Blog</h1>
-      {localStorage.getItem("user") ? (
+      {user ? (
         <nav>
           <ul className="nav">
             <li>
@@ -22,7 +26,7 @@ export default function Header() {
               <Link to="/create">Create</Link>
             </li>
             <li>
-              <a href="/login" onClick={onLogout}>
+              <a href="/login" onClick={logout}>
                 Logout
               </a>
             </li>
