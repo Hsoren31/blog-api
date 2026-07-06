@@ -36,7 +36,7 @@ const postLoginRequest = async (data) => {
 
 const getUserDashboardRequest = async () => {
   const response = await fetch(
-    `${ApiUrl}/api/users/${localStorage.getItem("username")}`,
+    `${ApiUrl}/api/users/${JSON.parse(localStorage.getItem("user")).username}`,
     {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -119,12 +119,15 @@ const deletePostRequest = async (postId) => {
   return response.json();
 };
 
-const getAccountRequest = async (username) => {
-  const response = await fetch(`${ApiUrl}/api/users/${username}`, {
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-  });
+const getAccountRequest = async () => {
+  const response = await fetch(
+    `${ApiUrl}/api/users/${JSON.parse(localStorage.getItem("user")).username}`,
+    {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }
+  );
 
   if (!response.ok) {
     const { error } = await response.json();
