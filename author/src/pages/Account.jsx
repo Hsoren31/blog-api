@@ -29,7 +29,7 @@ export default function Account() {
       state: {
         user: {
           name: user.name,
-          username: user.username,
+          bio: user.bio,
         },
       },
     });
