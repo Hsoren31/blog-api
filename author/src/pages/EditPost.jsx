@@ -18,6 +18,13 @@ export default function EditPost() {
   };
 
   function handleChange(e) {
+    if (e.target.type === "checkbox") {
+      setPostData({
+        ...postData,
+        [e.target.name]: e.target.checked,
+      });
+      return;
+    }
     setPostData({
       ...postData,
       [e.target.name]: e.target.value,
