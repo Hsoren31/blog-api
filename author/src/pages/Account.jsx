@@ -44,10 +44,6 @@ export default function Account() {
       <p>Name: {user.name}</p>
       <p>Bio: {user.bio}</p>
       <p>Username: {user.users.username}</p>
-      <ul>
-        <li>{user._count.followedBy} followers</li>
-        <li>{user._count.following} following</li>
-      </ul>
       <button onClick={onEdit}>Edit</button>
     </>
   );
