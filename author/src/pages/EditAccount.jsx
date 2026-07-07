@@ -1,22 +1,14 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router";
+import { deleteAccountRequest, putAccountRequest } from "../utils/apiFetches";
 
 export default function EditAccount() {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-  const initialUser = useRef(state.user);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState(state.user);
-  const submitDisable = initialUser.current === userData ? true : false;
-  const changedData = {
-    name:
-      initialUser.current.name !== userData.name ? userData.name : undefined,
-    username:
-      initialUser.current.username !== userData.username
-        ? userData.username
-        : undefined,
-  };
 
   function onCancel() {
     navigate("/account");
@@ -25,27 +17,17 @@ export default function EditAccount() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `http://localhost:3000/users/${localStorage.getItem("userId")}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/JSON",
-            Authorization: "Bearer " + localStorage.getItem("accessToken"),
-          },
-          body: JSON.stringify(changedData),
-        }
-      );
-      const results = await response.json();
-      if (!response.ok || results.errors || results.error) {
-        setError(results.errors || results.error);
-        throw new Error(results.errors);
-      }
+      setLoading(true);
+      await putAccountRequest(userData);
       navigate("/account");
     } catch (error) {
       console.log(error);
+      setError(error);
+    } finally {
+      setLoading(false);
     }
   };
+
   const onDelete = async (e) => {
     e.preventDefault();
     let result = confirm(
@@ -53,14 +35,8 @@ export default function EditAccount() {
     );
     if (!result) return;
     try {
-      fetch(`http://localhost:3000/users/${localStorage.getItem("userId")}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-      });
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("userId");
+      await deleteAccountRequest();
+      localStorage.clear();
       navigate("/signup");
     } catch (error) {
       setError(error);
@@ -74,6 +50,9 @@ export default function EditAccount() {
       [e.target.name]: e.target.value,
     }));
   }
+
+  if (loading) return <p>Loading...</p>;
+
   return (
     <>
       <h1>Edit Account</h1>
@@ -96,19 +75,17 @@ export default function EditAccount() {
           />
         </div>
         <div>
-          <label htmlFor="username">Username: </label>
+          <label htmlFor="bio">Bio: </label>
           <input
             type="text"
-            name="username"
-            id="username"
-            value={userData.username}
+            name="bio"
+            id="bio"
+            value={userData.bio}
             onChange={formChange}
           />
         </div>
         <button onClick={onCancel}>Cancel</button>
-        <button onClick={onSubmit} disabled={submitDisable}>
-          Submit
-        </button>
+        <button onClick={onSubmit}>Submit</button>
       </form>
       <h2>Delete Account</h2>
       <p>Permanently delete your account and all of your content.</p>

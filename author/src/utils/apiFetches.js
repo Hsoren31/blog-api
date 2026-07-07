@@ -137,6 +137,46 @@ const getAccountRequest = async () => {
   return response.json();
 };
 
+const putAccountRequest = async (accountData) => {
+  const response = await fetch(
+    `${ApiUrl}/api/users/${JSON.parse(localStorage.getItem("user")).username}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(accountData),
+    }
+  );
+
+  if (!response.ok) {
+    const { errors } = await response.json();
+    throw errors;
+  }
+
+  return response.json();
+};
+
+const deleteAccountRequest = async () => {
+  const response = await fetch(
+    `${ApiUrl}/api/users/${JSON.parse(localStorage.getItem("user")).username}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const { error } = await response.json();
+    throw error;
+  }
+
+  return response.json();
+};
+
 export {
   postSignupRequest,
   postLoginRequest,
@@ -146,4 +186,6 @@ export {
   putPostRequest,
   deletePostRequest,
   getAccountRequest,
+  putAccountRequest,
+  deleteAccountRequest,
 };
