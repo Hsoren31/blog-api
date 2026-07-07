@@ -6,7 +6,7 @@ export default function PostList({ list }) {
     return (
       <>
         <p>No Posts Here Yet.</p>
-        <Link to={"/create"}>Start Writing.</Link>
+        <Link to={"/write"}>Start Writing.</Link>
       </>
     );
   return (

@@ -23,7 +23,7 @@ export default function Header() {
               <Link to="/account">Account</Link>
             </li>
             <li>
-              <Link to="/create">Create</Link>
+              <Link to="/write">Create</Link>
             </li>
             <li>
               <a href="/login" onClick={logout}>
