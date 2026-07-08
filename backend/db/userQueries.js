@@ -43,7 +43,11 @@ async function readUser(username) {
           username: true,
         },
       },
-      posts: true,
+      posts: {
+        include: {
+          tags: true,
+        },
+      },
       _count: {
         select: {
           following: true,
