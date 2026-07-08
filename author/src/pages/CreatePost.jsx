@@ -19,9 +19,16 @@ export default function CreatePost() {
   }
 
   function onChange(e) {
+    if (e.target.type === "checkbox") {
+      setPostData({
+        ...postData,
+        [e.target.name]: e.target.checked,
+      });
+      return;
+    }
     setPostData({
       ...postData,
-      [e.target.name]: e.target.value || e.target.checked,
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -77,8 +84,8 @@ export default function CreatePost() {
         <div>
           <input
             type="checkbox"
-            name="publish"
-            id="publish"
+            name="published"
+            id="published"
             checked={postData.published}
             onChange={onChange}
           />
