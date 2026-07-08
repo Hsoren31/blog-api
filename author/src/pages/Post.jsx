@@ -33,6 +33,11 @@ export default function Post() {
       <h1>{post.title}</h1>
       <p>{post.description}</p>
       <p>{post.body}</p>
+      <p>
+        {post.tags.map((tag) => (
+          <span key={tag.id}>{tag.name}</span>
+        ))}
+      </p>
       <p>{formatLongDate(post.updatedAt || post.createdAt)}</p>
       {post.comments && (
         <ul>

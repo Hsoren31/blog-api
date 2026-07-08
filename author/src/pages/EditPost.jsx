@@ -5,8 +5,11 @@ import {
   getSinglePost,
   putPostRequest,
 } from "../utils/apiFetches";
+import { TagField } from "../components/TagField/TagField";
+import { useTagInput } from "../components/TagField/useTagInput";
 
 export default function EditPost() {
+  const { tags, setTags, handleAddTag, handleRemoveTag } = useTagInput();
   const navigate = useNavigate();
   const { postId } = useParams();
   const [error, setError] = useState(null);
@@ -36,6 +39,7 @@ export default function EditPost() {
       try {
         const { post } = await getSinglePost(postId);
         setPostData(post);
+        setTags(post.tags.map((tag) => tag.name));
       } catch (err) {
         console.error(err);
         setError(err);
@@ -51,7 +55,7 @@ export default function EditPost() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await putPostRequest(postId, postData);
+      await putPostRequest(postId, { ...postData, tags: tags });
       navigate(`/${postId}`);
     } catch (err) {
       console.log(err);
@@ -106,6 +110,11 @@ export default function EditPost() {
             onChange={handleChange}
           ></textarea>
         </div>
+        <TagField
+          tags={tags}
+          handleAddTag={handleAddTag}
+          handleRemoveTag={handleRemoveTag}
+        />
         <div>
           <input
             type="checkbox"

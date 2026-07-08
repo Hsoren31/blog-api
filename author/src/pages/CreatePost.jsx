@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { writePostRequest } from "../utils/apiFetches";
+import { TagField } from "../components/TagField/TagField";
+import { useTagInput } from "../components/TagField/useTagInput";
 
 export default function CreatePost() {
   const navigate = useNavigate();
+  const { tags, handleAddTag, handleRemoveTag } = useTagInput();
   const [postData, setPostData] = useState({
     title: "",
     description: "",
     body: "",
     published: false,
-    tags: [],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,7 +38,7 @@ export default function CreatePost() {
     e.preventDefault();
     setLoading(true);
     try {
-      await writePostRequest(postData);
+      await writePostRequest({ ...postData, tags: tags });
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -81,6 +83,11 @@ export default function CreatePost() {
             onInput={onChange}
           ></textarea>
         </div>
+        <TagField
+          tags={tags}
+          handleAddTag={handleAddTag}
+          handleRemoveTag={handleRemoveTag}
+        />
         <div>
           <input
             type="checkbox"

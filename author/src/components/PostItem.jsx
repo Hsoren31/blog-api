@@ -8,6 +8,11 @@ export default function PostItem({ post }) {
         <h3>{post.title}</h3>
       </Link>
       <p>{formatDateDistance(post.updatedAt || post.createdAt)}</p>
+      <p>
+        {post.tags.map((tag) => (
+          <span key={tag.id}>{tag.name}</span>
+        ))}
+      </p>
       <Link to={"/" + post.id + "/edit"}>Edit</Link>
     </li>
   );
