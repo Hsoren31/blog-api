@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { deleteAccountRequest, putAccountRequest } from "../utils/apiFetches";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 export default function EditAccount() {
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
@@ -37,6 +39,7 @@ export default function EditAccount() {
     try {
       await deleteAccountRequest();
       localStorage.clear();
+      setUser(null);
       navigate("/signup");
     } catch (error) {
       setError(error);
