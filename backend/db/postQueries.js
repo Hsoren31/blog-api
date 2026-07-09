@@ -100,7 +100,11 @@ async function readPosts() {
     include: {
       author: {
         select: {
-          name: true,
+          users: {
+            select: {
+              username: true,
+            },
+          },
         },
       },
       tags: true,
