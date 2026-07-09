@@ -25,22 +25,10 @@ export function TagField({ tags, handleAddTag, handleRemoveTag }) {
   return (
     <div>
       <label htmlFor="tags">Tags: </label>
-      <input
-        id="tags"
-        name="tags"
-        type="text"
-        placeholder={
-          tags.length < 5 ? "Add a tag" : "You can only enter max. of 5 tags"
-        }
-        onKeyDown={handleKeyPress}
-        onChange={handleInputChange}
-        value={userInput}
-        disabled={tags.length === 5}
-      />
       <ul>
         {tags.map((tag, index) => (
           <span key={`${index}-${tag}`}>
-            {tag}
+            # {tag}
             <button
               onClick={() => handleRemoveTag(tag)}
               title={`Remove ${tag}`}
@@ -50,6 +38,16 @@ export function TagField({ tags, handleAddTag, handleRemoveTag }) {
           </span>
         ))}
       </ul>
+      <input
+        id="tags"
+        name="tags"
+        type="text"
+        placeholder={tags.length > 1 ? "Add another" : "Add up to 5 tags..."}
+        onKeyDown={handleKeyPress}
+        onChange={handleInputChange}
+        value={userInput}
+        disabled={tags.length === 5}
+      />
     </div>
   );
 }
