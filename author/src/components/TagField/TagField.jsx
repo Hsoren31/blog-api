@@ -24,7 +24,9 @@ export function TagField({ tags, handleAddTag, handleRemoveTag }) {
 
   return (
     <div>
+      <label htmlFor="tags">Tags: </label>
       <input
+        id="tags"
         name="tags"
         type="text"
         placeholder={
