@@ -1,9 +1,4 @@
-import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Author from "./pages/Author";
-import Post from "./pages/Post";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
 import "./App.css";
 import Footer from "./components/Footer";
@@ -13,17 +8,7 @@ function App() {
   return (
     <CurrentUserProvider>
       <Header />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/:authorName">
-            <Route index element={<Author />} />
-            <Route path=":postId" element={<Post />} />
-          </Route>
-        </Routes>
-      </main>
+      <Outlet />
       <Footer />
     </CurrentUserProvider>
   );
