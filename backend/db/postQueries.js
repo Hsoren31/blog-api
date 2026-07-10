@@ -48,6 +48,7 @@ async function readPost(id) {
       id,
     },
     include: {
+      author: true,
       comments: true,
       tags: true,
     },
@@ -98,15 +99,7 @@ async function readPosts() {
       published: true,
     },
     include: {
-      author: {
-        select: {
-          users: {
-            select: {
-              username: true,
-            },
-          },
-        },
-      },
+      author: true,
       tags: true,
     },
   });

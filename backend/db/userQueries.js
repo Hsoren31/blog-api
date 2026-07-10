@@ -13,16 +13,10 @@ async function createUser(name, username, password) {
   const profile = await prisma.profile.create({
     data: {
       name,
+      username,
       users: {
         connect: {
           id: user.id,
-        },
-      },
-    },
-    include: {
-      users: {
-        select: {
-          username: true,
         },
       },
     },
@@ -33,16 +27,9 @@ async function createUser(name, username, password) {
 async function readUser(username) {
   const user = await prisma.profile.findFirst({
     where: {
-      users: {
-        username,
-      },
+      username,
     },
     include: {
-      users: {
-        select: {
-          username: true,
-        },
-      },
       posts: {
         include: {
           tags: true,

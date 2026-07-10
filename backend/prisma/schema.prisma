@@ -17,6 +17,7 @@ model User {
 
 model Profile {
   id         String    @id @default(uuid())
+  username   String
   name       String    @db.VarChar(20)
   bio        String?   @db.VarChar(100)
   avatar     String?
