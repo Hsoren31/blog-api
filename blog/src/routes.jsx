@@ -27,7 +27,7 @@ const router = createBrowserRouter([
             element: <Post />,
           },
           {
-            path: "/:author",
+            path: "/:authorUsername",
             element: <Author />,
           },
         ],
