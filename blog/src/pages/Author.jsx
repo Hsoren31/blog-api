@@ -1,33 +1,13 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useAuthor } from "../hooks/useAuthor";
 
 export default function Author() {
-  const { authorName } = useParams();
-  const [author, setAuthor] = useState(null);
+  const { authorUsername } = useParams();
+  const { author, loading, error } = useAuthor(authorUsername);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/posts/author/${authorName}`,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP Error: Status ${response.status}`);
-        }
-        let authorData = await response.json();
-        setAuthor(authorData.author);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, []);
-  console.log(author);
+  if (loading) return <h2>Loading...</h2>;
+  if (error) return <p>{error}</p>;
+
   return (
     <>
       {author && (

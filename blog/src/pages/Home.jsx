@@ -1,36 +1,23 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { formatDateDistance } from "../utilities/formatDate";
-import { getAllPosts } from "../utilities/apiRequests";
+import { usePosts } from "../hooks/usePosts";
 
 export default function Home() {
-  const [posts, setPosts] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    getAllPosts().then((data) => {
-      if (!data) {
-        setError("Something went wrong. Try Again.");
-      }
-      setPosts(data);
-      setLoading(false);
-    });
-  }, []);
+  const { posts, loading, error } = usePosts();
 
   return (
     <>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       <ul>
-        {posts ? (
+        {posts?.length > 0 ? (
           posts.map((post) => (
             <li key={post.id}>
-              <Link to={"/" + post.user.username + "/" + post.id}>
+              <Link to={`/posts/${post.id}`}>
                 <p>{post.title}</p>
                 <p>{post.description}</p>
-                <p>{post.user.username}</p>
-                <p>{formatDateDistance(post.timestamp)}</p>
+                <p>{post.author.username}</p>
+                <p>{formatDateDistance(post.updatedAt || post.createdAt)}</p>
                 <p>{post.commentCount}</p>
               </Link>
             </li>

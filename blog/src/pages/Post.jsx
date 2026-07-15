@@ -1,28 +1,26 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { usePost } from "../hooks/usePosts.js";
+import { useParams, Link } from "react-router-dom";
 import { formatLongDate } from "../utilities/formatDate";
-import CommentSection from "../components/CommentSection";
-import { getPost } from "../utilities/apiRequests";
 
 export default function Post() {
-  const { postId } = useParams();
-  const [post, setPost] = useState(null);
+  const { id } = useParams();
+  const { post, loading, error } = usePost(id);
 
-  useEffect(() => {
-    getPost(postId).then((data) => {
-      setPost(data);
-    });
-  }, [postId]);
+  if (error) return <p>{error}</p>;
+  if (loading) return <h2>Loading...</h2>;
 
   return (
     <>
       {post ? (
         <>
+          <p>
+            <Link to={`/${post.author.username}`}>{post.author.username}</Link>{" "}
+            &middot;{" "}
+            {formatLongDate(post.updatedAt ? post.updatedAt : post.createdAt)}
+          </p>
           <h1>{post.title}</h1>
-          <p>{formatLongDate(post.timestamp)}</p>
           <p>{post.description}</p>
           <p>{post.body}</p>
-          <CommentSection />
         </>
       ) : (
         <p>Unable to retrieve post.</p>
