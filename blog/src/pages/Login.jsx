@@ -1,24 +1,31 @@
-import { useState, useContext } from "react";
-import { CurrentUserContext } from "../context/CurrentUserContext";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useLogin } from "../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const { login } = useContext(CurrentUserContext);
+  const navigate = useNavigate();
+  const { login, loading, error } = useLogin();
   const [user, setUser] = useState({ username: "", password: "" });
-  const [error, setError] = useState(null);
 
-  const loginUser = async (e) => {
-    e.preventDefault();
-    try {
-      await login(user);
-    } catch (err) {
-      setError(err.message);
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    await login(user);
+    navigate("/");
+  }
+
+  if (loading) return <h2>Loading...</h2>;
 
   return (
     <>
-      <form onSubmit={loginUser}>
+      <form onSubmit={handleSubmit}>
         {error && <p>{error}</p>}
         <legend>Login</legend>
         <div>
@@ -28,12 +35,7 @@ export default function Login() {
             name="username"
             id="username"
             value={user.username}
-            onChange={(e) => {
-              setUser((prevData) => ({
-                ...prevData,
-                username: e.target.value,
-              }));
-            }}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -43,12 +45,7 @@ export default function Login() {
             name="password"
             id="password"
             value={user.password}
-            onChange={(e) => {
-              setUser((prevData) => ({
-                ...prevData,
-                password: e.target.value,
-              }));
-            }}
+            onChange={handleChange}
           />
         </div>
         <button type="submit">Submit</button>
