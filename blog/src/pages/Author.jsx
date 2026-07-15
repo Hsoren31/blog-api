@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useAuthor } from "../hooks/useAuthor";
+import PostList from "../components/PostList";
 
 export default function Author() {
   const { authorUsername } = useParams();
@@ -14,21 +15,7 @@ export default function Author() {
         <>
           <h1>{author.username}</h1>
           {author.posts && <p>{author.posts.length} Posts</p>}
-          <ul>
-            {author.posts ? (
-              author.posts.map((post) => (
-                <li key={post.id}>
-                  <p>{post.title}</p>
-                  <p>{post.description}</p>
-                  <p>{post.author}</p>
-                  <p>{post.timestamp}</p>
-                  <p>{post.commentCount} Comments</p>
-                </li>
-              ))
-            ) : (
-              <p>No Posts.</p>
-            )}
-          </ul>
+          <PostList posts={author.posts} />
         </>
       )}
     </>
