@@ -1,6 +1,7 @@
 import { usePost } from "../hooks/usePosts.js";
 import { useParams, Link } from "react-router-dom";
 import { formatLongDate } from "../utilities/formatDate";
+import { CommentSection } from "../components/CommentSection/CommentSection.jsx";
 
 export default function Post() {
   const { id } = useParams();
@@ -21,6 +22,7 @@ export default function Post() {
           <h1>{post.title}</h1>
           <p>{post.description}</p>
           <p>{post.body}</p>
+          <CommentSection />
         </>
       ) : (
         <p>Unable to retrieve post.</p>
