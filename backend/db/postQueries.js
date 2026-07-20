@@ -131,18 +131,21 @@ async function readPostComments(postId) {
   const comments = await prisma.comment.findMany({
     where: {
       postId,
+      parentId: null,
     },
     include: {
       children: {
+        orderBy: {
+          createdAt: "asc",
+        },
         include: {
-          author: {
-            select: {
-              name: true,
-            },
-          },
+          author: true,
         },
       },
       author: true,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
   return comments;
