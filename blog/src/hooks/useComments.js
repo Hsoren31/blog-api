@@ -38,3 +38,29 @@ export function useCreateComment() {
 
   return { createComment, loading, error };
 }
+
+export function useEditComment() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function editComment(postId, commentId, comment) {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const data = await apiRequest(`/posts/${postId}/comments/${commentId}`, {
+        method: "PUT",
+        body: JSON.stringify(comment),
+      });
+
+      return data;
+    } catch (err) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return { editComment, loading, error };
+}
