@@ -64,3 +64,28 @@ export function useEditComment() {
 
   return { editComment, loading, error };
 }
+
+export function useDeleteComment() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function deleteComment(postId, commentId) {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const data = await apiRequest(`/posts/${postId}/comments/${commentId}`, {
+        method: "DELETE",
+      });
+
+      return data;
+    } catch (err) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return { deleteComment, loading, error };
+}
