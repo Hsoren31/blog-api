@@ -20,8 +20,8 @@ export function useLogin() {
         body: JSON.stringify(credentials),
       });
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      setCurrentUser(data.user);
+      localStorage.setItem("user", JSON.stringify(data.body));
+      setCurrentUser(data.body);
       return data;
     } catch (error) {
       if (error instanceof ApiError) {

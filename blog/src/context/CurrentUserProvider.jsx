@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function useCurrentUser() {
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
+  const user = JSON.parse(localStorage.getItem("user"));
   const [currentUser, setCurrentUser] = useState(user ? user : null);
 
   async function logout() {
