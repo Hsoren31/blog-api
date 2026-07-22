@@ -19,8 +19,6 @@ export function Comment({ comment, parentId = null }) {
     setShowChildren((current) => !current);
   }
 
-  console.log(currentUser.username, comment.author.username);
-
   return (
     <div>
       <p>
