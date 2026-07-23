@@ -183,6 +183,9 @@ async function createComment(postId, userId, message, parentId) {
       text: message,
       parent: parentId ? { connect: { id: parentId } } : undefined,
     },
+    include: {
+      author: true,
+    },
   });
   return comment;
 }
