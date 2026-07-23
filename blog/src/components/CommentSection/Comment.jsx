@@ -24,7 +24,9 @@ export function Comment({ comment, parentId = null }) {
       <p>
         {comment.author.username} &middot; {formatShortDate(comment.createdAt)}
       </p>
-      <p>{comment.text}</p>
+      <p>
+        {comment.text} {comment.pending && <span>Pending...</span>}
+      </p>
       {currentUser.username === comment.author.username && (
         <button onClick={toggleEditForm}>Edit</button>
       )}

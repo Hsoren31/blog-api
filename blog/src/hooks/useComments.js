@@ -3,12 +3,15 @@ import { useFetch } from "./useFetch";
 import { apiRequest } from "../api/client";
 
 export function useComments(postId) {
-  const { data, loading, error } = useFetch(`/posts/${postId}/comments`);
+  const { data, loading, error, setData } = useFetch(
+    `/posts/${postId}/comments`
+  );
 
   return {
     comments: data,
     loading,
     error,
+    setComments: setData,
   };
 }
 
