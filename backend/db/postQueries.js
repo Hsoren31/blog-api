@@ -102,6 +102,14 @@ async function readPosts() {
       author: true,
       tags: true,
     },
+    orderBy: [
+      {
+        updatedAt: "desc",
+      },
+      {
+        createdAt: "desc",
+      },
+    ],
   });
   return posts;
 }
