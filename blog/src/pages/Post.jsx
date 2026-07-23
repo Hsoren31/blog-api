@@ -19,6 +19,13 @@ export default function Post() {
             &middot;{" "}
             {formatLongDate(post.updatedAt ? post.updatedAt : post.createdAt)}
           </p>
+          {post.tags !== 0 && (
+            <ul>
+              {post.tags.map((tag) => (
+                <li key={tag.id}>{tag.name}</li>
+              ))}
+            </ul>
+          )}
           <h1>{post.title}</h1>
           <p>{post.description}</p>
           <p>{post.body}</p>
