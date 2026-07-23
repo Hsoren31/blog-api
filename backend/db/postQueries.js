@@ -198,6 +198,9 @@ async function updateComment(commentId, message) {
     data: {
       text: message,
     },
+    include: {
+      author: true,
+    },
   });
   return comment;
 }
