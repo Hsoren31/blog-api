@@ -1,11 +1,7 @@
 import { useState } from "react";
-import { useEditComment } from "../../hooks/useComments";
-import { useParams } from "react-router-dom";
 
-export function EditComment({ comment, toggleEditForm, onDelete }) {
-  const { id } = useParams();
+export function EditComment({ comment, toggleEditForm, onEdit, onDelete }) {
   const [newComment, setNewComment] = useState(comment.text);
-  const { editComment, loading, error } = useEditComment();
 
   function handleChange(e) {
     setNewComment(e.target.value);
@@ -13,7 +9,7 @@ export function EditComment({ comment, toggleEditForm, onDelete }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await editComment(id, comment.id, { message: newComment });
+    onEdit({ id: comment.id, message: newComment });
     setNewComment("");
     toggleEditForm();
   }
@@ -22,9 +18,6 @@ export function EditComment({ comment, toggleEditForm, onDelete }) {
     e.preventDefault();
     onDelete(comment.id);
   }
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
 
   return (
     <form onSubmit={handleSubmit}>

@@ -3,6 +3,7 @@ import {
   useComments,
   useCreateComment,
   useDeleteComment,
+  useEditComment,
 } from "../../hooks/useComments";
 import { Comment } from "./Comment";
 import { CommentReply } from "./CommentReply";
@@ -12,6 +13,7 @@ export function CommentSection() {
   const { id } = useParams();
   const { comments, loading, error, setComments } = useComments(id);
   const { createComment } = useCreateComment();
+  const { editComment } = useEditComment();
   const { deleteComment } = useDeleteComment();
   const [optimisticComments, dispatch] = useOptimistic(
     comments,
@@ -27,6 +29,30 @@ export function CommentSection() {
       try {
         const newComment = await createComment(id, comment);
         setComments((prev) => [newComment.comment, ...prev]);
+      } catch (err) {
+        setCommentError(err);
+      }
+    });
+  }
+
+  function handleEditComment(newComment) {
+    setCommentError(null);
+    startTransition(async () => {
+      dispatch({ type: "update", newComment });
+
+      try {
+        const newUpdatedComment = await editComment(
+          id,
+          newComment.id,
+          newComment
+        );
+        setComments((current) =>
+          current.map((comment) =>
+            comment.id === newComment.id
+              ? { ...comment, text: newUpdatedComment.text }
+              : comment
+          )
+        );
       } catch (err) {
         setCommentError(err);
       }
@@ -63,6 +89,7 @@ export function CommentSection() {
             key={comment.id}
             comment={comment}
             parentId={comment.id}
+            onEdit={handleEditComment}
             onDelete={handleRemoveComment}
           />
         ))
@@ -88,6 +115,11 @@ function commentReducer(state, action) {
         },
         ...state,
       ];
+    }
+    case "edit": {
+      return state.map((comment) =>
+        comment.id === action.comment.id ? action.comment : comment
+      );
     }
     case "remove": {
       return state.filter((comment) => comment.id !== action.id);
