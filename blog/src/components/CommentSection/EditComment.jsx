@@ -1,23 +1,8 @@
 import { useState } from "react";
-import { useEditComment, useDeleteComment } from "../../hooks/useComments";
+import { useEditComment } from "../../hooks/useComments";
 import { useParams } from "react-router-dom";
 
-function DeleteButton({ comment }) {
-  const { id } = useParams();
-  const { deleteComment, loading, error } = useDeleteComment();
-
-  async function handleDelete(e) {
-    e.preventDefault();
-    await deleteComment(id, comment.id);
-  }
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-
-  return <button onClick={handleDelete}>Delete</button>;
-}
-
-export function EditComment({ comment, toggleEditForm }) {
+export function EditComment({ comment, toggleEditForm, onDelete }) {
   const { id } = useParams();
   const [newComment, setNewComment] = useState(comment.text);
   const { editComment, loading, error } = useEditComment();
@@ -31,6 +16,11 @@ export function EditComment({ comment, toggleEditForm }) {
     await editComment(id, comment.id, { message: newComment });
     setNewComment("");
     toggleEditForm();
+  }
+
+  function handleDelete(e) {
+    e.preventDefault();
+    onDelete(comment.id);
   }
 
   if (loading) return <p>Loading...</p>;
@@ -53,7 +43,7 @@ export function EditComment({ comment, toggleEditForm }) {
       >
         Submit
       </button>
-      <DeleteButton comment={comment} />
+      <button onClick={handleDelete}>Delete</button>
     </form>
   );
 }

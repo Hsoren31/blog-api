@@ -4,7 +4,7 @@ import { CommentReply } from "./CommentReply";
 import { EditComment } from "./EditComment";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 
-export function Comment({ comment, parentId = null }) {
+export function Comment({ comment, parentId = null, onDelete }) {
   const { currentUser } = useContext(CurrentUserContext);
   const [showEditForm, setShowEditForm] = useState(false);
   const [showReplyForm, setShowReplyForm] = useState(false);
@@ -31,7 +31,11 @@ export function Comment({ comment, parentId = null }) {
         <button onClick={toggleEditForm}>Edit</button>
       )}
       {showEditForm && (
-        <EditComment comment={comment} toggleEditForm={toggleEditForm} />
+        <EditComment
+          comment={comment}
+          toggleEditForm={toggleEditForm}
+          onDelete={onDelete}
+        />
       )}
       <button
         onClick={() => {
