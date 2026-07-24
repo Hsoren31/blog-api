@@ -4,7 +4,13 @@ import { CommentReply } from "./CommentReply";
 import { EditComment } from "./EditComment";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 
-export function Comment({ comment, parentId = null, onEdit, onDelete }) {
+export function Comment({
+  comment,
+  parentId = null,
+  onSubmit,
+  onEdit,
+  onDelete,
+}) {
   const { currentUser } = useContext(CurrentUserContext);
   const [showEditForm, setShowEditForm] = useState(false);
   const [showReplyForm, setShowReplyForm] = useState(false);
@@ -52,6 +58,10 @@ export function Comment({ comment, parentId = null, onEdit, onDelete }) {
           onCancel={() => {
             setShowReplyForm((current) => !current);
           }}
+          onSubmit={onSubmit}
+          openChildren={() => {
+            setShowChildren(true);
+          }}
         />
       )}
       {hasChildren && (
@@ -61,7 +71,12 @@ export function Comment({ comment, parentId = null, onEdit, onDelete }) {
       {hasChildren &&
         showChildren &&
         comment.children.map((child) => (
-          <Comment key={child.id} comment={child} parentId={comment.id} />
+          <Comment
+            key={child.id}
+            comment={child}
+            parentId={comment.id}
+            onSubmit={onSubmit}
+          />
         ))}
     </div>
   );

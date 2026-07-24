@@ -5,6 +5,7 @@ export function CommentReply({
   parentId = null,
   onCancel,
   onSubmit,
+  openChildren,
 }) {
   const [comment, setComment] = useState({
     parentId,
@@ -14,6 +15,7 @@ export function CommentReply({
   async function handleSubmit(e) {
     e.preventDefault();
     onSubmit(comment);
+    openChildren && openChildren();
     setComment({
       parentId,
       message: "",

@@ -28,7 +28,16 @@ export function CommentSection() {
 
       try {
         const newComment = await createComment(id, comment);
-        setComments((prev) => [newComment.comment, ...prev]);
+        if (!comment.parentId) {
+          return setComments((prev) => [newComment.comment, ...prev]);
+        }
+        return setComments((prev) =>
+          prev.map((c) =>
+            c.id === newComment.comment.parentId
+              ? { ...c, children: [newComment.comment, ...c.children] }
+              : c
+          )
+        );
       } catch (err) {
         setCommentError(err);
       }
@@ -89,6 +98,7 @@ export function CommentSection() {
             key={comment.id}
             comment={comment}
             parentId={comment.id}
+            onSubmit={handleAddComment}
             onEdit={handleEditComment}
             onDelete={handleRemoveComment}
           />
@@ -103,18 +113,39 @@ export function CommentSection() {
 function commentReducer(state, action) {
   switch (action.type) {
     case "add": {
-      return [
-        {
-          id: "temp-" + Date.now(),
-          text: action.comment.message,
-          createdAt: Date.now(),
-          author: {
-            username: "You",
+      if (!action.comment.parentId) {
+        return [
+          {
+            id: "temp-" + Date.now(),
+            text: action.comment.message,
+            createdAt: Date.now(),
+            author: {
+              username: "You",
+            },
+            pending: true,
           },
-          pending: true,
-        },
-        ...state,
-      ];
+          ...state,
+        ];
+      }
+      return state.map((c) =>
+        c.id === action.comment.parentId
+          ? {
+              ...c,
+              children: [
+                ...c.children,
+                {
+                  id: "temp-" + Date.now(),
+                  text: action.comment.message,
+                  createdAt: Date.now(),
+                  author: {
+                    username: "You",
+                  },
+                  pending: true,
+                },
+              ],
+            }
+          : c
+      );
     }
     case "edit": {
       return state.map((comment) =>
