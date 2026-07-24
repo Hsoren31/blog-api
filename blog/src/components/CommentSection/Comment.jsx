@@ -25,8 +25,6 @@ export function Comment({
     setShowChildren((current) => !current);
   }
 
-  console.log(comment);
-
   return (
     <div>
       <p>

@@ -192,7 +192,6 @@ function commentReducer(state, action) {
       );
     }
     case "remove": {
-      console.log(action);
       if (!action.parentId) {
         return state.filter((comment) => comment.id !== action.id);
       }
