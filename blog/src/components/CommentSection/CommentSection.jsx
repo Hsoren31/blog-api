@@ -55,11 +55,25 @@ export function CommentSection() {
           newComment.id,
           newComment
         );
-        setComments((current) =>
-          current.map((comment) =>
-            comment.id === newComment.id
-              ? { ...comment, text: newUpdatedComment.text }
-              : comment
+        if (!newUpdatedComment.parentId) {
+          setComments((current) =>
+            current.map((comment) =>
+              comment.id === newComment.id
+                ? { ...comment, text: newUpdatedComment.text }
+                : comment
+            )
+          );
+        }
+        setComments((prev) =>
+          prev.map((c) =>
+            c.id === newUpdatedComment.parentId
+              ? {
+                  ...c,
+                  children: c.children.map((c) =>
+                    c.id === newUpdatedComment.id ? newUpdatedComment : c
+                  ),
+                }
+              : c
           )
         );
       } catch (err) {
@@ -148,8 +162,21 @@ function commentReducer(state, action) {
       );
     }
     case "edit": {
-      return state.map((comment) =>
-        comment.id === action.comment.id ? action.comment : comment
+      if (!action.comment.parentId) {
+        return state.map((comment) =>
+          comment.id === action.comment.id ? action.comment : comment
+        );
+      }
+      return state.map((c) =>
+        c.id === action.comment.parendId
+          ? {
+              ...c,
+              children: (prev) =>
+                prev.map((c) =>
+                  c.id === action.comment.id ? action.comment : c
+                ),
+            }
+          : c
       );
     }
     case "remove": {

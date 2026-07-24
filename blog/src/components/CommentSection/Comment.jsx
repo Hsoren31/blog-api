@@ -76,6 +76,8 @@ export function Comment({
             comment={child}
             parentId={comment.id}
             onSubmit={onSubmit}
+            onEdit={onEdit}
+            onDelete={onDelete}
           />
         ))}
     </div>

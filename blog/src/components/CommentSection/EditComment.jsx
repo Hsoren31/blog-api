@@ -9,7 +9,7 @@ export function EditComment({ comment, toggleEditForm, onEdit, onDelete }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    onEdit({ id: comment.id, message: newComment });
+    onEdit({ id: comment.id, message: newComment, parentId: comment.parentId });
     setNewComment("");
     toggleEditForm();
   }
