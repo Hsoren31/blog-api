@@ -82,15 +82,27 @@ export function CommentSection() {
     });
   }
 
-  function handleRemoveComment(commentId) {
+  function handleRemoveComment(commentId, parentId) {
     setCommentError(null);
     startTransition(async () => {
-      dispatch({ type: "remove", id: commentId });
+      dispatch({ type: "remove", id: commentId, parentId });
 
       try {
         await deleteComment(id, commentId);
+        if (!parentId) {
+          setComments((prev) =>
+            prev.filter((comment) => comment.id !== commentId)
+          );
+        }
         setComments((prev) =>
-          prev.filter((comment) => comment.id !== commentId)
+          prev.map((c) =>
+            c.id === parentId
+              ? {
+                  ...c,
+                  children: c.children.filter((c) => c.id !== commentId),
+                }
+              : c
+          )
         );
       } catch (err) {
         setCommentError(err);
@@ -180,7 +192,18 @@ function commentReducer(state, action) {
       );
     }
     case "remove": {
-      return state.filter((comment) => comment.id !== action.id);
+      console.log(action);
+      if (!action.parentId) {
+        return state.filter((comment) => comment.id !== action.id);
+      }
+      return state.map((c) =>
+        c.id === action.parentId
+          ? {
+              ...c,
+              children: c.children.filter((c) => c.id !== action.id),
+            }
+          : c
+      );
     }
     default: {
       return state;

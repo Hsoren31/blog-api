@@ -16,7 +16,7 @@ export function EditComment({ comment, toggleEditForm, onEdit, onDelete }) {
 
   function handleDelete(e) {
     e.preventDefault();
-    onDelete(comment.id);
+    onDelete(comment.id, comment.parentId);
   }
 
   return (
