@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  min-width: calc(100vw - 5rem);
   min-height: 100vh;
   margin: 0 auto;
   padding: 0 2rem;
@@ -23,4 +23,44 @@ nav > ul {
 
 main {
   flex-grow: 1;
+}
+
+ul#posts {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1rem;
+}
+
+.post-list-item {
+  border: 2px solid var(--clr-text);
+  border-radius: 15px;
+}
+
+.post_frame {
+  background-color: var(--clr-text);
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
+  min-height: 150px;
+}
+
+.post_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+ul.tags {
+  padding: 15px;
+  list-style: none;
+  display: flex;
+  justify-content: end;
+  gap: 5px;
+}
+
+ul.tags > .tag {
+  background-color: var(--clr-accent);
+  padding: 0.25em;
+  border-radius: 8px;
 }
