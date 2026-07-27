@@ -185,6 +185,7 @@ async function createComment(postId, userId, message, parentId) {
     },
     include: {
       author: true,
+      children: true,
     },
   });
   return comment;
