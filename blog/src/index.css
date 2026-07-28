@@ -6,6 +6,10 @@
   --clr-secondary: #90e1dc;
   --clr-accent: #61ded6;
 
+  --clr-error: #c23854;
+  --clr-warning: #ffce52;
+  --clr-success: #008533;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -63,11 +67,50 @@ button:focus-visible {
   outline: 4px solid var(--clr-text);
 }
 
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+form {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-row {
+  display: grid;
+  justify-items: start;
+}
+
+input {
+  width: 100%;
+  outline: 3px solid var(--clr-accent);
+}
+
+input:not(:placeholder-shown):valid {
+  outline-color: var(--clr-success);
+}
+
+input:not(:placeholder-shown):invalid {
+  outline-color: var(--clr-error);
+}
+
+input:focus:invalid {
+  outline-color: var(--clr-warning);
+}
+
+form > button {
+  justify-self: start;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --clr-text: #eef6f6;
     --clr-text-hover: #c9d3d3;
     --clr-background: #040b0a;
+    --clr-background-highlight: #0b1e1c;
     --clr-primary: #3eb6ae;
     --clr-secondary: #1f706b;
     --clr-accent: #219c94;

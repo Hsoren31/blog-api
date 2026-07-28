@@ -10,6 +10,7 @@ export default function Signup() {
     password: "",
     confirmPassword: "",
   });
+  const [passwordFocused, setPasswordFocused] = useState(false);
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -36,48 +37,80 @@ export default function Signup() {
         {Array.isArray(fieldErrors) && (
           <ul>
             {fieldErrors.map((err) => (
-              <li>{err.msg}</li>
+              <li className="field-error">{err.msg}</li>
             ))}
           </ul>
         )}
         <legend>Sign Up</legend>
-        <div>
-          <label htmlFor="name">Name: </label>
-          <input type="text" name="name" id="name" onChange={handleChange} />
-          {fieldErrors?.name && (
-            <p className="field-error">{fieldErrors.name}</p>
-          )}
+        <div className="form-row">
+          <label htmlFor="name">Name (optional) </label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            onChange={handleChange}
+            placeholder="John Doe"
+          />
         </div>
-        <div>
-          <label htmlFor="username">Username: </label>
+        <div className="form-row">
+          <label htmlFor="username">
+            <span>*</span>Username: (8 - 15 characters)
+          </label>
           <input
             type="text"
             name="username"
             id="username"
             onChange={handleChange}
+            required
+            minLength={8}
+            maxLength={15}
+            placeholder="John_123"
           />
         </div>
-        <div>
-          <label htmlFor="password">Password: </label>
+        <div className="form-row">
+          <label htmlFor="password">
+            <span>*</span>Password:
+          </label>
           <input
             type="password"
             name="password"
             id="password"
             onChange={handleChange}
+            required
+            minLength={8}
+            maxLength={25}
+            placeholder="Enter Password"
+            onFocus={() => setPasswordFocused(true)}
+            onBlur={() => setPasswordFocused(false)}
           />
+          {passwordFocused && (
+            <ul>
+              <li>8 - 25 characters</li>
+              <li>One Uppercase Letter</li>
+              <li>One Number</li>
+            </ul>
+          )}
         </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirm Password: </label>
+        <div className="form-row">
+          <label htmlFor="confirmPassword">
+            <span>*</span>Confirm Password:{" "}
+          </label>
           <input
             type="password"
             name="confirmPassword"
             id="confirmPassword"
             onChange={handleChange}
+            required
+            minLength={8}
+            maxLength={25}
+            placeholder="Confirm Password"
           />
         </div>
         <button type="submit">Submit</button>
       </form>
-      <Link to="/login">Have an account already? Login here.</Link>
+      <p>
+        Have an account already? <Link to="/login">Login here.</Link>
+      </p>
     </>
   );
 }

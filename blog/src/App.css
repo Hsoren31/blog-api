@@ -64,3 +64,7 @@ ul.tags > .tag {
   padding: 0.25em;
   border-radius: 8px;
 }
+
+.field-error {
+  color: var(--clr-error);
+}

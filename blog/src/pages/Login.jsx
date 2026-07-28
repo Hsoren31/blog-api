@@ -26,7 +26,7 @@ export default function Login() {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        {error && <p>{error}</p>}
+        {error && <p className="field-error">{error}</p>}
         <legend>Login</legend>
         <div>
           <label htmlFor="username">Username: </label>
@@ -36,6 +36,9 @@ export default function Login() {
             id="username"
             value={user.username}
             onChange={handleChange}
+            minLength="8"
+            maxLength="15"
+            placeholder="John_1234"
           />
         </div>
         <div>
@@ -46,11 +49,16 @@ export default function Login() {
             id="password"
             value={user.password}
             onChange={handleChange}
+            minLength="8"
+            maxLength="25"
+            placeholder="Enter Password"
           />
         </div>
         <button type="submit">Submit</button>
       </form>
-      <Link to="/signup">Don't have an account? Sign up here.</Link>
+      <p>
+        Don't have an account? <Link to="/signup">Sign up here.</Link>
+      </p>
     </>
   );
 }
