@@ -6,6 +6,8 @@
   --clr-secondary: #90e1dc;
   --clr-accent: #61ded6;
 
+  --clr-delete-hover: #f50000;
+  --clr-delete: #d50000;
   --clr-error: #c23854;
   --clr-warning: #ffce52;
   --clr-success: #008533;
@@ -81,6 +83,10 @@ a:hover {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+h2 {
+  font-size: 2em;
 }
 
 button {

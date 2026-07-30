@@ -114,25 +114,27 @@ export function CommentSection() {
   if (error) return <p>{error}</p>;
 
   return (
-    <>
+    <div id="comment-section">
       <h2>Comments</h2>
       <CommentReply onSubmit={handleAddComment} />
       {commentError && <p>{error}</p>}
       {optimisticComments.length > 0 ? (
-        optimisticComments.map((comment) => (
-          <Comment
-            key={comment.id}
-            comment={comment}
-            parentId={comment.id}
-            onSubmit={handleAddComment}
-            onEdit={handleEditComment}
-            onDelete={handleRemoveComment}
-          />
-        ))
+        <ul id="comment-list">
+          {optimisticComments.map((comment) => (
+            <Comment
+              key={comment.id}
+              comment={comment}
+              parentId={comment.id}
+              onSubmit={handleAddComment}
+              onEdit={handleEditComment}
+              onDelete={handleRemoveComment}
+            />
+          ))}
+        </ul>
       ) : (
         <p>No Comments Yet.</p>
       )}
-    </>
+    </div>
   );
 }
 

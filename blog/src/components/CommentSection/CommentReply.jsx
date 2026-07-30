@@ -27,7 +27,7 @@ export function CommentReply({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="comment-reply" onSubmit={handleSubmit}>
       <textarea
         placeholder="Write a comment..."
         name="comment"
@@ -35,11 +35,16 @@ export function CommentReply({
         onChange={handleChange}
         autoFocus={autoFocus}
       />
-
-      {onCancel && <button onClick={onCancel}>Cancel</button>}
-      <button type="submit" disabled={comment.message.trim() === ""}>
-        Submit
-      </button>
+      <div className="buttons">
+        {onCancel && (
+          <button className="cancel" onClick={onCancel}>
+            Cancel
+          </button>
+        )}
+        <button type="submit" disabled={comment.message.trim() === ""}>
+          Submit
+        </button>
+      </div>
     </form>
   );
 }

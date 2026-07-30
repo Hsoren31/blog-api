@@ -8,7 +8,9 @@ function App() {
   return (
     <CurrentUserProvider>
       <Header />
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
       <Footer />
     </CurrentUserProvider>
   );

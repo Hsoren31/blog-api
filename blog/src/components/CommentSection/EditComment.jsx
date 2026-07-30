@@ -36,7 +36,9 @@ export function EditComment({ comment, toggleEditForm, onEdit, onDelete }) {
       >
         Submit
       </button>
-      <button onClick={handleDelete}>Delete</button>
+      <button className="delete" onClick={handleDelete}>
+        Delete
+      </button>
     </form>
   );
 }

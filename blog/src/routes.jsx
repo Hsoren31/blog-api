@@ -4,7 +4,7 @@ import Author from "./pages/Author";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFoundPage from "./pages/NotFoundPage";
-import Post from "./pages/Post";
+import Post from "./pages/Post/Post.jsx";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Signup from "./pages/Signup";
 

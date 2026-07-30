@@ -26,31 +26,51 @@ export function Comment({
   }
 
   return (
-    <div>
-      <p>
-        {comment.author.username} &middot; {formatShortDate(comment.createdAt)}
-      </p>
-      <p>
-        {comment.text} {comment.pending && <span>Pending...</span>}
-      </p>
-      {currentUser.username === comment.author.username && (
-        <button onClick={toggleEditForm}>Edit</button>
-      )}
-      {showEditForm && (
-        <EditComment
-          comment={comment}
-          toggleEditForm={toggleEditForm}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
-      )}
-      <button
-        onClick={() => {
-          setShowReplyForm((current) => !current);
-        }}
+    <>
+      <div
+        className={`comment ${comment.parentId !== null && "comment-child"}`}
       >
-        Reply
-      </button>
+        <div className="comment-credits">
+          <p>{comment.author.username}</p>
+          <p>{formatShortDate(comment.createdAt)}</p>
+        </div>
+        <div className="comment-message-row">
+          <p>{comment.text}</p>
+          {comment.pending && <span>Pending...</span>}
+          {currentUser.username === comment.author.username && (
+            <button className="comment-action edit" onClick={toggleEditForm}>
+              Edit
+            </button>
+          )}
+        </div>
+        <div className="comment-actions">
+          <button
+            className="comment-action reply"
+            onClick={() => {
+              setShowReplyForm((current) => !current);
+            }}
+          >
+            Reply
+          </button>
+          {hasChildren && (
+            <button
+              className="comment-action view-children"
+              onClick={toggleShowChildren}
+            >
+              View Replies
+            </button>
+          )}
+        </div>
+
+        {showEditForm && (
+          <EditComment
+            comment={comment}
+            toggleEditForm={toggleEditForm}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        )}
+      </div>
       {showReplyForm && (
         <CommentReply
           autoFocus
@@ -64,10 +84,6 @@ export function Comment({
           }}
         />
       )}
-      {hasChildren && (
-        <button onClick={toggleShowChildren}>View Replies</button>
-      )}
-
       {hasChildren &&
         showChildren &&
         comment.children.map((child) => (
@@ -80,6 +96,6 @@ export function Comment({
             onDelete={onDelete}
           />
         ))}
-    </div>
+    </>
   );
 }
