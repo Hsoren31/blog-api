@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSignup } from "../hooks/useAuth";
+import { useSignup } from "../../hooks/useAuth";
+import "./Auth.css";
 
 export default function Signup() {
   const { signup, loading, error, fieldErrors } = useSignup();

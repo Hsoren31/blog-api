@@ -3,7 +3,7 @@ import { formatDateDistance } from "../utilities/formatDate";
 
 export default function PostList({ posts }) {
   return (
-    <>
+    <div>
       {posts ? (
         <ul id="posts">
           {posts.map((post) => (
@@ -28,14 +28,16 @@ export default function PostList({ posts }) {
                 </p>
                 <h2>{post.title}</h2>
                 <p>{post.description}</p>
-                <Link to={`/posts/${post.id}`}>Read more...</Link>
               </div>
+              <Link className="read-more" to={`/posts/${post.id}`}>
+                Read more...
+              </Link>
             </li>
           ))}
         </ul>
       ) : (
         <h3>No Posts written yet.</h3>
       )}
-    </>
+    </div>
   );
 }

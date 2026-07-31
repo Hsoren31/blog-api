@@ -1,0 +1,11 @@
+input:not(:placeholder-shown):valid {
+  outline: 2px solid var(--clr-success-bg);
+}
+
+input:not(:placeholder-shown):invalid {
+  outline: 2px solid var(--clr-error-bg);
+}
+
+input:focus-within:invalid {
+  outline: 2px solid var(--clr-warning-bg);
+}
