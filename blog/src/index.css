@@ -1,25 +1,48 @@
 :root {
+  /* Text */
   --clr-text: #091111;
-  --clr-text-hover: #3d4a4a;
-  --clr-background: #f5fbfa;
+
+  /* Background */
+  --clr-bg: #f5fbfa;
+  --clr-bg-subtle: #e2f3ef;
+  --clr-bg-muted: #d3eee9;
+
+  /* Brand */
   --clr-primary: #4ac1ba;
-  --clr-secondary: #90e1dc;
+  --clr-primary-hover: #3eb6ae;
   --clr-accent: #61ded6;
+  --clr-accent-hover: #35d4ca;
 
-  --clr-delete-hover: #f50000;
-  --clr-delete: #d50000;
-  --clr-error: #c23854;
-  --clr-warning: #ffce52;
-  --clr-success: #008533;
+  /* danger/destructive actions */
+  --clr-danger-hover: #b91c1c;
+  --clr-danger: #991b1b;
 
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Form status */
+  --clr-error: #dc2626; /* Error messages */
+  --clr-error-bg: #c23854;
+  --clr-warning-bg: #ffce52;
+  --clr-success-bg: #008533;
+
+  /* Fonts */
+  --ff-accent: "Oswald", sans-serif;
+  --ff-base: "Quattrocento", serif;
+  font-family: var(--ff-base);
   line-height: 1.5;
   font-weight: 400;
 
+  /* Light Dark Themes */
   color-scheme: light dark;
   color: var(--clr-text);
   background-color: var(--clr-background);
 
+  /* Spacing */
+  --spacing-1: 0.5rem;
+  --spacing-2: 1rem;
+  --spacing-3: 1.5rem;
+  --spacing-4: 2rem;
+  --spacing-5: 2.5rem;
+
+  /* Font resets */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -63,6 +86,7 @@ h3,
 h4,
 h5,
 h6 {
+  font-family: var(--ff-accent);
   text-wrap: balance;
 }
 
@@ -74,10 +98,6 @@ a {
   font-weight: 500;
   color: var(--clr-text);
   text-decoration: inherit;
-}
-
-a:hover {
-  color: var(--clr-text-hover);
 }
 
 h1 {
@@ -96,13 +116,13 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: var(--clr-secondary);
+  background-color: var(--clr-accent);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 
 button:hover {
-  background-color: var(--clr-accent);
+  background-color: var(--clr-accent-hover);
 }
 
 button:focus,
@@ -129,19 +149,6 @@ form {
 
 input {
   width: 100%;
-  outline: 3px solid var(--clr-accent);
-}
-
-input:not(:placeholder-shown):valid {
-  outline-color: var(--clr-success);
-}
-
-input:not(:placeholder-shown):invalid {
-  outline-color: var(--clr-error);
-}
-
-input:focus:invalid {
-  outline-color: var(--clr-warning);
 }
 
 form > button {
@@ -150,12 +157,18 @@ form > button {
 
 @media (prefers-color-scheme: dark) {
   :root {
+    /* Text */
     --clr-text: #eef6f6;
-    --clr-text-hover: #c9d3d3;
-    --clr-background: #040b0a;
-    --clr-background-highlight: #0b1e1c;
+
+    /* Background */
+    --clr-bg: #040b0a;
+    --clr-bg-subtle: #0b1e1b;
+    --clr-bg-muted: #163c36;
+
+    /* Brand */
     --clr-primary: #3eb6ae;
-    --clr-secondary: #1f706b;
+    --clr-primary-hover: #49c1b9;
     --clr-accent: #219c94;
+    --clr-accent-hover: #27b9af;
   }
 }

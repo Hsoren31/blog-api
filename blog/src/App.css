@@ -16,7 +16,7 @@ header {
 
 nav > ul {
   display: flex;
-  gap: 10px;
+  gap: var(--spacing-2);
   align-items: center;
   list-style: none;
 }
@@ -25,46 +25,12 @@ main {
   flex-grow: 1;
 }
 
-ul#posts {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
-  gap: 1rem;
-}
-
-.post-list-item {
-  border: 2px solid var(--clr-text);
-  border-radius: 15px;
-}
-
-.post_frame {
-  background-color: var(--clr-text);
-  border-top-left-radius: 13px;
-  border-top-right-radius: 13px;
-  min-height: 150px;
-}
-
-.post_content {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-}
-
-ul.tags {
-  padding: 15px;
-  list-style: none;
-  display: flex;
-  justify-content: end;
-  gap: 5px;
-}
-
-.tag {
+li.tag {
   background-color: var(--clr-accent);
-  padding: 0.25em;
+  font-weight: 700;
+  font-size: 0.75rem;
+  max-width: fit-content;
+  padding: 0.1em 0.3em;
   border-radius: 8px;
-}
-
-.field-error {
-  color: var(--clr-error);
+  text-transform: uppercase;
 }
