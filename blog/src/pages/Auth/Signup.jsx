@@ -32,7 +32,7 @@ export default function Signup() {
   if (loading) return <h2>Loading...</h2>;
 
   return (
-    <>
+    <div id="signup-container">
       <form onSubmit={handleSubmit}>
         {error && <p>{error}</p>}
         {Array.isArray(fieldErrors) && (
@@ -112,6 +112,6 @@ export default function Signup() {
       <p>
         Have an account already? <Link to="/login">Login here.</Link>
       </p>
-    </>
+    </div>
   );
 }

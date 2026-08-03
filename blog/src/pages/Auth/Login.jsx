@@ -25,7 +25,7 @@ export default function Login() {
   if (loading) return <h2>Loading...</h2>;
 
   return (
-    <>
+    <div id="login-container">
       <form onSubmit={handleSubmit}>
         {error && <p className="field-error">{error}</p>}
         <legend>Login</legend>
@@ -60,6 +60,6 @@ export default function Login() {
       <p>
         Don't have an account? <Link to="/signup">Sign up here.</Link>
       </p>
-    </>
+    </div>
   );
 }
