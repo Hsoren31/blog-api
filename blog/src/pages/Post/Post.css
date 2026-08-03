@@ -1,0 +1,81 @@
+#post {
+  max-width: 65ch;
+  margin: var(--spacing-2) auto;
+  display: grid;
+  gap: var(--spacing-2);
+}
+
+#comment-section {
+  display: grid;
+  gap: var(--spacing-1);
+}
+
+.comment-reply,
+.comment-edit {
+  gap: 0.25rem;
+  font-size: 0.85rem;
+
+  .buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: end;
+  }
+
+  input[type="text"] {
+    outline-color: transparent;
+  }
+}
+
+#comment-list {
+  padding: 0;
+}
+
+.comment {
+  display: grid;
+  padding: var(--spacing-1);
+}
+
+.comment-credits {
+  display: flex;
+  gap: var(--spacing-1);
+  font-size: 0.75rem;
+
+  .author {
+    font-weight: 700;
+  }
+}
+
+.comment-message-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment-actions {
+  display: flex;
+  gap: var(--spacing-1);
+}
+
+.comment-action {
+  background-color: var(--clr-bg);
+  font-size: 0.75rem;
+  padding: 0.3em 0.5em;
+}
+
+.comment-action:hover {
+  background-color: var(--clr-bg-muted);
+}
+
+button.submit {
+  background-color: var(--clr-bg-subtle);
+}
+
+button.delete {
+  background-color: var(--clr-danger);
+}
+button.delete:hover {
+  background-color: var(--clr-danger-hover);
+}
+
+.comment-child {
+  margin-left: var(--spacing-4);
+}

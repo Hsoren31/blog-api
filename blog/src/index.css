@@ -33,7 +33,7 @@
   /* Light Dark Themes */
   color-scheme: light dark;
   color: var(--clr-text);
-  background-color: var(--clr-background);
+  background-color: var(--clr-bg);
 
   /* Spacing */
   --spacing-1: 0.5rem;

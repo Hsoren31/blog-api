@@ -28,20 +28,26 @@ export function CommentReply({
 
   return (
     <form className="comment-reply" onSubmit={handleSubmit}>
-      <textarea
+      <input
+        type="text"
         placeholder="Write a comment..."
         name="comment"
         value={comment.message}
         onChange={handleChange}
+        onBlur={onCancel}
         autoFocus={autoFocus}
       />
       <div className="buttons">
         {onCancel && (
-          <button className="cancel" onClick={onCancel}>
+          <button className="cancel comment-action" onClick={onCancel}>
             Cancel
           </button>
         )}
-        <button type="submit" disabled={comment.message.trim() === ""}>
+        <button
+          className="submit comment-action"
+          type="submit"
+          disabled={comment.message.trim() === ""}
+        >
           Submit
         </button>
       </div>

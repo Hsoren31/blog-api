@@ -1,6 +1,13 @@
 import { useState } from "react";
 
-export function EditComment({ comment, toggleEditForm, onEdit, onDelete }) {
+export function EditComment({
+  comment,
+  toggleEditForm,
+  onEdit,
+  onCancel,
+  onDelete,
+  autoFocus,
+}) {
   const [newComment, setNewComment] = useState(comment.text);
 
   function handleChange(e) {
@@ -20,25 +27,32 @@ export function EditComment({ comment, toggleEditForm, onEdit, onDelete }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="editComment">Edit</label>
+    <form className="comment-edit" onSubmit={handleSubmit}>
       <input
         type="text"
         name="editComment"
         id="editComment"
         value={newComment}
         onChange={handleChange}
+        onBlur={onCancel}
+        autoFocus={autoFocus}
       />
-      <button
-        disabled={
-          newComment?.trim() === comment.text || newComment?.trim() === ""
-        }
-      >
-        Submit
-      </button>
-      <button className="delete" onClick={handleDelete}>
-        Delete
-      </button>
+      <div className="buttons">
+        <button className="comment-actions cancel" onClick={onCancel}>
+          Cancel
+        </button>
+        <button className="delete comment-action" onClick={handleDelete}>
+          Delete
+        </button>
+        <button
+          className="comment-action submit"
+          disabled={
+            newComment?.trim() === comment.text || newComment?.trim() === ""
+          }
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 }

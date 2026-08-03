@@ -30,47 +30,55 @@ export function Comment({
       <div
         className={`comment ${comment.parentId !== null && "comment-child"}`}
       >
-        <div className="comment-credits">
-          <p>{comment.author.username}</p>
-          <p>{formatShortDate(comment.createdAt)}</p>
-        </div>
-        <div className="comment-message-row">
-          <p>{comment.text}</p>
-          {comment.pending && <span>Pending...</span>}
-          {currentUser.username === comment.author.username && (
-            <button className="comment-action edit" onClick={toggleEditForm}>
-              Edit
-            </button>
-          )}
-        </div>
-        <div className="comment-actions">
-          <button
-            className="comment-action reply"
-            onClick={() => {
-              setShowReplyForm((current) => !current);
-            }}
-          >
-            Reply
-          </button>
-          {hasChildren && (
-            <button
-              className="comment-action view-children"
-              onClick={toggleShowChildren}
-            >
-              View Replies
-            </button>
-          )}
-        </div>
-
-        {showEditForm && (
+        {showEditForm ? (
           <EditComment
             comment={comment}
             toggleEditForm={toggleEditForm}
             onEdit={onEdit}
+            onCancel={toggleEditForm}
             onDelete={onDelete}
+            autoFocus={true}
           />
+        ) : (
+          <>
+            <div className="comment-credits">
+              <p className="author">{comment.author.username}</p>
+              <p className="timestamp">{formatShortDate(comment.createdAt)}</p>
+            </div>
+            <div className="comment-message-row">
+              <p>{comment.text}</p>
+              {comment.pending && <span>Pending...</span>}
+              {currentUser.username === comment.author.username && (
+                <button
+                  className="comment-action edit"
+                  onClick={toggleEditForm}
+                >
+                  Edit
+                </button>
+              )}
+            </div>
+            <div className="comment-actions">
+              <button
+                className="comment-action reply"
+                onClick={() => {
+                  setShowReplyForm((current) => !current);
+                }}
+              >
+                Reply
+              </button>
+              {hasChildren && (
+                <button
+                  className="comment-action view-children"
+                  onClick={toggleShowChildren}
+                >
+                  View Replies
+                </button>
+              )}
+            </div>
+          </>
         )}
       </div>
+
       {showReplyForm && (
         <CommentReply
           autoFocus
