@@ -33,7 +33,7 @@ export default function Signup() {
 
   return (
     <div id="signup-container">
-      <form onSubmit={handleSubmit}>
+      <form id="signup" onSubmit={handleSubmit}>
         {error && <p>{error}</p>}
         {Array.isArray(fieldErrors) && (
           <ul>
