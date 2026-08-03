@@ -25,6 +25,11 @@ main {
   flex-grow: 1;
 }
 
+footer {
+  padding: var(--spacing-2);
+  align-self: center;
+}
+
 li.tag {
   background-color: var(--clr-accent);
   font-weight: 700;
