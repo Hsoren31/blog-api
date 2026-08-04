@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import App from "./App.jsx";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
-import HomeFeed from "./pages/HomeFeed.jsx";
+import HomeFeed from "./pages/Home/HomeFeed.jsx";
 import EditPost from "./pages/EditPost.jsx";
 import Post from "./pages/Post.jsx";
 import CreatePost from "./pages/CreatePost.jsx";
