@@ -1,0 +1,21 @@
+.post-container {
+  max-width: 65ch;
+  display: grid;
+  gap: var(--spacing-1);
+}
+
+.publish-status {
+  background-color: var(--clr-bg-subtle);
+  text-align: center;
+  padding: var(--spacing-1);
+}
+
+.post-credits {
+  display: flex;
+  gap: var(--spacing-1);
+  position: relative;
+
+  .post-edit {
+    top: 0;
+  }
+}

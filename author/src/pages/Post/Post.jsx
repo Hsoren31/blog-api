@@ -1,7 +1,8 @@
 import { Link, useParams } from "react-router";
 import { useState, useEffect } from "react";
-import { formatLongDate } from "../utils/formatTime";
-import { getSinglePost } from "../utils/apiFetches";
+import { formatLongDate } from "../../utils/formatTime";
+import { getSinglePost } from "../../utils/apiFetches";
+import "./Post.css";
 
 export default function Post() {
   const params = useParams();
@@ -28,17 +29,29 @@ export default function Post() {
   if (error) return <p>{error}</p>;
 
   return (
-    <>
-      <p>{post.published ? "Published" : "Unpublished"}</p>
+    <div className="post-container">
+      <p className="publish-status">
+        {post.published ? "Published" : "Unpublished"}
+      </p>
+      <div className="post-credits">
+        <p>{post.author.username}</p>
+        <p>{formatLongDate(post.updatedAt || post.createdAt)}</p>
+        <Link className="post-edit" to={"/" + post.id + "/edit"}>
+          Edit
+        </Link>
+      </div>
+
       <h1>{post.title}</h1>
       <p>{post.description}</p>
       <p>{post.body}</p>
-      <p>
+      <p className="tag-list">
         {post.tags.map((tag) => (
-          <span key={tag.id}>{tag.name}</span>
+          <span className="tag" key={tag.id}>
+            {tag.name}
+          </span>
         ))}
       </p>
-      <p>{formatLongDate(post.updatedAt || post.createdAt)}</p>
+
       {post.comments && (
         <ul>
           {post.comments.map((comment) => (
@@ -49,7 +62,6 @@ export default function Post() {
           ))}
         </ul>
       )}
-      <Link to={"/" + post.id + "/edit"}>Edit</Link>
-    </>
+    </div>
   );
 }

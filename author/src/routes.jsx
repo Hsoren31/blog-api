@@ -3,7 +3,7 @@ import App from "./App.jsx";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import HomeFeed from "./pages/Home/HomeFeed.jsx";
 import EditPost from "./pages/EditPost.jsx";
-import Post from "./pages/Post.jsx";
+import Post from "./pages/Post/Post.jsx";
 import CreatePost from "./pages/CreatePost.jsx";
 import Account from "./pages/Account.jsx";
 import EditAccount from "./pages/EditAccount.jsx";
