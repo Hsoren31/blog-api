@@ -88,7 +88,7 @@ export default function CreatePost() {
           handleAddTag={handleAddTag}
           handleRemoveTag={handleRemoveTag}
         />
-        <div>
+        <div className="checkbox">
           <input
             type="checkbox"
             name="published"
