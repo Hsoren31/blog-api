@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import PostList from "../components/PostList";
-import Post from "./Post";
-import { getUserDashboardRequest } from "../utils/apiFetches";
+import PostList from "../../components/PostList";
+import { getUserDashboardRequest } from "../../utils/apiFetches";
+import "./Home.css";
 
 export default function HomeFeed() {
   const [user, setUser] = useState(null);
@@ -40,7 +40,7 @@ export default function HomeFeed() {
     <>
       <h1>Welcome Back {user.username}!</h1>
       <h2>Your Posts</h2>
-      <nav>
+      <nav className="post-nav">
         <button
           style={{
             textDecoration: visiblePosts === "drafts" ? "underline" : "none",

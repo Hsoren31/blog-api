@@ -1,0 +1,41 @@
+.post-nav {
+  display: flex;
+  gap: var(--spacing-1);
+}
+
+ul.post-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--spacing-1);
+}
+
+li.post {
+  border: 2px solid var(--clr-accent);
+  border-radius: 8px;
+  padding: var(--spacing-2);
+  position: relative;
+}
+
+a.post-edit {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+}
+
+.tag-list {
+  display: flex;
+  gap: var(--spacing-1);
+}
+
+.tag {
+  background-color: var(--clr-primary);
+  color: var(--clr-bg);
+  font-weight: 700;
+  padding: 0.15em 0.5em;
+  border-radius: 8px;
+}
+
+.no-posts {
+  padding: var(--spacing-3);
+}
