@@ -13,7 +13,7 @@ export function TagField({ tags, handleAddTag, handleRemoveTag }) {
 
       if (
         userInput.trim() !== "" &&
-        userInput.length <= 12 &&
+        userInput.length <= 20 &&
         tags.length < 5
       ) {
         handleAddTag(userInput);
@@ -47,6 +47,7 @@ export function TagField({ tags, handleAddTag, handleRemoveTag }) {
         onChange={handleInputChange}
         value={userInput}
         disabled={tags.length === 5}
+        maxLength="20"
       />
     </div>
   );
