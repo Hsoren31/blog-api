@@ -1,5 +1,6 @@
 .post-container {
   max-width: 65ch;
+  margin: 0 auto;
   display: grid;
   gap: var(--spacing-1);
 }
