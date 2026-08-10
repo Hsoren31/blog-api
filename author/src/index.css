@@ -90,6 +90,13 @@ h6 {
   text-wrap: balance;
 }
 
+input,
+button,
+select,
+textarea {
+  font: inherit;
+}
+
 #root {
   isolation: isolate;
 }
