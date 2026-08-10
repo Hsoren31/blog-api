@@ -37,7 +37,7 @@ footer {
 
 form {
   display: grid;
-  gap: var(--spacing-1);
+  gap: var(--spacing-2);
   background-color: var(--clr-bg-subtle);
   border: 1px solid var(--clr-accent);
   border-radius: 8px;
