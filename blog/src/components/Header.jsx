@@ -15,7 +15,7 @@ export default function Header() {
           </li>
           {currentUser && (
             <li>
-              <a href="/account">{currentUser.username}</a>
+              <a href={`/${currentUser.username}`}>{currentUser.username}</a>
             </li>
           )}
           <li>
