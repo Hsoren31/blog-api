@@ -90,7 +90,13 @@ export default function EditPost() {
             id="title"
             value={postData.title}
             onChange={handleChange}
+            maxLength="50"
           />
+          <span className="character-count">
+            {postData.title === ""
+              ? "50 characters allowed"
+              : `${postData.title.length} out of 50 characters`}
+          </span>
         </div>
         <div>
           <label htmlFor="description">Description: </label>
@@ -100,6 +106,11 @@ export default function EditPost() {
             value={postData.description}
             onChange={handleChange}
           ></textarea>
+          <span className="character-count">
+            {postData.description === ""
+              ? "150 characters allowed"
+              : `${postData.description.length} out of 150 characters`}
+          </span>
         </div>
         <div>
           <label htmlFor="body">Body: </label>

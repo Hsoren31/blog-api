@@ -62,8 +62,14 @@ export default function CreatePost() {
             name="title"
             id="title"
             value={postData.title}
+            maxLength="50"
             onInput={onChange}
           />
+          <span className="character-count">
+            {postData.title === ""
+              ? "50 characters allowed"
+              : `${postData.title.length} out of 50 characters`}
+          </span>
         </div>
         <div>
           <label htmlFor="description">Description: </label>
@@ -71,8 +77,14 @@ export default function CreatePost() {
             name="description"
             id="description"
             value={postData.description}
+            maxLength="150"
             onInput={onChange}
           />
+          <span className="character-count">
+            {postData.description === ""
+              ? "150 characters allowed"
+              : `${postData.description.length} out of 150 characters`}
+          </span>
         </div>
         <div>
           <label htmlFor="body">Body: </label>
