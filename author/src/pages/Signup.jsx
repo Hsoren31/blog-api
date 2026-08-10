@@ -13,6 +13,7 @@ export default function Signup() {
     password: "",
     confirmPassword: "",
   });
+  const [passwordInstructions, setPasswordInstructions] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,14 +37,16 @@ export default function Signup() {
     }
   };
 
+  const togglePasswordInstructions = () => {
+    setPasswordInstructions(!passwordInstructions);
+  };
+
   return (
     <>
       {loading && <p>Loading...</p>}
       <form onSubmit={submitUser}>
         <legend>Create an Account</legend>
-        <p>
-          Have an Account already? <Link to="/login">Login</Link>
-        </p>
+
         <>
           {error &&
             (Array.isArray(error) ? (
@@ -56,19 +59,19 @@ export default function Signup() {
           Required fields are followed by <span aria-label="required">*</span>.
         </p>
         <div>
-          <label htmlFor="name">Name: </label>
+          <label htmlFor="name">Name (optional) </label>
           <input
             type="text"
             name="name"
             id="name"
-            placeholder="John"
+            placeholder="John Doe"
             value={formData.name}
             onChange={handleChange}
           />
         </div>
         <div>
           <label htmlFor="username">
-            Username<span aria-label="required">*</span>:
+            <span aria-label="required">*</span>Username: (8-15 characters)
           </label>
           <input
             type="text"
@@ -83,7 +86,7 @@ export default function Signup() {
         </div>
         <div>
           <label htmlFor="password">
-            Password<span aria-label="required">*</span>:
+            <span aria-label="required">*</span>Password:
           </label>
           <input
             type="password"
@@ -94,11 +97,20 @@ export default function Signup() {
             required
             minLength="8"
             maxLength="25"
+            onFocus={togglePasswordInstructions}
+            onBlur={togglePasswordInstructions}
           />
+          {passwordInstructions && (
+            <ul>
+              <li>8-25 characters</li>
+              <li>One Uppercase letter</li>
+              <li>One Number</li>
+            </ul>
+          )}
         </div>
         <div>
           <label htmlFor="confirmPassword">
-            Confirm Password<span aria-label="required">*</span>:
+            <span aria-label="required">*</span>Confirm Password:
           </label>
           <input
             type="password"
@@ -112,6 +124,9 @@ export default function Signup() {
           />
         </div>
         <button type="submit">Create Account</button>
+        <p>
+          Have an Account already? <Link to="/login">Login</Link>
+        </p>
       </form>
     </>
   );
