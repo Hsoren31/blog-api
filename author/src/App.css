@@ -34,6 +34,8 @@ footer {
 }
 
 form {
+  max-width: 65ch;
+  margin: 0 auto;
   display: grid;
   gap: var(--spacing-2);
   background-color: var(--clr-bg-subtle);
@@ -57,4 +59,8 @@ form > button:hover {
 .checkbox {
   display: flex;
   gap: var(--spacing-1);
+}
+
+.auth-form {
+  max-width: 30ch;
 }

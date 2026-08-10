@@ -42,7 +42,7 @@ export default function Login() {
     <>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
-      <form onSubmit={loginUser}>
+      <form onSubmit={loginUser} className="auth-form">
         <legend>Login</legend>
         <div>
           <label htmlFor="username">Username: </label>

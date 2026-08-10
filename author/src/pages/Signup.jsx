@@ -44,7 +44,7 @@ export default function Signup() {
   return (
     <>
       {loading && <p>Loading...</p>}
-      <form onSubmit={submitUser}>
+      <form onSubmit={submitUser} className="auth-form">
         <legend>Create an Account</legend>
 
         <>
