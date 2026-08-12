@@ -7,6 +7,7 @@ export async function apiRequest(path, options = {}) {
   const res = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers: {
+      mode: "cors",
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
