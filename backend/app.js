@@ -12,19 +12,19 @@ import { verifyToken } from "./controller/authController.js";
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: [
       process.env.BLOG_URL,
       process.env.AUTHOR_URL,
-      "http://localhost:5173",
-      "http://localhost:5174",
+      "http://localhost:5173/",
+      "http://localhost:5174/",
     ],
     credentials: true,
   })
 );
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/posts", postsRouter);
 app.use("/api/users", usersRouter);
