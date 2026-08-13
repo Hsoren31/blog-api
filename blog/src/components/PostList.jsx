@@ -4,7 +4,7 @@ import { formatDateDistance } from "../utilities/formatDate";
 export default function PostList({ posts }) {
   return (
     <div>
-      {posts ? (
+      {posts.length > 0 ? (
         <ul id="posts">
           {posts.map((post) => (
             <li key={post.id} className="post-list-item">
