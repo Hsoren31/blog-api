@@ -96,6 +96,7 @@ async function getLogin(req, res) {
 
 async function postLogin(req, res) {
   passport.authenticate("local", (err, user, options) => {
+    if (err) return next(err);
     if (!user) {
       res.status(400).json({ message: options.message });
     }
