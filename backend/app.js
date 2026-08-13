@@ -26,6 +26,11 @@ app.use(
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ message: "Internal server error" });
+});
+
 app.use("/api/posts", postsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
