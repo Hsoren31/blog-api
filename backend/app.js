@@ -17,8 +17,8 @@ app.use(
     origin: [
       process.env.BLOG_URL,
       process.env.AUTHOR_URL,
-      "http://localhost:5173/",
-      "http://localhost:5174/",
+      "http://localhost:5173",
+      "http://localhost:5174",
     ],
     credentials: true,
   })
