@@ -94,7 +94,7 @@ async function getLogin(req, res) {
   res.send("Login");
 }
 
-async function postLogin(req, res) {
+async function postLogin(req, res, next) {
   passport.authenticate("local", (err, user, options) => {
     if (err) return next(err);
     if (!user) {
@@ -107,7 +107,7 @@ async function postLogin(req, res) {
         token,
       });
     });
-  })(req, res);
+  })(req, res, next);
 }
 
 async function verifyToken(req, res, next) {
