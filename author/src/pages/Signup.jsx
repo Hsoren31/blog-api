@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { useNavigate } from "react-router-dom";
-import * as api from "../utils/apiFetches.js";
+import { useSignup } from "../hooks/useAuth";
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { signup, loading, error, fieldErrors } = useSignup();
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -23,37 +22,31 @@ export default function Signup() {
     }));
   };
 
-  const submitUser = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    try {
-      await api.postSignupRequest(formData);
-      navigate("/login");
-    } catch (err) {
-      console.error(err);
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  async function submitUser(e) {
+    e.preventDefault();
+    await signup(formData);
+    navigate("/login");
+  }
 
   const togglePasswordInstructions = () => {
     setPasswordInstructions(!passwordInstructions);
   };
 
+  if (loading) return <h2>Loading...</h2>;
+
   return (
     <>
-      {loading && <p>Loading...</p>}
       <form onSubmit={submitUser} className="auth-form">
         <legend>Create an Account</legend>
-
         <>
-          {error &&
-            (Array.isArray(error) ? (
-              error.map((err) => <p>{err.msg}</p>)
-            ) : (
-              <p>{error.msg}</p>
-            ))}
+          {error && <p>{error}</p>}
+          {Array.isArray(fieldErrors) && (
+            <ul>
+              {fieldErrors.map((err) => (
+                <li className="field-error">{err.msg}</li>
+              ))}
+            </ul>
+          )}
         </>
         <p>
           Required fields are followed by <span aria-label="required">*</span>.
