@@ -1,4 +1,5 @@
-// All in one request to the backend.
+import { ApiError } from "./ApiError";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 export async function apiRequest(path, options = {}) {
@@ -15,7 +16,18 @@ export async function apiRequest(path, options = {}) {
   });
 
   if (!res.ok) {
-    throw new Error("Response not ok");
+    let body = null;
+    try {
+      body = await res.json();
+    } catch {
+      // response wasn't JSON - body stays null, fall back below
+    }
+
+    const message =
+      body?.message ||
+      body?.error ||
+      `Request failed with status ${res.status}`;
+    throw new ApiError(message, res.status, body?.errors ?? null);
   }
 
   const data = await res.json();
