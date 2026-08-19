@@ -1,11 +1,12 @@
+import { useCreatePost } from "../hooks/usePost";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { writePostRequest } from "../utils/apiFetches";
 import { TagField } from "../components/TagField/TagField";
 import { useTagInput } from "../components/TagField/useTagInput";
 
 export default function CreatePost() {
   const navigate = useNavigate();
+  const { loading, error, createPost } = useCreatePost();
   const { tags, handleAddTag, handleRemoveTag } = useTagInput();
   const [postData, setPostData] = useState({
     title: "",
@@ -13,8 +14,6 @@ export default function CreatePost() {
     body: "",
     published: false,
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   function onCancel() {
     navigate("/");
@@ -36,16 +35,8 @@ export default function CreatePost() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      await writePostRequest({ ...postData, tags: tags });
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
+    await createPost(postData);
+    navigate("/");
   };
 
   if (loading) return <h1>Loading...</h1>;
