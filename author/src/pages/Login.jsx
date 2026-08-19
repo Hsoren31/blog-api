@@ -1,13 +1,11 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { postLoginRequest } from "../utils/apiFetches";
-import { AuthContext } from "../context/AuthContext";
+import { useLogin } from "../hooks/useAuth";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { setUser } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { loading, error, fieldErrors, login } = useLogin();
+
   const [userCredentials, setUserCredentials] = useState({
     username: "",
     password: "",
@@ -21,29 +19,25 @@ export default function Login() {
     }));
   };
 
-  const loginUser = async (e) => {
+  async function loginUser(e) {
     e.preventDefault();
-    try {
-      setLoading(true);
-      const response = await postLoginRequest(userCredentials);
-      localStorage.setItem("user", JSON.stringify(response.body));
-      localStorage.setItem("token", response.token);
-      setUser(response.body);
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    await login(userCredentials);
+    navigate("/");
+  }
 
   return (
     <>
       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
       <form onSubmit={loginUser} className="auth-form">
         <legend>Login</legend>
+        {error && <p>{error}</p>}
+        {Array.isArray(fieldErrors) && (
+          <ul>
+            {fieldErrors.map((err) => (
+              <li className="field-error">{err.msg}</li>
+            ))}
+          </ul>
+        )}
         <div>
           <label htmlFor="username">Username: </label>
           <input
