@@ -1,37 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PostList from "../../components/PostList";
-import { getUserDashboardRequest } from "../../utils/apiFetches";
+import { useUser } from "../../hooks/useUser";
 import "./Home.css";
 
 export default function HomeFeed() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [draftPosts, setDraftPosts] = useState(null);
-  const [publishedPosts, setPublishedPosts] = useState(null);
+  const username = JSON.parse(localStorage.getItem("user")).username;
+  const { user, loading, error } = useUser(username);
+  const [draftPosts, setDraftPosts] = useState([]);
+  const [publishedPosts, setPublishedPosts] = useState([]);
   const [visiblePosts, setVisiblePosts] = useState("drafts");
 
-  const changeVisiblePosts = (e) => {
+  function changeVisiblePosts(e) {
     setVisiblePosts(e.target.value);
-  };
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const { user } = await getUserDashboardRequest();
-        setUser(user);
-        setDraftPosts(user.posts.filter((post) => post.published === false));
-        setPublishedPosts(user.posts.filter((post) => post.published === true));
-      } catch (err) {
-        console.error(err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, []);
+  }
 
   if (loading) return <h1>Loading...</h1>;
   if (error) return <p>{error}</p>;
