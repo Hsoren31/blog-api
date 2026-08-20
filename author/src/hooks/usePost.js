@@ -63,3 +63,27 @@ export function useEditPost() {
 
   return { loading, error, editPost };
 }
+
+export function useDeletePost() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function deletePost(postId) {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await apiRequest(`/posts/${postId}`, {
+        method: "DELETE",
+      });
+      return response;
+    } catch (err) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return { loading, error, deletePost };
+}

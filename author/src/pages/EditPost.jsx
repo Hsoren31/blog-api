@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TagField } from "../components/TagField/TagField";
 import { useTagInput } from "../components/TagField/useTagInput";
-import { useEditPost, usePost } from "../hooks/usePost";
+import { useDeletePost, useEditPost, usePost } from "../hooks/usePost";
 
 export default function EditPost() {
   const { postId } = useParams();
@@ -12,16 +12,19 @@ export default function EditPost() {
   if (error) return <p>{error}</p>;
 
   return (
-    <EditForm
-      initialData={{
-        title: post.title,
-        description: post.description,
-        body: post.body,
-        published: post.published,
-        tags: post.tags.map((tag) => tag.name),
-        id: post.id,
-      }}
-    />
+    <div>
+      <EditForm
+        initialData={{
+          title: post.title,
+          description: post.description,
+          body: post.body,
+          published: post.published,
+          tags: post.tags.map((tag) => tag.name),
+          id: post.id,
+        }}
+      />
+      <DeletePostBtn postId={post.id} />
+    </div>
   );
 }
 
@@ -127,4 +130,23 @@ function EditForm({ initialData }) {
       </button>
     </form>
   );
+}
+
+function DeletePostBtn({ postId }) {
+  const { deletePost, loading, error } = useDeletePost();
+  const navigate = useNavigate();
+
+  async function onDelete() {
+    const confirmation = confirm(
+      "Are you sure you want to delete this post? This action cannot be undone."
+    );
+    if (confirmation) {
+      await deletePost(postId);
+      navigate("/");
+    }
+  }
+
+  if (error) return <p>{error}</p>;
+
+  return <button onClick={onDelete}>{loading ? "Loading" : "Delete"}</button>;
 }
