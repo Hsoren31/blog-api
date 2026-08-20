@@ -1,98 +1,72 @@
-import { useContext, useState } from "react";
-import { useNavigate, useLocation } from "react-router";
-import { deleteAccountRequest, putAccountRequest } from "../utils/apiFetches";
-import { AuthContext } from "../context/AuthContext.jsx";
+import { useState } from "react";
+import { useAccount, useEditAccount } from "../hooks/useAccount.js";
+import { useNavigate } from "react-router";
 
 export default function EditAccount() {
-  const { setUser } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { state } = location;
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState(state.user);
+  const { account, loading, error } = useAccount();
 
-  function onCancel() {
+  if (loading) return <h2>Loading...</h2>;
+  if (error) return <p>{error}</p>;
+
+  return <EditAccountForm account={account} />;
+}
+
+function EditAccountForm({ account }) {
+  const { editAccount, loading, error } = useEditAccount();
+  const [accountData, setAccountData] = useState(account);
+  const navigate = useNavigate();
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setAccountData({
+      ...accountData,
+      [name]: value,
+    });
+  }
+
+  function handleCancel() {
     navigate("/account");
   }
 
-  const onSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    try {
-      setLoading(true);
-      await putAccountRequest(userData);
-      navigate("/account");
-    } catch (error) {
-      console.log(error);
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const onDelete = async (e) => {
-    e.preventDefault();
-    let result = confirm(
-      "Are you sure you want to delete your account? This cannot be undone."
-    );
-    if (!result) return;
-    try {
-      await deleteAccountRequest();
-      localStorage.clear();
-      setUser(null);
-      navigate("/signup");
-    } catch (error) {
-      setError(error);
-      console.error(error);
-    }
-  };
-
-  function formChange(e) {
-    setUserData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }));
+    await editAccount(accountData);
+    navigate("/account");
   }
 
-  if (loading) return <p>Loading...</p>;
-
   return (
-    <>
-      <h1>Edit Account</h1>
-      <form>
-        {error && (
-          <>
-            {error.map((err) => (
-              <p>{err.msg}</p>
-            ))}
-          </>
-        )}
-        <div>
-          <label htmlFor="name">Name: </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={userData.name}
-            onChange={formChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="bio">Bio: </label>
-          <input
-            type="text"
-            name="bio"
-            id="bio"
-            value={userData.bio}
-            onChange={formChange}
-          />
-        </div>
-        <button onClick={onCancel}>Cancel</button>
-        <button onClick={onSubmit}>Submit</button>
-      </form>
-      <h2>Delete Account</h2>
-      <p>Permanently delete your account and all of your content.</p>
-      <button onClick={onDelete}>Delete</button>
-    </>
+    <form>
+      {error && (
+        <>
+          {error.map((err) => (
+            <p>{err.msg}</p>
+          ))}
+        </>
+      )}
+      <div>
+        <label htmlFor="name">Name: </label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          value={accountData.name}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="bio">Bio: </label>
+        <input
+          type="text"
+          name="bio"
+          id="bio"
+          value={accountData.bio}
+          onChange={handleChange}
+        />
+      </div>
+      <button onClick={handleCancel}>Cancel</button>
+      <button onClick={handleSubmit}>
+        {loading ? "Loading" : "Update Account"}
+      </button>
+    </form>
   );
 }
