@@ -1,156 +1,130 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  deletePostRequest,
-  getSinglePost,
-  putPostRequest,
-} from "../utils/apiFetches";
 import { TagField } from "../components/TagField/TagField";
 import { useTagInput } from "../components/TagField/useTagInput";
+import { useEditPost, usePost } from "../hooks/usePost";
 
 export default function EditPost() {
-  const { tags, setTags, handleAddTag, handleRemoveTag } = useTagInput();
-  const navigate = useNavigate();
   const { postId } = useParams();
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [postData, setPostData] = useState(null);
+  const { post, loading, error } = usePost(postId);
 
-  const onCancel = () => {
-    navigate(`/${postId}`);
-  };
-
-  function handleChange(e) {
-    if (e.target.type === "checkbox") {
-      setPostData({
-        ...postData,
-        [e.target.name]: e.target.checked,
-      });
-      return;
-    }
-    setPostData({
-      ...postData,
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const { post } = await getSinglePost(postId);
-        setPostData(post);
-        setTags(post.tags.map((tag) => tag.name));
-      } catch (err) {
-        console.error(err);
-        setError(err);
-        setPostData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPost();
-  }, [postId]);
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await putPostRequest(postId, { ...postData, tags: tags });
-      navigate(`/${postId}`);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const onDelete = async (e) => {
-    e.preventDefault();
-    let result = confirm("Are you sure you want to delete this post?");
-    if (!result) return;
-    try {
-      await deletePostRequest(postId);
-      navigate("/");
-    } catch (err) {
-      setError(err);
-      console.error(err);
-    }
-  };
-
-  if (loading) return <h1>Loading...</h1>;
+  if (loading) return <h2>Loading...</h2>;
   if (error) return <p>{error}</p>;
 
   return (
-    <>
-      <h1>Edit Post</h1>
-      <form>
-        <div>
-          <label htmlFor="title">Title: </label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            value={postData.title}
-            onChange={handleChange}
-            maxLength="50"
-          />
-          <span className="character-count">
-            {postData.title === ""
-              ? "50 characters allowed"
-              : `${postData.title.length} out of 50 characters`}
-          </span>
-        </div>
-        <div>
-          <label htmlFor="description">Description: </label>
-          <textarea
-            name="description"
-            id="description"
-            value={postData.description}
-            onChange={handleChange}
-          ></textarea>
-          <span className="character-count">
-            {postData.description === ""
-              ? "150 characters allowed"
-              : `${postData.description.length} out of 150 characters`}
-          </span>
-        </div>
-        <div>
-          <label htmlFor="body">Body: </label>
-          <textarea
-            name="body"
-            id="body"
-            value={postData.body}
-            onChange={handleChange}
-          ></textarea>
-        </div>
-        <TagField
-          tags={tags}
-          handleAddTag={handleAddTag}
-          handleRemoveTag={handleRemoveTag}
+    <EditForm
+      initialData={{
+        title: post.title,
+        description: post.description,
+        body: post.body,
+        published: post.published,
+        tags: post.tags.map((tag) => tag.name),
+        id: post.id,
+      }}
+    />
+  );
+}
+
+function EditForm({ initialData }) {
+  const { editPost, loading, error } = useEditPost();
+  const [postData, setPostData] = useState(initialData);
+  const { tags, handleAddTag, handleRemoveTag } = useTagInput(initialData.tags);
+  const navigate = useNavigate();
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    if (e.target.type === "checkbox") {
+      setPostData((prev) => ({
+        ...prev,
+        [name]: e.target.checked,
+      }));
+      return;
+    }
+    setPostData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  async function submitEdit(e) {
+    e.preventDefault();
+    await editPost(postData.id, { ...postData, tags });
+    navigate(`/${postData.id}`);
+  }
+
+  function onCancel() {
+    navigate(`/${postData.id}`);
+  }
+
+  return (
+    <form>
+      <legend>Edit Post</legend>
+      {error && <p>{error}</p>}
+      <div>
+        <label htmlFor="title">Title: </label>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          value={postData.title}
+          onChange={handleChange}
+          maxLength="50"
         />
-        <div>
-          <input
-            type="checkbox"
-            name="published"
-            id="published"
-            checked={postData.published}
-            onChange={handleChange}
-          />
-          <label htmlFor="checkbox">Publish</label>
-        </div>
-        <button onClick={onCancel}>Cancel</button>
-        <button
-          onClick={onSubmit}
-          disabled={
-            postData.published === true &&
-            postData.title.trim() === "" &&
-            postData.body.trim() === ""
-          }
-        >
-          Submit
-        </button>
-      </form>
-      <form onSubmit={onDelete}>
-        <button type="submit">Delete Post</button>
-      </form>
-    </>
+        <span className="character-count">
+          {postData.title === ""
+            ? "50 characters allowed"
+            : `${postData.title.length} out of 50 characters`}
+        </span>
+      </div>
+      <div>
+        <label htmlFor="description">Description: </label>
+        <textarea
+          name="description"
+          id="description"
+          value={postData.description}
+          onChange={handleChange}
+        ></textarea>
+        <span className="character-count">
+          {postData.description === ""
+            ? "150 characters allowed"
+            : `${postData.description.length} out of 150 characters`}
+        </span>
+      </div>
+      <div>
+        <label htmlFor="body">Body: </label>
+        <textarea
+          name="body"
+          id="body"
+          value={postData.body}
+          onChange={handleChange}
+        ></textarea>
+      </div>
+      <TagField
+        tags={tags}
+        handleAddTag={handleAddTag}
+        handleRemoveTag={handleRemoveTag}
+      />
+      <div>
+        <input
+          type="checkbox"
+          name="published"
+          id="published"
+          checked={postData.published}
+          onChange={handleChange}
+        />
+        <label htmlFor="checkbox">Publish</label>
+      </div>
+      <button onClick={onCancel}>Cancel</button>
+      <button
+        onClick={submitEdit}
+        disabled={
+          postData.published === true &&
+          postData.title.trim() === "" &&
+          postData.body.trim() === ""
+        }
+      >
+        {loading ? "Loading" : "Submit"}
+      </button>
+    </form>
   );
 }

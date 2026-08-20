@@ -37,3 +37,29 @@ export function useCreatePost() {
 
   return { loading, error, createPost };
 }
+
+export function useEditPost() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function editPost(postId, postData) {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await apiRequest(`/posts/${postId}`, {
+        method: "PUT",
+        body: JSON.stringify(postData),
+      });
+
+      return response;
+    } catch (err) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return { loading, error, editPost };
+}

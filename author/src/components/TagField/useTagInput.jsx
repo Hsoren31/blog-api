@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export function useTagInput() {
-  const [tags, setTags] = useState([]);
+export function useTagInput(initialTags = []) {
+  const [tags, setTags] = useState(initialTags);
 
   const handleAddTag = (newTag) => {
     if (newTag && !tags.includes(newTag) && tags.length < 5) {
