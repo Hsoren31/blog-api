@@ -1,6 +1,11 @@
-import { useState } from "react";
-import { useAccount, useEditAccount } from "../hooks/useAccount.js";
+import { useContext, useState } from "react";
+import {
+  useAccount,
+  useDeleteAccount,
+  useEditAccount,
+} from "../hooks/useAccount.js";
 import { useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 export default function EditAccount() {
   const { account, loading, error } = useAccount();
@@ -8,7 +13,12 @@ export default function EditAccount() {
   if (loading) return <h2>Loading...</h2>;
   if (error) return <p>{error}</p>;
 
-  return <EditAccountForm account={account} />;
+  return (
+    <div>
+      <EditAccountForm account={account} />
+      <DeleteAccountForm username={account.username} />
+    </div>
+  );
 }
 
 function EditAccountForm({ account }) {
@@ -66,6 +76,36 @@ function EditAccountForm({ account }) {
       <button onClick={handleCancel}>Cancel</button>
       <button onClick={handleSubmit}>
         {loading ? "Loading" : "Update Account"}
+      </button>
+    </form>
+  );
+}
+
+function DeleteAccountForm({ username }) {
+  const { loading, error, deleteAccount } = useDeleteAccount();
+  const { setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  async function onDelete(e) {
+    e.preventDefault();
+    let confirmation = confirm(
+      "Are you sure you want to delete your account? This will delete your account and everything associated with it. This action cannot be undone?"
+    );
+    if (confirmation) {
+      await deleteAccount(username);
+      localStorage.clear();
+      setUser(null);
+      navigate("/signup");
+    }
+  }
+
+  if (error) return <p>{error}</p>;
+
+  return (
+    <form>
+      <legend>Delete Account</legend>
+      <button onClick={onDelete}>
+        {loading ? "Loading" : "Delete Account"}
       </button>
     </form>
   );

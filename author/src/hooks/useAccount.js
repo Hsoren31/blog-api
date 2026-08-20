@@ -42,3 +42,28 @@ export function useEditAccount() {
 
   return { editAccount, loading, error };
 }
+
+export function useDeleteAccount() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function deleteAccount(username) {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = apiRequest(`/users/${username}`, {
+        method: "DELETE",
+      });
+
+      return response;
+    } catch (err) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return { loading, error, deleteAccount };
+}
