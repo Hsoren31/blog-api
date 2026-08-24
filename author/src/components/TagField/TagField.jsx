@@ -8,7 +8,7 @@ export function TagField({ tags, handleAddTag, handleRemoveTag }) {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" || e.key === "," || e.key === " ") {
       e.preventDefault();
 
       if (
@@ -42,13 +42,14 @@ export function TagField({ tags, handleAddTag, handleRemoveTag }) {
         id="tags"
         name="tags"
         type="text"
-        placeholder={tags.length > 1 ? "Add another" : "Add up to 5 tags..."}
+        placeholder="Type and press Enter to add a tag..."
         onKeyDown={handleKeyPress}
         onChange={handleInputChange}
         value={userInput}
         disabled={tags.length === 5}
         maxLength="20"
       />
+      <span>{tags.length}/5 tags</span>
     </div>
   );
 }
