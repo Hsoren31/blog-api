@@ -35,7 +35,7 @@ export default function CreatePost() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await createPost(postData);
+    await createPost({ ...postData, tags });
     navigate("/");
   };
 
