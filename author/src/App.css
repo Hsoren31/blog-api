@@ -56,6 +56,10 @@ form > button:hover {
   background-color: var(--clr-accent-hover);
 }
 
+input[type="checkbox"] {
+  accent-color: var(--clr-accent);
+}
+
 .checkbox {
   display: flex;
   gap: var(--spacing-1);
