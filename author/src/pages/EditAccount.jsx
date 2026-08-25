@@ -102,11 +102,15 @@ function DeleteAccountForm({ username }) {
   if (error) return <p>{error}</p>;
 
   return (
-    <form>
-      <legend>Delete Account</legend>
-      <button onClick={onDelete}>
+    <div className="danger-zone">
+      <h2>Danger Zone</h2>
+      <p>
+        Deleting your account will delete everything associated with it. This
+        action cannot be undone.
+      </p>
+      <button className="delete" onClick={onDelete}>
         {loading ? "Loading" : "Delete Account"}
       </button>
-    </form>
+    </div>
   );
 }

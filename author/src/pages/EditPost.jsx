@@ -23,7 +23,7 @@ export default function EditPost() {
           id: post.id,
         }}
       />
-      <DeletePostBtn postId={post.id} />
+      <DeletePostSection postId={post.id} />
     </div>
   );
 }
@@ -132,7 +132,7 @@ function EditForm({ initialData }) {
   );
 }
 
-function DeletePostBtn({ postId }) {
+function DeletePostSection({ postId }) {
   const { deletePost, loading, error } = useDeletePost();
   const navigate = useNavigate();
 
@@ -148,5 +148,15 @@ function DeletePostBtn({ postId }) {
 
   if (error) return <p>{error}</p>;
 
-  return <button onClick={onDelete}>{loading ? "Loading" : "Delete"}</button>;
+  return (
+    <div className="danger-zone">
+      <h2>Danger Zone</h2>
+      <p>
+        Delete this post. Once this you delete this post there is no going back.
+      </p>
+      <button className="delete" onClick={onDelete}>
+        {loading ? "Loading" : "Delete"}
+      </button>
+    </div>
+  );
 }

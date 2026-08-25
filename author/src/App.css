@@ -68,3 +68,22 @@ input[type="checkbox"] {
 .auth-form {
   max-width: 30ch;
 }
+
+.danger-zone {
+  border: 3px solid var(--clr-danger);
+  border-radius: 8px;
+  padding: 1em;
+  max-width: 65ch;
+  margin: var(--spacing-3) auto;
+}
+
+button.delete {
+  border: 1px solid var(--clr-text);
+  background-color: transparent;
+  transition: color 0.25s;
+}
+
+button.delete:hover {
+  border-color: var(--clr-danger-hover);
+  color: var(--clr-danger);
+}
