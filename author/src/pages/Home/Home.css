@@ -26,6 +26,7 @@ a.post-edit {
 .tag-list {
   display: flex;
   gap: var(--spacing-1);
+  flex-wrap: wrap;
 }
 
 .tag {
