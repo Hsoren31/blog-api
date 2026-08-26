@@ -28,12 +28,20 @@ export function FilteredPostsSection({ posts }) {
 
   return (
     <div>
-      {TABS.map((tab) => (
-        <button value={tab.value} onClick={handleTabChange}>
-          {tab.label}
-        </button>
-      ))}
-      <PostList list={activeTab.posts} />
+      <div className="tabs">
+        {TABS.map((tab) => (
+          <button
+            value={tab.value}
+            onClick={handleTabChange}
+            className={tab.value === activeTab.value ? "active-tab tab" : "tab"}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      <div id="active-list">
+        <PostList list={activeTab.posts} />
+      </div>
     </div>
   );
 }
