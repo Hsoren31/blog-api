@@ -61,4 +61,10 @@ a.post-edit {
   padding: var(--spacing-3);
   background-color: var(--clr-bg);
   border-radius: 8px;
+  display: grid;
+  gap: var(--spacing-2);
+}
+
+button.start-writing {
+  background-color: var(--clr-accent);
 }
