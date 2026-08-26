@@ -11,7 +11,7 @@ export default function HomeFeed() {
 
   return (
     <>
-      <h1>Welcome Back {user.username}!</h1>
+      <h3>Welcome Back {user.username}!</h3>
       <h2>Your Posts</h2>
       <FilteredPostsSection posts={user.posts} />
     </>
