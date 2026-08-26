@@ -107,7 +107,7 @@ function EditForm({ initialData }) {
         handleAddTag={handleAddTag}
         handleRemoveTag={handleRemoveTag}
       />
-      <div>
+      <div className="checkbox">
         <input
           type="checkbox"
           name="published"
