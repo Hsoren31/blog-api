@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { TagField } from "../components/TagField/TagField";
-import { useTagInput } from "../components/TagField/useTagInput";
-import { useDeletePost, useEditPost, usePost } from "../hooks/usePost";
+import { TagField } from "../../components/TagField/TagField";
+import { useTagInput } from "../../components/TagField/useTagInput";
+import { useDeletePost, useEditPost, usePost } from "../../hooks/usePost";
 
 export default function EditPost() {
   const { postId } = useParams();

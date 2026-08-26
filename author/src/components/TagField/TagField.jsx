@@ -25,11 +25,12 @@ export function TagField({ tags, handleAddTag, handleRemoveTag }) {
   return (
     <div>
       <label htmlFor="tags">Tags: </label>
-      <ul>
+      <ul className="edit-tags">
         {tags.map((tag, index) => (
-          <span key={`${index}-${tag}`}>
-            # {tag}
+          <span className="tag-pill" key={`${index}-${tag}`}>
+            #{tag}
             <button
+              className="remove-tag"
               onClick={() => handleRemoveTag(tag)}
               title={`Remove ${tag}`}
             >

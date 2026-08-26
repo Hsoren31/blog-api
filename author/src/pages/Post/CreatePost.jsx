@@ -1,8 +1,8 @@
-import { useCreatePost } from "../hooks/usePost";
+import { useCreatePost } from "../../hooks/usePost";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { TagField } from "../components/TagField/TagField";
-import { useTagInput } from "../components/TagField/useTagInput";
+import { TagField } from "../../components/TagField/TagField";
+import { useTagInput } from "../../components/TagField/useTagInput";
 
 export default function CreatePost() {
   const navigate = useNavigate();

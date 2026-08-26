@@ -20,3 +20,27 @@
     top: 0;
   }
 }
+
+ul.edit-tags {
+  padding: 0;
+  margin: var(--spacing-1) 0;
+  display: flex;
+  gap: var(--spacing-1);
+  flex-wrap: wrap;
+}
+
+.tag-pill {
+  background-color: var(--clr-primary);
+  border-radius: 15px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 0.85rem;
+}
+
+button.remove-tag {
+  padding: 0;
+  background-color: transparent;
+}
