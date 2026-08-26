@@ -101,7 +101,9 @@ export default function CreatePost() {
           />
           <label htmlFor="checkbox">Publish</label>
         </div>
-        <button onClick={onCancel}>Cancel</button>
+        <button className="cancel" onClick={onCancel}>
+          Cancel
+        </button>
         <button
           onClick={onSubmit}
           disabled={

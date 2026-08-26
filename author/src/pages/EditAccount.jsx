@@ -73,7 +73,9 @@ function EditAccountForm({ account }) {
           onChange={handleChange}
         />
       </div>
-      <button onClick={handleCancel}>Cancel</button>
+      <button className="cancel" onClick={handleCancel}>
+        Cancel
+      </button>
       <button onClick={handleSubmit}>
         {loading ? "Loading" : "Update Account"}
       </button>
