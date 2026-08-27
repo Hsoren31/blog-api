@@ -101,19 +101,21 @@ export default function CreatePost() {
           />
           <label htmlFor="checkbox">Publish</label>
         </div>
-        <button className="cancel" onClick={onCancel}>
-          Cancel
-        </button>
-        <button
-          onClick={onSubmit}
-          disabled={
-            postData.published === true &&
-            postData.title.trim() === "" &&
-            postData.body.trim() === ""
-          }
-        >
-          Submit
-        </button>
+        <div className="buttons">
+          <button className="cancel" onClick={onCancel}>
+            Cancel
+          </button>
+          <button
+            onClick={onSubmit}
+            disabled={
+              postData.published === true &&
+              postData.title.trim() === "" &&
+              postData.body.trim() === ""
+            }
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </>
   );
