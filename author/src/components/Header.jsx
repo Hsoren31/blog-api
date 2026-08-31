@@ -1,29 +1,43 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 
 export default function Header() {
   const { user, setUser } = useContext(AuthContext);
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+
+  function toggleHamburger() {
+    setHamburgerOpen(!hamburgerOpen);
+  }
 
   function logout() {
     localStorage.clear();
     setUser(null);
+    toggleHamburger();
   }
 
   return (
     <header>
-      <h1>Blog</h1>
+      <h1 id="app-name">
+        <a href="/">Blog Author</a>
+      </h1>
+      <button
+        onClick={toggleHamburger}
+        id="hamburger"
+        aria-expanded={hamburgerOpen ? "true" : "false"}
+      ></button>
       {user ? (
-        <nav>
-          <ul className="nav">
+        <nav id="user-nav">
+          <ul className="nav" data-visible={hamburgerOpen ? "true" : "false"}>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/account" onClick={toggleHamburger}>
+                Account
+              </Link>
             </li>
             <li>
-              <Link to="/account">Account</Link>
-            </li>
-            <li>
-              <Link to="/write">Create</Link>
+              <Link to="/write" onClick={toggleHamburger}>
+                Create
+              </Link>
             </li>
             <li>
               <a href="/login" onClick={logout}>
