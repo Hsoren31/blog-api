@@ -68,6 +68,10 @@ textarea {
   min-height: 3rem;
 }
 
+.field-error {
+  color: var(--clr-error);
+}
+
 form > button {
   background-color: var(--clr-accent);
 }

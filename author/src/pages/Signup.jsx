@@ -38,16 +38,7 @@ export default function Signup() {
     <>
       <form onSubmit={submitUser} className="auth-form">
         <legend>Create an Account</legend>
-        <>
-          {error && <p>{error}</p>}
-          {Array.isArray(fieldErrors) && (
-            <ul>
-              {fieldErrors.map((err) => (
-                <li className="field-error">{err.msg}</li>
-              ))}
-            </ul>
-          )}
-        </>
+        {error && <p>{error}</p>}
         <p>
           Required fields are followed by <span aria-label="required">*</span>.
         </p>
@@ -61,6 +52,11 @@ export default function Signup() {
             value={formData.name}
             onChange={handleChange}
           />
+          {fieldErrors.some((err) => err.path === "name") && (
+            <span className="field-error">
+              {fieldErrors.find((err) => err.path === "name").msg}
+            </span>
+          )}
         </div>
         <div>
           <label htmlFor="username">
@@ -76,6 +72,11 @@ export default function Signup() {
             maxLength="15"
             required
           />
+          {fieldErrors.some((err) => err.path === "username") && (
+            <span className="field-error">
+              {fieldErrors.find((err) => err.path === "username").msg}
+            </span>
+          )}
         </div>
         <div>
           <label htmlFor="password">
@@ -93,6 +94,11 @@ export default function Signup() {
             onFocus={togglePasswordInstructions}
             onBlur={togglePasswordInstructions}
           />
+          {fieldErrors.some((err) => err.path === "password") && (
+            <span className="field-error">
+              {fieldErrors.find((err) => err.path === "password").msg}
+            </span>
+          )}
           {passwordInstructions && (
             <ul>
               <li>8-25 characters</li>
@@ -115,6 +121,11 @@ export default function Signup() {
             minLength="8"
             maxLength="25"
           />
+          {fieldErrors.some((err) => err.path === "confirmPassword") && (
+            <span className="field-error">
+              {fieldErrors.find((err) => err.path === "confirmPassword").msg}
+            </span>
+          )}
         </div>
         <button type="submit">Create Account</button>
         <p>
