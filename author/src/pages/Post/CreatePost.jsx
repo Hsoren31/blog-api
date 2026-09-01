@@ -44,8 +44,8 @@ export default function CreatePost() {
 
   return (
     <>
-      <h1>Create Post</h1>
       <form>
+        <legend>Create Post</legend>
         <div>
           <label htmlFor="title">Title: </label>
           <input

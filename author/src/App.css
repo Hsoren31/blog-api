@@ -54,6 +54,10 @@ form {
   padding: var(--spacing-3);
 }
 
+legend {
+  font-size: 1.25rem;
+}
+
 form > div {
   display: grid;
 }

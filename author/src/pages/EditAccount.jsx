@@ -46,6 +46,7 @@ function EditAccountForm({ account }) {
 
   return (
     <form>
+      <legend>Update Account</legend>
       {error && (
         <>
           {error.map((err) => (
