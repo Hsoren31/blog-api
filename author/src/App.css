@@ -62,6 +62,12 @@ form > div {
   display: grid;
 }
 
+textarea {
+  field-sizing: content;
+  resize: none;
+  min-height: 3rem;
+}
+
 form > button {
   background-color: var(--clr-accent);
 }
