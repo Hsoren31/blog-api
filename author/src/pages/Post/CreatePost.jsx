@@ -15,7 +15,8 @@ export default function CreatePost() {
     published: false,
   });
 
-  function onCancel() {
+  function onCancel(e) {
+    e.preventDefault();
     navigate("/");
   }
 

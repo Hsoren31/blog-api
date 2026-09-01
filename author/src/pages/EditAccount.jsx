@@ -34,7 +34,8 @@ function EditAccountForm({ account }) {
     });
   }
 
-  function handleCancel() {
+  function handleCancel(e) {
+    e.preventDefault();
     navigate("/account");
   }
 

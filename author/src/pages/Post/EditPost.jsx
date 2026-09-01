@@ -55,7 +55,8 @@ function EditForm({ initialData }) {
     navigate(`/${postData.id}`);
   }
 
-  function onCancel() {
+  function onCancel(e) {
+    e.preventDefault();
     navigate(`/${postData.id}`);
   }
 
