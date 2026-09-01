@@ -84,6 +84,7 @@ function EditForm({ initialData }) {
         <textarea
           name="description"
           id="description"
+          maxLength={150}
           value={postData.description}
           onChange={handleChange}
         ></textarea>

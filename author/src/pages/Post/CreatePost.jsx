@@ -68,7 +68,7 @@ export default function CreatePost() {
             name="description"
             id="description"
             value={postData.description}
-            maxLength="150"
+            maxLength={150}
             onInput={onChange}
           />
           <span className="character-count">
