@@ -17,15 +17,22 @@ export default function Header() {
               <a href={`/${currentUser.username}`}>{currentUser.username}</a>
             </li>
           )}
-          <li>
-            {currentUser ? (
+          {currentUser ? (
+            <li>
               <a href="/login" onClick={logout}>
                 Logout
               </a>
-            ) : (
-              <a href="/login">Login</a>
-            )}
-          </li>
+            </li>
+          ) : (
+            <>
+              <li>
+                <a href="/login">Login</a>
+              </li>
+              <li>
+                <a href="/signup">Signup</a>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>
