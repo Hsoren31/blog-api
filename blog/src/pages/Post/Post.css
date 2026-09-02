@@ -5,6 +5,13 @@
   gap: var(--spacing-2);
 }
 
+ul#post-tags {
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  padding: 0;
+}
+
 #comment-section {
   display: grid;
   gap: var(--spacing-1);
