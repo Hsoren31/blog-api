@@ -113,14 +113,16 @@ div.buttons {
 }
 
 button.delete {
-  border: 1px solid var(--clr-text);
+  border: 1px solid var(--clr-danger);
+  color: var(--clr-danger);
   background-color: transparent;
-  transition: color 0.25s;
+  transition: background-color 0.25s, color 0.25s;
 }
 
 button.delete:hover {
+  background-color: var(--clr-danger-hover);
   border-color: var(--clr-danger-hover);
-  color: var(--clr-danger);
+  color: var(--clr-text);
 }
 
 @media screen and (max-width: 560px) {
