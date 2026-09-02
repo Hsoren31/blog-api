@@ -29,9 +29,9 @@ export default function PostList({ posts }) {
                 <h2>{post.title}</h2>
                 <p>{post.description}</p>
               </div>
-              <Link className="read-more" to={`/posts/${post.id}`}>
-                Read more...
-              </Link>
+              <div className="read-more">
+                <Link to={`/posts/${post.id}`}>Read more...</Link>
+              </div>
             </li>
           ))}
         </ul>
