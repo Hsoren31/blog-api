@@ -36,6 +36,10 @@ export default function CreatePost() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (postData.title.trim() === "") {
+      await createPost({ ...postData, title: "Untitled", tags });
+      navigate("/");
+    }
     await createPost({ ...postData, tags });
     navigate("/");
   };
