@@ -36,6 +36,7 @@ export function CommentReply({
         onChange={handleChange}
         onBlur={onCancel}
         autoFocus={autoFocus}
+        autoComplete="off"
       />
       <div className="buttons">
         {onCancel && (
