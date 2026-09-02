@@ -30,7 +30,7 @@ export default function Login() {
       {loading && <p>Loading...</p>}
       <form onSubmit={loginUser} className="auth-form">
         <legend>Login</legend>
-        {error && <p>{error}</p>}
+        {error && <p className="error">{error}</p>}
         {Array.isArray(fieldErrors) && (
           <ul>
             {fieldErrors.map((err) => (
