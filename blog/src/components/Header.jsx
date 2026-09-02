@@ -7,12 +7,11 @@ export default function Header() {
 
   return (
     <header>
-      <h1>Blog</h1>
+      <a href="/">
+        <h1>Blog</h1>
+      </a>
       <nav>
         <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
           {currentUser && (
             <li>
               <a href={`/${currentUser.username}`}>{currentUser.username}</a>
