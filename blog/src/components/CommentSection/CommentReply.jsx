@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function CommentReply({
   autoFocus,
@@ -11,6 +11,17 @@ export function CommentReply({
     parentId,
     message: "",
   });
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    function handleOutsideClick(e) {
+      if (formRef.current && !formRef.current.contains(e.target)) {
+        onCancel;
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [onCancel]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -27,14 +38,13 @@ export function CommentReply({
   }
 
   return (
-    <form className="comment-reply" onSubmit={handleSubmit}>
+    <form ref={formRef} className="comment-reply" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Write a comment..."
         name="comment"
         value={comment.message}
         onChange={handleChange}
-        onBlur={onCancel}
         autoFocus={autoFocus}
         autoComplete="off"
       />
