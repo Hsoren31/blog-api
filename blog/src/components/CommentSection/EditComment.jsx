@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function EditComment({
   comment,
@@ -9,6 +9,18 @@ export function EditComment({
   autoFocus,
 }) {
   const [newComment, setNewComment] = useState(comment.text);
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    function handleOutsideClick(e) {
+      if (formRef.current && !formRef.current.contains(e.target)) {
+        onCancel();
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [onCancel]);
 
   function handleChange(e) {
     setNewComment(e.target.value);
@@ -27,24 +39,32 @@ export function EditComment({
   }
 
   return (
-    <form className="comment-edit" onSubmit={handleSubmit}>
+    <form className="comment-edit" onSubmit={handleSubmit} ref={formRef}>
       <input
         type="text"
         name="editComment"
         id="editComment"
         value={newComment}
         onChange={handleChange}
-        onBlur={onCancel}
         autoFocus={autoFocus}
       />
       <div className="buttons">
-        <button className="comment-actions cancel" onClick={onCancel}>
+        <button
+          type="button"
+          className="comment-actions cancel"
+          onClick={onCancel}
+        >
           Cancel
         </button>
-        <button className="delete comment-action" onClick={handleDelete}>
+        <button
+          type="button"
+          className="delete comment-action"
+          onClick={handleDelete}
+        >
           Delete
         </button>
         <button
+          type="submit"
           className="comment-action submit"
           disabled={
             newComment?.trim() === comment.text || newComment?.trim() === ""
