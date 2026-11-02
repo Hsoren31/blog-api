@@ -204,17 +204,17 @@ button:focus-visible {
     --primary-400: #d9cabf;
 
     /* Secondary */
-    --secondary-50: #1a2013;
-    --secondary-100: #4e5f3a;
-    --secondary-200: #687e4e;
-    --secondary-300: #9bb181;
-    --secondary-400: #b4c5a0;
+    --secondary-50: #4e5f3a;
+    --secondary-100: #687e4e;
+    --secondary-200: #9bb181;
+    --secondary-300: #cdd8c0;
+    --secondary-400: #e6ecdf;
 
     /* Accent */
-    --accent-50: #162013;
+    --accent-50: #2b4026;
     --accent-100: #416039;
-    --accent-200: #6ca15e;
-    --accent-300: #a7c69f;
+    --accent-200: #56814b;
+    --accent-300: #89b47e;
     --accent-400: #c4d9bf;
   }
 }
