@@ -4,7 +4,11 @@ div.tabs {
 }
 
 .active-tab {
-  background-color: var(--clr-primary);
+  background-color: var(--secondary-200);
+}
+
+.active-tab:hover {
+  background-color: var(--secondary-200);
 }
 
 .tab:focus {
@@ -18,7 +22,7 @@ div.tabs {
 }
 
 #active-list {
-  background-color: var(--clr-primary);
+  background-color: var(--secondary-200);
   padding: 1em;
 }
 
@@ -30,10 +34,10 @@ ul.post-list {
 }
 
 li.post {
-  border: 2px solid var(--clr-accent);
+  border: 2px solid var(--primary-50);
   border-radius: 8px;
   padding: var(--spacing-2);
-  background-color: var(--clr-bg);
+  background-color: var(--background-100);
   position: relative;
 }
 
@@ -50,8 +54,8 @@ a.post-edit {
 }
 
 .tag {
-  background-color: var(--clr-primary);
-  color: var(--clr-bg);
+  background-color: var(--accent-100);
+  color: var(--clr-text-300);
   font-weight: 700;
   padding: 0.15em 0.5em;
   border-radius: 8px;
@@ -59,12 +63,12 @@ a.post-edit {
 
 .no-posts {
   padding: var(--spacing-3);
-  background-color: var(--clr-bg);
+  background-color: var(--background-200);
   border-radius: 8px;
   display: grid;
   gap: var(--spacing-2);
 }
 
 button.start-writing {
-  background-color: var(--clr-accent);
+  background-color: var(--accent-200);
 }

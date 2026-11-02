@@ -1,17 +1,38 @@
 :root {
   /* Text */
-  --clr-text: #091111;
+  --clr-text-50: #81664b;
+  --clr-text-100: #604d39;
+  --clr-text-200: #403326;
+  --clr-text-300: #201a13;
+  --clr-text-400: #100d09;
 
   /* Background */
-  --clr-bg: #f5fbfa;
-  --clr-bg-subtle: #e2f3ef;
-  --clr-bg-muted: #d3eee9;
+  --background-50: #f5f2ef;
+  --background-100: #ece4df;
+  --background-200: #d8cac0;
+  --background-300: #c5afa0;
+  --background-400: #b19481;
 
-  /* Brand */
-  --clr-primary: #4ac1ba;
-  --clr-primary-hover: #3eb6ae;
-  --clr-accent: #61ded6;
-  --clr-accent-hover: #35d4ca;
+  /* Primary */
+  --primary-50: #d9cabf;
+  --primary-100: #c6b09f;
+  --primary-200: #a17b5e;
+  --primary-300: #604a39;
+  --primary-400: #201913;
+
+  /* Secondary */
+  --secondary-50: #b4c69f;
+  --secondary-100: #9cb380;
+  --secondary-200: #69804d;
+  --secondary-300: #344026;
+  --secondary-400: #1a2013;
+
+  /* Accent */
+  --accent-50: #c4d9bf;
+  --accent-100: #a7c69f;
+  --accent-200: #8ab47e;
+  --accent-300: #57814b;
+  --accent-400: #2b4026;
 
   /* danger/destructive actions */
   --clr-danger-hover: #b91c1c;
@@ -32,8 +53,8 @@
 
   /* Light Dark Themes */
   color-scheme: light dark;
-  color: var(--clr-text);
-  background-color: var(--clr-bg);
+  color: var(--clr-text-400);
+  background-color: var(--clr-bg-50);
 
   /* Spacing */
   --spacing-1: 0.5rem;
@@ -64,6 +85,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--background-50);
 }
 
 p,
@@ -102,7 +124,7 @@ textarea {
 }
 
 a {
-  color: var(--clr-text);
+  color: var(--clr-text-300);
   text-decoration: none;
   display: inline-block;
   position: relative;
@@ -116,7 +138,7 @@ a::after {
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: var(--clr-text);
+  background-color: var(--clr-text-300);
   transition: transform 0.25s ease-out;
   transform-origin: bottom right;
 }
@@ -146,12 +168,12 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: var(--clr-accent);
+  background-color: var(--accent-200);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  background-color: var(--clr-accent-hover);
+  background-color: var(--accent-300);
 }
 button:focus,
 button:focus-visible {
@@ -161,18 +183,39 @@ button:focus-visible {
 @media (prefers-color-scheme: dark) {
   :root {
     /* Text */
-    --clr-text: #eef6f6;
+    --clr-text-50: #b4967e;
+    --clr-text-100: #c6b19f;
+    --clr-text-200: #d9cbbf;
+    --clr-text-300: #ece5df;
+    --clr-text-400: #f6f2ef;
 
     /* Background */
-    --clr-bg: #040b0a;
-    --clr-bg-subtle: #0b1e1b;
-    --clr-bg-muted: #163c36;
+    --background-50: #100c0a;
+    --background-100: #201813;
+    --background-200: #3f3127;
+    --background-300: #5f493a;
+    --background-400: #7e614e;
 
-    /* Brand */
-    --clr-primary: #3eb6ae;
-    --clr-primary-hover: #49c1b9;
-    --clr-accent: #219c94;
-    --clr-accent-hover: #27b9af;
+    /* Primary */
+    --primary-50: #201913;
+    --primary-100: #403126;
+    --primary-200: #81624b;
+    --primary-300: #b4957e;
+    --primary-400: #d9cabf;
+
+    /* Secondary */
+    --secondary-50: #1a2013;
+    --secondary-100: #4e5f3a;
+    --secondary-200: #687e4e;
+    --secondary-300: #9bb181;
+    --secondary-400: #b4c5a0;
+
+    /* Accent */
+    --accent-50: #162013;
+    --accent-100: #416039;
+    --accent-200: #6ca15e;
+    --accent-300: #a7c69f;
+    --accent-400: #c4d9bf;
   }
 }
 

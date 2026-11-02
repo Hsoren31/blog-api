@@ -6,7 +6,7 @@
 }
 
 .publish-status {
-  background-color: var(--clr-bg-subtle);
+  background-color: var(--background-300);
   text-align: center;
   padding: var(--spacing-1);
 }
@@ -30,7 +30,7 @@ ul.edit-tags {
 }
 
 .tag-pill {
-  background-color: var(--clr-primary);
+  background-color: var(--primary-200);
   border-radius: 15px;
   padding: 5px 10px;
   display: flex;
@@ -42,5 +42,9 @@ ul.edit-tags {
 
 button.remove-tag {
   padding: 0;
+  background-color: transparent;
+}
+
+button.remove-tag:hover {
   background-color: transparent;
 }
