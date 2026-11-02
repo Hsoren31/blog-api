@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as postController from "../controller/postController.js";
-import { verifyToken } from "../controller/authController.js";
+import verifyToken from "../middleware/auth/verifyToken.js";
 const postsRouter = new Router();
 
 //post crud operations

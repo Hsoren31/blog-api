@@ -8,7 +8,7 @@ import postsRouter from "./routes/postsRouter.js";
 import usersRouter from "./routes/usersRouter.js";
 import authRouter from "./routes/authRouter.js";
 
-import { verifyToken } from "./controller/authController.js";
+import verifyToken from "./middleware/auth/verifyToken.js";
 
 const app = express();
 
