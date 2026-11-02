@@ -1,5 +1,4 @@
 import * as db from "../db/userQueries.js";
-import { body, validationResult } from "express-validator";
 
 async function readUser(req, res) {
   try {
@@ -15,53 +14,40 @@ async function readUser(req, res) {
   }
 }
 
-const updateProfile = [
-  body("name")
-    .trim()
-    .optional({ values: "falsy" })
-    .isAlpha("en-US", { ignore: " " })
-    .withMessage("Name must only contain letters."),
-  async (req, res) => {
-    try {
-      // Check validation
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json(errors);
-      }
+async function updateProfile(req, res) {
+  try {
+    const { username } = req.params;
+    const { name, bio, avatar } = req.body;
 
-      const { username } = req.params;
-      const { name, bio, avatar } = req.body;
-
-      //Check if user was found
-      const userExists = await db.checkUserExists(username);
-      if (!userExists) {
-        return res.status(404).json({ error: "Could not find user." });
-      }
-
-      // Check if unauthorized account is trying to update account.
-      const userId = await db.readUserId(username);
-      if (userId !== req.user.id) {
-        return res
-          .status(403)
-          .json({ error: "You don't have access to change this account." });
-      }
-
-      //Update Profile
-      const user = await db.updateProfile({
-        userId: req.user.id,
-        name,
-        bio,
-        avatar,
-      });
-      res.json({ user });
-    } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .json({ error: "Something unexpected occured. Please try again." });
+    //Check if user was found
+    const userExists = await db.checkUserExists(username);
+    if (!userExists) {
+      return res.status(404).json({ error: "Could not find user." });
     }
-  },
-];
+
+    // Check if unauthorized account is trying to update account.
+    const userId = await db.readUserId(username);
+    if (userId !== req.user.id) {
+      return res
+        .status(403)
+        .json({ error: "You don't have access to change this account." });
+    }
+
+    //Update Profile
+    const user = await db.updateProfile({
+      userId: req.user.id,
+      name,
+      bio,
+      avatar,
+    });
+    res.json({ user });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: "Something unexpected occured. Please try again." });
+  }
+}
 
 async function deleteUser(req, res) {
   try {
