@@ -1,17 +1,38 @@
 :root {
   /* Text */
-  --clr-text: #091111;
+  --clr-text-50: #81664b;
+  --clr-text-100: #604d39;
+  --clr-text-200: #403326;
+  --clr-text-300: #201a13;
+  --clr-text-400: #100d09;
 
   /* Background */
-  --clr-bg: #f5fbfa;
-  --clr-bg-subtle: #e2f3ef;
-  --clr-bg-muted: #d3eee9;
+  --background-50: #f5f2ef;
+  --background-100: #ece4df;
+  --background-200: #d8cac0;
+  --background-300: #c5afa0;
+  --background-400: #b19481;
 
-  /* Brand */
-  --clr-primary: #4ac1ba;
-  --clr-primary-hover: #3eb6ae;
-  --clr-accent: #61ded6;
-  --clr-accent-hover: #35d4ca;
+  /* Primary */
+  --primary-50: #d9cabf;
+  --primary-100: #c6b09f;
+  --primary-200: #a17b5e;
+  --primary-300: #604a39;
+  --primary-400: #201913;
+
+  /* Secondary */
+  --secondary-50: #b4c69f;
+  --secondary-100: #9cb380;
+  --secondary-200: #69804d;
+  --secondary-300: #344026;
+  --secondary-400: #1a2013;
+
+  /* Accent */
+  --accent-50: #c4d9bf;
+  --accent-100: #a7c69f;
+  --accent-200: #8ab47e;
+  --accent-300: #57814b;
+  --accent-400: #2b4026;
 
   /* danger/destructive actions */
   --clr-danger-hover: #b91c1c;
@@ -177,17 +198,38 @@ form > button {
 @media (prefers-color-scheme: dark) {
   :root {
     /* Text */
-    --clr-text: #eef6f6;
+    --clr-text-50: #b4967e;
+    --clr-text-100: #c6b19f;
+    --clr-text-200: #d9cbbf;
+    --clr-text-300: #ece5df;
+    --clr-text-400: #f6f2ef;
 
     /* Background */
-    --clr-bg: #040b0a;
-    --clr-bg-subtle: #0b1e1b;
-    --clr-bg-muted: #163c36;
+    --background-50: #100c0a;
+    --background-100: #201813;
+    --background-200: #3f3127;
+    --background-300: #5f493a;
+    --background-400: #7e614e;
 
-    /* Brand */
-    --clr-primary: #3eb6ae;
-    --clr-primary-hover: #49c1b9;
-    --clr-accent: #219c94;
-    --clr-accent-hover: #27b9af;
+    /* Primary */
+    --primary-50: #201913;
+    --primary-100: #403126;
+    --primary-200: #81624b;
+    --primary-300: #b4957e;
+    --primary-400: #d9cabf;
+
+    /* Secondary */
+    --secondary-50: #4e5f3a;
+    --secondary-100: #687e4e;
+    --secondary-200: #9bb181;
+    --secondary-300: #cdd8c0;
+    --secondary-400: #e6ecdf;
+
+    /* Accent */
+    --accent-50: #2b4026;
+    --accent-100: #416039;
+    --accent-200: #56814b;
+    --accent-300: #89b47e;
+    --accent-400: #c4d9bf;
   }
 }
