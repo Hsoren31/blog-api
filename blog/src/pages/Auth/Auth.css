@@ -14,7 +14,7 @@ div#signup-container,
 div#login-container {
   max-width: 30ch;
   margin: var(--spacing-2) auto;
-  background-color: var(--clr-bg-subtle);
+  background-color: var(--background-200);
   padding: var(--spacing-3);
   border-radius: 8px;
   display: grid;

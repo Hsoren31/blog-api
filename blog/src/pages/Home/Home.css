@@ -8,14 +8,14 @@ ul#posts {
 
 li.post-list-item {
   border-radius: 8px;
-  border: 1px solid var(--clr-text);
+  border: 1px solid var(--primary-400);
   display: flex;
   flex-direction: column;
 }
 
 div.post_frame {
   min-height: 150px;
-  background-color: var(--clr-text);
+  background-color: var(--primary-400);
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
 }
@@ -38,5 +38,5 @@ div.post_content {
 .read-more {
   margin-top: auto;
   padding: var(--spacing-2);
-  border-top: 1px solid var(--clr-text);
+  border-top: 1px solid var(--primary-400);
 }

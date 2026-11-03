@@ -63,17 +63,21 @@ ul#post-tags {
 }
 
 .comment-action {
-  background-color: var(--clr-bg);
+  background-color: var(--background-200);
   font-size: 0.75rem;
   padding: 0.3em 0.5em;
 }
 
 .comment-action:hover {
-  background-color: var(--clr-bg-muted);
+  background-color: var(--background-300);
 }
 
 button.submit {
-  background-color: var(--clr-bg-subtle);
+  background-color: var(--secondary-200);
+}
+
+button.submit:hover {
+  background-color: var(--secondary-100);
 }
 
 button.delete {
