@@ -27,12 +27,17 @@ ul.tags {
   gap: 3px;
   flex-wrap: wrap;
   padding: var(--spacing-1);
+  font-size: var(--fs-100);
 }
 
 div.post_content {
   padding: var(--spacing-2);
   display: flex;
   flex-direction: column;
+}
+
+.post-credits {
+  font-size: var(--fs-200);
 }
 
 .read-more {

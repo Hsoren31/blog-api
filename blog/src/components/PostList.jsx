@@ -20,13 +20,13 @@ export default function PostList({ posts }) {
                 )}
               </div>
               <div className="post_content">
-                <p>
+                <p className="post-credits">
                   {post.author && <>{post.author.username} &middot; </>}
                   {formatDateDistance(
                     post.updatedAt ? post.updatedAt : post.createdAt
                   )}
                 </p>
-                <h2>{post.title}</h2>
+                <h3>{post.title}</h3>
                 <p>{post.description}</p>
               </div>
               <div className="read-more">
