@@ -20,7 +20,6 @@ ul#post-tags {
 .comment-reply,
 .comment-edit {
   gap: 0.25rem;
-  font-size: 0.85rem;
 
   .buttons {
     display: flex;
@@ -45,7 +44,7 @@ ul#post-tags {
 .comment-credits {
   display: flex;
   gap: var(--spacing-1);
-  font-size: 0.75rem;
+  font-size: var(--fs-200);
 
   .author {
     font-weight: 700;
@@ -64,7 +63,6 @@ ul#post-tags {
 
 .comment-action {
   background-color: var(--background-200);
-  font-size: 0.75rem;
   padding: 0.3em 0.5em;
 }
 

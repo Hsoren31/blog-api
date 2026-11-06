@@ -55,6 +55,8 @@
   --fs-500: 1.25rem; /* 20px */
   --fs-600: 1.5rem; /* 24px */
   --fs-700: 1.875rem; /* 30px */
+  --fs-800: 2.25rem; /* 36px */
+  --fs-900: 3rem; /* 48px */
 
   font-family: var(--ff-base);
   line-height: 1.5;
@@ -150,19 +152,23 @@ a:hover::after {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: var(--fs-900);
   line-height: 1.1;
 }
 
 h2 {
-  font-size: 2em;
+  font-size: var(--fs-800);
+}
+
+h3 {
+  font-size: var(--fs-600);
 }
 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
-  font-size: 1em;
+  font-size: var(--fs-base);
   font-weight: 500;
   font-family: inherit;
   background-color: var(--accent-200);
