@@ -35,7 +35,7 @@ li.tag {
   font-weight: 700;
   font-size: var(--fs-100);
   max-width: fit-content;
-  padding: 0.1em 0.3em;
-  border-radius: 8px;
+  padding: 0.25em 0.75em;
+  border-radius: 16px;
   text-transform: uppercase;
 }
