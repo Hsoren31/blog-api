@@ -16,6 +16,7 @@ export default function Post() {
       {post ? (
         <div id="post">
           <h2>{post.title}</h2>
+          <p className="post-description">{post.description}</p>
           <div className="post-credits">
             <p>
               Written by{" "}
@@ -27,7 +28,6 @@ export default function Post() {
               {formatLongDate(post.updatedAt ? post.updatedAt : post.createdAt)}
             </p>
           </div>
-          <p>{post.description}</p>
           <p>{post.body}</p>
           {post.tags !== 0 && (
             <ul id="post-tags">

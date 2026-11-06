@@ -5,6 +5,10 @@
   gap: var(--spacing-2);
 }
 
+p.post-description {
+  font-size: var(--fs-400);
+}
+
 ul#post-tags {
   list-style: none;
   display: flex;
