@@ -74,12 +74,16 @@ ul#post-tags {
   background-color: var(--background-300);
 }
 
-button.submit {
-  background-color: var(--secondary-200);
+button.submit:disabled {
+  background-color: var(--secondary-50);
 }
 
-button.submit:hover {
+button.submit:enabled {
   background-color: var(--secondary-100);
+}
+
+button.submit:enabled:hover {
+  background-color: var(--secondary-200);
 }
 
 button.delete {
