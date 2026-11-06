@@ -47,6 +47,15 @@
   /* Fonts */
   --ff-accent: "Oswald", sans-serif;
   --ff-base: "Quattrocento", serif;
+
+  --fs-100: 0.75rem; /* 12px */
+  --fs-200: 0.875rem; /* 14px */
+  --fs-300: 1rem; /* 16px */
+  --fs-400: 1.125rem; /* 18px */
+  --fs-500: 1.25rem; /* 20px */
+  --fs-600: 1.5rem; /* 24px */
+  --fs-700: 1.875rem; /* 30px */
+
   font-family: var(--ff-base);
   line-height: 1.5;
   font-weight: 400;
